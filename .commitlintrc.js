@@ -1,19 +1,17 @@
 /** @type {import('cz-git').UserConfig} */
-const fs = require('fs');
-const path = require('path');
+const fs = require( 'fs' );
+const path = require( 'path' );
 
 /**
  *  @param {string[]} packages
  *  @param {string[]} apps
  */
-const packages = fs.readdirSync(path.resolve(__dirname, 'packages'));
-const apps = fs.readdirSync(path.resolve(__dirname, 'apps'));
 
 module.exports = {
-  extends: ['@commitlint/config-conventional'],
+  extends: [ '@commitlint/config-conventional' ],
   rules: {
     // @see: https://commitlint.js.org/#/reference-rules
-    'scope-enum': [2, 'always', ['global', ...apps, ...packages]],
+    // 'scope-enum': [2, 'always', ['global', ...apps, ...packages]],
   },
   prompt: {
     types: [
