@@ -1,10 +1,10 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { MDXProvider } from "@mdx-js/react";
-import Layout from "../../components/Layout";
+import Layout from "components/Layout";
 import Router from "next/router";
-import { PostProps } from "../../components/Post";
-import prisma from '../../lib/prisma'
+import { PostProps } from "components/Post";
+import prisma from 'lib/prisma'
 import { useSession } from "next-auth/react";
 
 
