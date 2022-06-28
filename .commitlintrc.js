@@ -1,17 +1,12 @@
 /** @type {import('cz-git').UserConfig} */
-const fs = require( 'fs' );
-const path = require( 'path' );
+const { execSync } = require( 'child_process' );
 
-/**
- *  @param {string[]} packages
- *  @param {string[]} apps
- */
+
 
 module.exports = {
   extends: [ '@commitlint/config-conventional' ],
   rules: {
     // @see: https://commitlint.js.org/#/reference-rules
-    // 'scope-enum': [2, 'always', ['global', ...apps, ...packages]],
   },
   prompt: {
     types: [
@@ -62,10 +57,18 @@ module.exports = {
         emoji: ':rewind:',
       },
     ],
+    scopes: [
+      { value: "app", name: "app:       Overall function" },
+      { value: "ui", name: "ui:        UI/Layout/Components" },
+      { value: "api", name: "api:       API Changes" },
+      { value: "db", name: "db:        Database" },
+      { value: "build", name: "build:     Build System/Workflows" },
+      { value: "deps", name: "deps:      Dependencies" },
+      { value: "conf", name: "config:    Config changes" },
+    ],
     useEmoji: true,
-    // scopes: ['base', ...apps, ...packages],
     enableMultipleScopes: true,
     allowEmptyScopes: false,
-    maxSubjectLength: 72,
+    // maxSubjectLength: 72,
   },
 };
