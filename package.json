@@ -43,7 +43,6 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
-    "@types/next-auth": "3.13.0",
     "@types/node": "16.11.41",
     "@types/react": "18.0.14",
     "commitizen": "^4.2.4",
