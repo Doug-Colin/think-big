@@ -61,7 +61,7 @@ specifiers:
   react-dom: 18.2.0
   react-markdown: 8.0.3
   storybook-addon-swc: ^1.1.7
-  ts-node: 10.8.1
+  ts-node: 10.8.2
   typescript: 4.7.4
   webpack: ^5
 
@@ -117,7 +117,7 @@ devDependencies:
   prettier: 2.7.1
   prisma: 3.15.2
   storybook-addon-swc: 1.1.7_webpack@5.73.0
-  ts-node: 10.8.1_7zjsdbe4b4o6yzns7q5as5hoii
+  ts-node: 10.8.2_7zjsdbe4b4o6yzns7q5as5hoii
   typescript: 4.7.4
   webpack: 5.73.0_@swc+core@1.2.207
 
@@ -128,7 +128,7 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       '@jridgewell/gen-mapping': 0.1.1
-      '@jridgewell/trace-mapping': 0.3.9
+      '@jridgewell/trace-mapping': 0.3.14
 
   /@babel/code-frame/7.18.6:
     resolution: {integrity: sha512-TDCmlK5eOvH+eH7cdAFlNXeVJqWIQ7gW9tY1GJIpUtFb6CmjVyq2VM3u71bOyR8CRihcCgMUYoDNyLXao3+70Q==}
@@ -2169,6 +2169,7 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.0.8
       '@jridgewell/sourcemap-codec': 1.4.14
+    dev: true
 
   /@mantine/core/4.2.11_pxqnptmbwc6rdqpjyxswrkaqjm:
     resolution: {integrity: sha512-4nLZLIbtiu1uVEqfdxqkEr/gLbI/RC4+8C2j3d9zFs+vPbIuKi2R/LSbwXfFePEPSfb90RqLlXiVZY2z17jwFA==}
@@ -5826,7 +5827,7 @@ packages:
     dependencies:
       '@types/node': 16.11.42
       cosmiconfig: 7.0.1
-      ts-node: 10.8.1_7zjsdbe4b4o6yzns7q5as5hoii
+      ts-node: 10.8.2_7zjsdbe4b4o6yzns7q5as5hoii
       typescript: 4.7.4
     transitivePeerDependencies:
       - '@swc/core'
@@ -11808,8 +11809,8 @@ packages:
     engines: {node: '>=6.10'}
     dev: true
 
-  /ts-node/10.8.1_7zjsdbe4b4o6yzns7q5as5hoii:
-    resolution: {integrity: sha512-Wwsnao4DQoJsN034wePSg5nZiw4YKXf56mPIAeD6wVmiv+RytNSWqc2f3fKvcUoV+Yn2+yocD71VOfQHbmVX4g==}
+  /ts-node/10.8.2_7zjsdbe4b4o6yzns7q5as5hoii:
+    resolution: {integrity: sha512-LYdGnoGddf1D6v8REPtIH+5iq/gTDuZqv2/UJUU7tKjuEU8xVZorBM+buCGNjj+pGEud+sOoM4CX3/YzINpENA==}
     hasBin: true
     peerDependencies:
       '@swc/core': '>=1.2.50'
