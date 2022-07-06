@@ -46,7 +46,7 @@
 		"@commitlint/cli": "^17.0.2",
 		"@commitlint/config-conventional": "^17.0.2",
 		"@types/node": "16.11.43",
-		"@types/react": "18.0.14",
+		"@types/react": "18.0.15",
 		"babel-loader": "^8.2.5",
 		"commitizen": "^4.2.4",
 		"commitlint-config-gitmoji": "^2.2.5",
