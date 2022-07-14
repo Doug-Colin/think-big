@@ -22,13 +22,13 @@ const useStyles = createStyles((theme) => ({
 
 		'&:hover': {
 			opacity: 1,
-			backgroundColor: theme.colors[theme.primaryColor][5],
+			backgroundColor: theme.colors.primary[5],
 		},
 	},
 	active: {
 		opacity: 1,
 		'&, &:hover': {
-			backgroundColor: theme.colors[theme.primaryColor][7],
+			backgroundColor: theme.colors.primary[7],
 		},
 	},
 	icon: {
@@ -59,7 +59,7 @@ export function NavbarLink({ icon, label, active, onClick }: NavbarLinkProps) {
 
 const useNavbarStyles = createStyles((theme) => ({
 	navbar: {
-		backgroundColor: theme.colors[theme.primaryColor][6],
+		backgroundColor: theme.colors.primary[9],
 		margin: 'none',
 	},
 }))

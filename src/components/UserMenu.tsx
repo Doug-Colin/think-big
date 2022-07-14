@@ -22,16 +22,16 @@ const useStyles = createStyles((theme) => ({
 		// },
 	},
 	user: {
-		color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+		color: theme.colors.primary[0], //theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
 		padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
 		borderRadius: theme.radius.sm,
 		transition: 'background-color 100ms ease',
 
 		'&:hover': {
-			backgroundColor:
-				theme.colorScheme === 'dark'
-					? theme.colors.dark[8]
-					: theme.colors.primary[6],
+			backgroundColor: theme.colors.primary[5],
+			// theme.colorScheme === 'dark'
+			// 	? theme.colors.dark[8]
+			// 	: theme.colors.primary[6],
 		},
 	},
 	userActive: {
@@ -43,7 +43,6 @@ const useStyles = createStyles((theme) => ({
 	},
 }))
 
-// FIXME: Hover property not shading
 export const UserMenu = ({ image, name, ...others }: UserMenuProps) => {
 	const [userMenuOpened, setUserMenuOpened] = useState(false)
 	const { classes, cx, theme } = useStyles()
