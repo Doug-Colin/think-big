@@ -7,6 +7,7 @@ import {
 } from '@mantine/core'
 import { Icon } from '@iconify/react'
 import React, { useState } from 'react'
+import styles from './UserMenu.module.scss'
 
 // This is Typescript stuff - don't worry about it.
 interface UserMenuProps {
@@ -26,7 +27,6 @@ const useStyles = createStyles((theme) => ({
 		padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
 		borderRadius: theme.radius.sm,
 		transition: 'background-color 100ms ease',
-
 		'&:hover': {
 			backgroundColor: theme.colors.primary[5],
 			// theme.colorScheme === 'dark'
@@ -57,7 +57,12 @@ export const UserMenu = ({ image, name, ...others }: UserMenuProps) => {
 			control={
 				<UnstyledButton className={classes.user}>
 					<Group>
-						<Avatar src={image} radius='xl' />
+						<Avatar
+							src={image}
+							radius='xl'
+							alt={name}
+							className={styles.avatarShadow}
+						/>
 						<Icon icon='tabler:chevron-down' />
 					</Group>
 				</UnstyledButton>
