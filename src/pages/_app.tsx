@@ -1,11 +1,24 @@
 import { SessionProvider } from 'next-auth/react'
 import Head from 'next/head'
 import { AppProps } from 'next/app'
-import { MantineProvider } from '@mantine/core'
+import {
+	MantineProvider,
+	ColorSchemeProvider,
+	ColorScheme,
+} from '@mantine/core'
+import { useColorScheme } from '@mantine/hooks'
+import { useState } from 'react'
 import { MainLayout } from '~/layouts'
+import { baseTheme } from '~/style'
 
 const App = (props: AppProps) => {
 	const { Component, pageProps } = props
+	const preferredColorScheme = useColorScheme()
+	const [colorScheme, setColorScheme] =
+		useState<ColorScheme>(preferredColorScheme)
+	const toggleColorScheme = (value?: ColorScheme) =>
+		setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
+
 	return (
 		<SessionProvider session={pageProps.session}>
 			<Head>
@@ -15,18 +28,16 @@ const App = (props: AppProps) => {
 					content='minimum-scale=1, initial-scale=1, width=device-width'
 				/>
 			</Head>
-			<MantineProvider
-				withGlobalStyles
-				withNormalizeCSS
-				theme={{
-					/** Put your mantine theme override here */
-					colorScheme: 'light',
-				}}
+			<ColorSchemeProvider
+				colorScheme={colorScheme}
+				toggleColorScheme={toggleColorScheme}
 			>
-				<MainLayout>
-					<Component {...pageProps} />
-				</MainLayout>
-			</MantineProvider>
+				<MantineProvider withGlobalStyles withNormalizeCSS theme={baseTheme}>
+					<MainLayout>
+						<Component {...pageProps} />
+					</MainLayout>
+				</MantineProvider>
+			</ColorSchemeProvider>
 		</SessionProvider>
 	)
 }
