@@ -1,5 +1,4 @@
-import { AppShell, Header, createStyles } from '@mantine/core'
-import { create } from 'cypress/types/lodash'
+import { AppShell } from '@mantine/core'
 import { SideNav, HeaderBar } from '~/components'
 
 export const MainLayout = ({ children }) => {
