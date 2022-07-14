@@ -6,6 +6,10 @@
 		}
 	],
 	"settings": {
-		"exportall.config.folderListener": ["/src/components"]
+		"exportall.config.folderListener": [
+			"/src/components",
+			"/mockdata",
+			"/src/style"
+		]
 	}
 }
