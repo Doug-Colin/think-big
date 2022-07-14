@@ -2,6 +2,7 @@ import { SessionProvider } from 'next-auth/react'
 import Head from 'next/head'
 import { AppProps } from 'next/app'
 import { MantineProvider } from '@mantine/core'
+import { MainLayout } from '~/layouts'
 
 const App = (props: AppProps) => {
 	const { Component, pageProps } = props
@@ -22,7 +23,9 @@ const App = (props: AppProps) => {
 					colorScheme: 'light',
 				}}
 			>
-				<Component {...pageProps} />
+				<MainLayout>
+					<Component {...pageProps} />
+				</MainLayout>
 			</MantineProvider>
 		</SessionProvider>
 	)
