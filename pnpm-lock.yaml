@@ -46,6 +46,7 @@ specifiers:
   react-markdown: 8.0.3
   ts-node: ^10.8.2
   typescript: ^4.7.4
+  zod: ^3.17.3
 
 dependencies:
   '@mantine/core': 4.2.11_umwvklz3hzhdrxyz7tf2npqalq
@@ -69,6 +70,7 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-markdown: 8.0.3_3hx2ussxxho4jajbwrd6gq34qe
+  zod: 3.17.3
 
 devDependencies:
   '@babel/core': 7.18.6
@@ -9839,6 +9841,13 @@ packages:
       }
     engines: { node: '>=10' }
     dev: true
+
+  /zod/3.17.3:
+    resolution:
+      {
+        integrity: sha512-4oKP5zvG6GGbMlqBkI5FESOAweldEhSOZ6LI6cG+JzUT7ofj1ZOC0PJudpQOpT1iqOFpYYtX5Pw0+o403y4bcg==,
+      }
+    dev: false
 
   /zwitch/2.0.2:
     resolution:
