@@ -1,20 +1,15 @@
 import { Icon } from '@iconify/react'
-import {
-	Center,
-	Header,
-	Group,
-	Image,
-	createStyles,
-	TextInput,
-} from '@mantine/core'
-import { NavbarLink } from './SideNav'
-
+import { Center, Group, Image, createStyles, TextInput } from '@mantine/core'
+import { NavbarLink, UserMenu } from './'
+import { fakeUser } from 'mockdata'
 const useStyles = createStyles((theme) => ({
 	header: {
 		backgroundColor: theme.colors[theme.primaryColor][6],
+		padding: '0 10px',
 	},
 	logo: {
-		margin: theme.spacing.sm,
+		marginTop: theme.spacing.sm,
+		marginBottom: theme.spacing.sm,
 		height: 60,
 		width: 60,
 	},
@@ -47,7 +42,7 @@ export const HeaderBar = () => {
 					className={classes.searchBox}
 				/>
 			</Center>
-			<NavbarLink icon='tabler:logout' label='Logout' />
+			<UserMenu name={fakeUser.name} image={fakeUser.image} />
 		</Group>
 		// </Header>
 	)

@@ -28,16 +28,16 @@ const App = (props: AppProps) => {
 					content='minimum-scale=1, initial-scale=1, width=device-width'
 				/>
 			</Head>
-			<ColorSchemeProvider
+			{/* <ColorSchemeProvider
 				colorScheme={colorScheme}
 				toggleColorScheme={toggleColorScheme}
-			>
-				<MantineProvider withGlobalStyles withNormalizeCSS theme={baseTheme}>
-					<MainLayout>
-						<Component {...pageProps} />
-					</MainLayout>
-				</MantineProvider>
-			</ColorSchemeProvider>
+			> */}
+			<MantineProvider withGlobalStyles withNormalizeCSS theme={baseTheme}>
+				<MainLayout>
+					<Component {...pageProps} />
+				</MainLayout>
+			</MantineProvider>
+			{/* </ColorSchemeProvider> */}
 		</SessionProvider>
 	)
 }
