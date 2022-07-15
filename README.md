@@ -1,7 +1,7 @@
 <h1 align="center">
   <a href="https://github.com/100Devs-ADHD/think-big">
     <!-- Please provide path to your logo here -->
-    <img src="docs/images/logo.svg" alt="Logo" width="100" height="100">
+    <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-logo.svg" alt="Logo" width="500" height="130">
   </a>
 </h1>
 
@@ -14,7 +14,8 @@
   <a href="https://github.com/100Devs-ADHD/think-big/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
   ·
   <a href="https://github.com/100Devs-ADHD/think-big/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
-  .<a href="https://github.com/100Devs-ADHD/think-big/discussions">Ask a Question</a>
+  ·
+	<a href="https://github.com/100Devs-ADHD/think-big/discussions">Ask a Question</a>
 </div>
 
 <div align="center">
@@ -75,8 +76,7 @@
 
 ### Built With
 
-> **[?]**
-> Please provide the technologies that are used in the project.
+> **Express.js, MongoDB, Next.js, Node.js & React.js**
 
 ## Getting Started
 
@@ -168,6 +168,7 @@ For a full list of all authors and contributors, see [the contributors page](htt
 ## Security
 
 ThinkBIG follows good practices of security, but 100% security cannot be assured.
+
 ThinkBIG is provided **"as is"** without any **warranty**. Use at your own risk.
 
 _For more information and to report security issues, please refer to our [security documentation](docs/SECURITY.md)._
@@ -177,9 +178,3 @@ _For more information and to report security issues, please refer to our [securi
 This project is licensed under the **GNU General Public License v3**.
 
 See [LICENSE](LICENSE) for more information.
-
-## Acknowledgements
-
-> **[?]**
-> If your work was funded by any organization or institution, acknowledge their support here.
-> In addition, if your work relies on other software libraries, or was inspired by looking at other work, it is appropriate to acknowledge this intellectual debt too.
