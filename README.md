@@ -1,21 +1,21 @@
 <h1 align="center">
   <a href="https://github.com/100Devs-ADHD/think-big">
     <!-- Please provide path to your logo here -->
-    <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-logo.svg" alt="Logo" width="500" height="130">
+    <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-logo.svg" alt="thinkBig" width="500" height="130">
   </a>
 </h1>
 
 <div align="center">
-  ThinkBIG
-  <br />
-  <a href="#about"><strong>Explore the screenshots »</strong></a>
-  <br />
-  <br />
-  <a href="https://github.com/100Devs-ADHD/think-big/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
-  ·
-  <a href="https://github.com/100Devs-ADHD/think-big/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
-  ·
-	<a href="https://github.com/100Devs-ADHD/think-big/discussions">Ask a Question</a>
+
+<a href="#about"><strong>Explore the screenshots »</strong></a>
+<br />
+<br />
+<a href="https://github.com/100Devs-ADHD/think-big/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
+·
+<a href="https://github.com/100Devs-ADHD/think-big/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
+·
+<a href="https://github.com/100Devs-ADHD/think-big/discussions">Ask a Question</a>
+
 </div>
 
 <div align="center">
@@ -65,12 +65,11 @@
 <summary>Screenshots</summary>
 <br>
 
-> **[?]**
-> Please provide your screenshots here.
+**Prototype Screenshots**
 
-|                               Home Page                               |                               Login Page                               |
-| :-------------------------------------------------------------------: | :--------------------------------------------------------------------: |
-| <img src="docs/images/screenshot.png" title="Home Page" width="100%"> | <img src="docs/images/screenshot.png" title="Login Page" width="100%"> |
+|                                                              Classes                                                               |                                                              Classes                                                               |                                                            Calendar                                                            |
+| :--------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------: |
+| <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-screenshot-1.png" title="Prototype Classes Page" width="100%"> | <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-screenshot-2.png" title="Prototype Classes Page" width="100%"> | <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-screenshot-2.png" title="Prototype Calendar" width="100%"> |
 
 </details>
 
