@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-if [ "$SKIP_COMMITIZEN" ]; then
+TMP_FILE=$(git rev-parse --path-format=absolute --git-dir)/commit-skip
+
+if [ -f $TMP_FILE ]; then
 	echo 'Skipping Commitizen step'
 	exit 0
 fi

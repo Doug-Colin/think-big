@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-export SKIP_COMMITIZEN=1
+TMP_FILE=$(git rev-parse --path-format=absolute --git-dir)/commit-skip
+
+echo '1' > $TMP_FILE
+echo 'Pausing prepare-commit-msg hook during rebase'

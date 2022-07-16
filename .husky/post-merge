@@ -1,7 +1,12 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-export SKIP_COMMITIZEN=
+TMP_FILE=$(git rev-parse --path-format=absolute --git-dir)/commit-skip
+
+if [ -f $TMP_FILE ]; then
+	echo 'Restoring prepare-commit-msg hook'
+	rm $TMP_FILE
+fi
 
 changed_files="$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD)"
 
