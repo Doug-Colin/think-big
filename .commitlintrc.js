@@ -2,12 +2,9 @@
 const { execSync } = require('child_process')
 
 const commitFile =
-	`${
-		execSync('git rev-parse --path-format=absolute --git-dir')
-			.toString()
-			.trim()
-			.split('/n')[0]
-	}/COMMIT_EDITMSG` || false
+	`${execSync('git rev-parse --path-format=absolute --git-dir')
+		.toString()
+		.trim()}/COMMIT_EDITMSG` || false
 
 const getCommitMsg = () => {
 	if (commitFile) {
