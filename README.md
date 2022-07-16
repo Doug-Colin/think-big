@@ -1,7 +1,7 @@
 <h1 align="center">
   <a href="https://github.com/100Devs-ADHD/think-big">
     <!-- Please provide path to your logo here -->
-    <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-logo.svg" alt="thinkBig" width="500" height="130">
+    <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-logo.svg" alt="thinkBig" width="850" >
   </a>
 </h1>
 
