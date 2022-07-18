@@ -23,7 +23,7 @@ const useStyles = createStyles((theme) => ({
 		// },
 	},
 	user: {
-		color: theme.colors.primary[0], //theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+		color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : '',
 		padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
 		borderRadius: theme.radius.sm,
 		transition: 'background-color 100ms ease',
@@ -35,11 +35,7 @@ const useStyles = createStyles((theme) => ({
 		},
 	},
 	userActive: {
-		backgroundColor:
-			theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
-	},
-	name: {
-		color: theme.colors.primary[0],
+		backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : '',
 	},
 }))
 

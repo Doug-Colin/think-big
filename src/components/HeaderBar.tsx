@@ -4,7 +4,7 @@ import { NavbarLink, UserMenu } from './'
 import { fakeUser } from 'mockdata'
 const useStyles = createStyles((theme) => ({
 	header: {
-		backgroundColor: theme.colors[theme.primaryColor][9],
+		backgroundColor: theme.colors[theme.primaryColor][6],
 		padding: '0 10px',
 	},
 	logo: {

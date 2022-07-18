@@ -5,6 +5,7 @@ type CustomColors =
 	| 'highlightPrimary'
 	| 'highlightSecondary'
 	| 'lowlight'
+	| 'secondary'
 	| 'dark'
 
 declare module '@mantine/core' {
