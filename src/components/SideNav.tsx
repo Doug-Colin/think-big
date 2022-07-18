@@ -17,7 +17,7 @@ const useStyles = createStyles((theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		color: theme.white,
+		// color: theme.white,
 		opacity: 0.85,
 
 		'&:hover': {
@@ -59,7 +59,7 @@ export function NavbarLink({ icon, label, active, onClick }: NavbarLinkProps) {
 
 const useNavbarStyles = createStyles((theme) => ({
 	navbar: {
-		backgroundColor: theme.colors.primary[9],
+		backgroundColor: theme.colors.primary[6],
 		margin: 'none',
 	},
 }))
