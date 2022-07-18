@@ -64,6 +64,7 @@ export const baseTheme: MantineThemeOverride = {
 			'#710421',
 		],
 		lowlight: [
+			// Black Olive
 			'#898883',
 			'#76746f',
 			'#62605a',
@@ -76,6 +77,7 @@ export const baseTheme: MantineThemeOverride = {
 			'#1e1c19',
 		],
 		dark: [
+			// Eerie Black
 			'#e9e9e8',
 			'#d3d2d2',
 			'#bebcbb',
