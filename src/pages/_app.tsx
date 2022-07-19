@@ -10,6 +10,10 @@ import { useColorScheme } from '@mantine/hooks'
 import { useState } from 'react'
 import { MainLayout } from '~/layouts'
 import { baseTheme } from '~/style'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
+const queryClient = new QueryClient()
 
 const App = (props: AppProps) => {
 	const { Component, pageProps } = props
@@ -28,16 +32,19 @@ const App = (props: AppProps) => {
 					content='minimum-scale=1, initial-scale=1, width=device-width'
 				/>
 			</Head>
-			{/* <ColorSchemeProvider
+			<QueryClientProvider client={queryClient}>
+				{/* <ColorSchemeProvider
 				colorScheme={colorScheme}
 				toggleColorScheme={toggleColorScheme}
 			> */}
-			<MantineProvider withGlobalStyles withNormalizeCSS theme={baseTheme}>
-				<MainLayout>
-					<Component {...pageProps} />
-				</MainLayout>
-			</MantineProvider>
-			{/* </ColorSchemeProvider> */}
+				<MantineProvider withGlobalStyles withNormalizeCSS theme={baseTheme}>
+					<MainLayout>
+						<Component {...pageProps} />
+						<ReactQueryDevtools initialIsOpen={false} />
+					</MainLayout>
+				</MantineProvider>
+				{/* </ColorSchemeProvider> */}
+			</QueryClientProvider>
 		</SessionProvider>
 	)
 }
