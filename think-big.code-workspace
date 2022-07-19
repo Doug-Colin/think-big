@@ -29,6 +29,9 @@
 		"githubPullRequests.useReviewMode": {
 			"merged": false,
 			"closed": false
+		},
+		"[prisma]": {
+			"editor.defaultFormatter": "Prisma.prisma"
 		}
 	}
 }
