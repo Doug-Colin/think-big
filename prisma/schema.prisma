@@ -59,6 +59,8 @@ model User {
   accounts             Account[]
   sessions             Session[]
   //custom fields
+  userDisabled         Boolean               @default(false)
+  serverMember         Boolean               @default(false)
   completedAssignments AssignmentStatus[]    @relation(fields: [assignmentId], references: [id])
   assignmentId         String[]              @db.ObjectId
   completedClasses     ClassStatus[]         @relation(fields: [classId], references: [id])
