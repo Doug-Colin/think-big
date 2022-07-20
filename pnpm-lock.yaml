@@ -25,6 +25,7 @@ specifiers:
   '@tanstack/react-query-devtools': ^4.0.5
   '@types/node': 18.0.5
   '@types/react': 18.0.15
+  axios: ^0.27.2
   babel-loader: ^8.2.5
   commitizen: ^4.2.4
   commitlint-config-gitmoji: ^2.2.5
@@ -47,6 +48,8 @@ specifiers:
   react-dom: 18.2.0
   react-markdown: 8.0.3
   sass: ^1.53.0
+  superjson: ^1.9.1
+  swr: ^1.3.0
   ts-node: ^10.9.1
   typescript: ^4.7.4
   zod: ^3.17.3
@@ -68,12 +71,15 @@ dependencies:
   '@next/mdx': 12.2.2_todqhrvd7cvbb36hzi2r6xttgq
   '@prisma/client': 4.1.0_prisma@4.1.0
   '@tanstack/react-query': 4.0.5_biqbaboplfbrettd7655fr4n2y
+  axios: 0.27.2
   dayjs: 1.11.3
   next: 12.2.2_zazhvxb5wdpfvem7m5mnvhb45a
   next-auth: 4.10.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-markdown: 8.0.3_3hx2ussxxho4jajbwrd6gq34qe
+  superjson: 1.9.1
+  swr: 1.3.0_react@18.2.0
   zod: 3.17.3
 
 devDependencies:
@@ -2611,7 +2617,6 @@ packages:
       {
         integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==,
       }
-    dev: true
 
   /at-least-node/1.0.0:
     resolution:
@@ -2650,6 +2655,18 @@ packages:
       }
     engines: { node: '>=12' }
     dev: true
+
+  /axios/0.27.2:
+    resolution:
+      {
+        integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==,
+      }
+    dependencies:
+      follow-redirects: 1.15.1
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /axobject-query/2.2.0:
     resolution:
@@ -3167,7 +3184,6 @@ packages:
     engines: { node: '>= 0.8' }
     dependencies:
       delayed-stream: 1.0.0
-    dev: true
 
   /comma-separated-tokens/2.0.2:
     resolution:
@@ -3354,6 +3370,16 @@ packages:
         integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==,
       }
     engines: { node: '>= 0.6' }
+    dev: false
+
+  /copy-anything/3.0.2:
+    resolution:
+      {
+        integrity: sha512-CzATjGXzUQ0EvuvgOCI6A4BGOo2bcVx8B+eC2nF862iv9fopnPQwlrbACakNCHRIJbCSBj+J/9JeDf60k64MkA==,
+      }
+    engines: { node: '>=12.13' }
+    dependencies:
+      is-what: 4.1.7
     dev: false
 
   /core-js-pure/3.23.3:
@@ -3736,7 +3762,6 @@ packages:
         integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==,
       }
     engines: { node: '>=0.4.0' }
-    dev: true
 
   /dequal/2.0.2:
     resolution:
@@ -4835,6 +4860,19 @@ packages:
       }
     dev: true
 
+  /follow-redirects/1.15.1:
+    resolution:
+      {
+        integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==,
+      }
+    engines: { node: '>=4.0' }
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
+
   /forever-agent/0.6.1:
     resolution:
       {
@@ -4853,6 +4891,18 @@ packages:
       combined-stream: 1.0.8
       mime-types: 2.1.35
     dev: true
+
+  /form-data/4.0.0:
+    resolution:
+      {
+        integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==,
+      }
+    engines: { node: '>= 6' }
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
+    dev: false
 
   /fs-extra/10.1.0:
     resolution:
@@ -5959,6 +6009,14 @@ packages:
     dependencies:
       call-bind: 1.0.2
     dev: true
+
+  /is-what/4.1.7:
+    resolution:
+      {
+        integrity: sha512-DBVOQNiPKnGMxRMLIYSwERAS5MVY1B7xYiGnpgctsOFvVDz9f9PFXXxMcTOHuoqYp4NK9qFYQaIC1NRRxLMpBQ==,
+      }
+    engines: { node: '>=12.13' }
+    dev: false
 
   /is-windows/1.0.2:
     resolution:
@@ -9052,6 +9110,16 @@ packages:
       }
     dev: false
 
+  /superjson/1.9.1:
+    resolution:
+      {
+        integrity: sha512-oT3HA2nPKlU1+5taFgz/HDy+GEaY+CWEbLzaRJVD4gZ7zMVVC4GDNFdgvAZt6/VuIk6D2R7RtPAiCHwmdzlMmg==,
+      }
+    engines: { node: '>=10' }
+    dependencies:
+      copy-anything: 3.0.2
+    dev: false
+
   /supports-color/5.5.0:
     resolution:
       {
@@ -9087,6 +9155,17 @@ packages:
       }
     engines: { node: '>= 0.4' }
     dev: true
+
+  /swr/1.3.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-dkghQrOl2ORX9HYrMDtPa7LTVHJjCTeZoB1dqTbnnEDlSvN8JEKpYIYurDfvbQFUUS8Cg8PceFVZNkW0KNNYPw==,
+      }
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0 || 18
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /symbol-observable/1.0.1:
     resolution:
