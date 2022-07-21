@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://github.com/100Devs-ADHD/think-big">
-    <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-logo.svg" alt="thinkBig" width="850" >
+    <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig/thinkbig-logo.svg" alt="thinkBig" width="850" >
   </a>
 </h1>
 
@@ -8,7 +8,7 @@
 
 **Latest Prototype Screenshots**
 
-<img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-screenshot-1.png" title="Prototype Classes Page" width="250px"> <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-screenshot-2.png" title="Prototype Classes Page" width="250px"> <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig-screenshot-3.png" title="Prototype Calendar" width="250px">
+<img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig/readme-md/thinkbig-screenshot-1.webp" title="Prototype Classes Page" width="250px"> <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig/readme-md/thinkbig-screenshot-2.webp" title="Prototype Classes Page" width="250px"> <img src="https://github.com/100Devs-ADHD/assets/blob/main/thinkbig/readme-md/thinkbig-screenshot-3.webp" title="Prototype Calendar" width="250px">
 <br />
 <br />
 <a href="https://github.com/100Devs-ADHD/think-big/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
