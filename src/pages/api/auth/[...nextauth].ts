@@ -55,13 +55,35 @@ const updateServerMember = async (user: User, isServerMember: boolean) => {
 	})
 }
 
+/**
+ * It generates a random string of random length
+ * @returns A string of random characters.
+ */
+const generateRandomString = () => {
+	let randomString = ''
+	const randomNumber = Math.floor(Math.random() * 10)
+
+	for (let i = 0; i < 20 + randomNumber; i++) {
+		randomString += String.fromCharCode(33 + Math.floor(Math.random() * 94))
+	}
+
+	return randomString
+}
+
 const authOptions: NextAuthOptions = {
 	providers: [
 		DiscordProvider({
 			clientId: process.env.DISCORD_CLIENT_ID,
 			clientSecret: process.env.DISCORD_CLIENT_SECRET,
-			authorization:
-				'https://discord.com/api/oauth2/authorize?scope=identify+email+guilds+guilds.members.read',
+			authorization: {
+				url: 'https://discord.com/api/oauth2/authorize',
+				params: {
+					scope: 'identify email guilds guilds.members.read',
+					state: generateRandomString(),
+					display: 'popup',
+				},
+			},
+			checks: ['pkce', 'state'],
 			profile(profile) {
 				if (profile.avatar === null) {
 					const defaultAvatarNumber = parseInt(profile.discriminator) % 5
