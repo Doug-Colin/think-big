@@ -33,6 +33,9 @@
 - name: 'in-progress'
   color: fbca04
   description: 'Issue is currently being worked on by a developer.'
+- name: '🕵️ under review'
+  color: ff0000
+  description: 'Issue is currently under review'
 - name: 'stale'
   color: fef2c0
   description: 'No activity for quite some time.'
