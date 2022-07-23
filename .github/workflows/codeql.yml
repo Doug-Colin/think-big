@@ -4,7 +4,9 @@ name: CodeQL
 on:
   push:
   pull_request:
-    types: [ready_for_review]
+    types:
+      - ready_for_review
+      - synchronize
   schedule:
     - cron: '30 1 * * 0'
 
