@@ -34,6 +34,7 @@ specifiers:
   cz-emoji-conventional: ^1.0.1
   cz-git: ^1.3.9
   dayjs: ^1.11.3
+  discord-api-types: ^0.36.3
   eslint: 8.20.0
   eslint-config-next: 12.2.2
   eslint-config-prettier: ^8.5.0
@@ -73,6 +74,7 @@ dependencies:
   '@tanstack/react-query': 4.0.5_biqbaboplfbrettd7655fr4n2y
   axios: 0.27.2
   dayjs: 1.11.3
+  discord-api-types: 0.36.3
   next: 12.2.2_zazhvxb5wdpfvem7m5mnvhb45a
   next-auth: 4.10.2_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -3812,6 +3814,13 @@ packages:
     dependencies:
       path-type: 4.0.0
     dev: true
+
+  /discord-api-types/0.36.3:
+    resolution:
+      {
+        integrity: sha512-bz/NDyG0KBo/tY14vSkrwQ/n3HKPf87a0WFW/1M9+tXYK+vp5Z5EksawfCWo2zkAc6o7CClc0eff1Pjrqznlwg==,
+      }
+    dev: false
 
   /doctrine/2.1.0:
     resolution:
