@@ -88,7 +88,7 @@ npm -g install pnpm
 
 or follow the instructions on [pnpm's installation page](https://pnpm.io/installation).
 
-If you are using [VS Code](https://code.visualstudio.com/), the `think-big.code-workspace` file will suggest some extensions to use along with this development environment and break out the folder structure based on components.
+If you are using [VS Code](https://code.visualstudio.com/), the `think-big.code-workspace` file will suggest some extensions to use along with this development environment.
 
 <br/>
 
