@@ -85,21 +85,21 @@ const authOptions: NextAuthOptions = {
 				},
 			},
 			checks: ['pkce', 'state'],
-			profile(profile) {
-				if (profile.avatar === null) {
-					const defaultAvatarNumber = parseInt(profile.discriminator) % 5
-					profile.image_url = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`
-				} else {
-					const format = profile.avatar.startsWith('a_') ? 'gif' : 'png'
-					profile.image_url = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`
-				}
-				return {
-					id: profile.id,
-					name: `${profile.username}#${profile.discriminator}`,
-					email: profile.email,
-					image: profile.image_url,
-				}
-			},
+			// profile(profile) {
+			// 	if (profile.avatar === null) {
+			// 		const defaultAvatarNumber = parseInt(profile.discriminator) % 5
+			// 		profile.image_url = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`
+			// 	} else {
+			// 		const format = profile.avatar.startsWith('a_') ? 'gif' : 'png'
+			// 		profile.image_url = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`
+			// 	}
+			// 	return {
+			// 		id: profile.id,
+			// 		name: `${profile.username}#${profile.discriminator}`,
+			// 		email: profile.email,
+			// 		image: profile.image_url,
+			// 	}
+			// },
 		}),
 	],
 	callbacks: {
@@ -109,9 +109,9 @@ const authOptions: NextAuthOptions = {
 			// 100Devs Discord server member? proceed!
 			if (user.serverMember) return true
 			// check to see if user is a member of the discord server & update status if they are
-			const serverMember = await isServerMember(account)
-			if (isServerMember) {
-				updateServerMember(user, serverMember)
+			const serverMemberStatus = await isServerMember(account)
+			if (serverMemberStatus) {
+				updateServerMember(user, serverMemberStatus)
 				return true
 			}
 			// nope, get out.
