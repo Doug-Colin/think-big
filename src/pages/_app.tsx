@@ -7,6 +7,7 @@ import {
 	ColorScheme,
 } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
+import { ModalsProvider } from '@mantine/modals'
 import { useState } from 'react'
 import { MainLayout } from '~/layouts'
 import { baseTheme } from '~/style'
@@ -38,10 +39,12 @@ const App = (props: AppProps) => {
 				toggleColorScheme={toggleColorScheme}
 			> */}
 				<MantineProvider withGlobalStyles withNormalizeCSS theme={baseTheme}>
-					<MainLayout>
-						<Component {...pageProps} />
-						<ReactQueryDevtools initialIsOpen={false} />
-					</MainLayout>
+					<ModalsProvider>
+						<MainLayout>
+							<Component {...pageProps} />
+							<ReactQueryDevtools initialIsOpen={false} />
+						</MainLayout>
+					</ModalsProvider>
 				</MantineProvider>
 				{/* </ColorSchemeProvider> */}
 			</QueryClientProvider>
