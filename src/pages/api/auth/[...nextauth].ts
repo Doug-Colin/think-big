@@ -5,6 +5,7 @@ import DiscordProvider from 'next-auth/providers/discord'
 import prisma from '~/lib/prisma'
 import axios from 'axios'
 import type { User, Account } from 'next-auth'
+import type { APIGuild } from 'discord-api-types/v10'
 
 const authHandler: NextApiHandler = (req, res) =>
 	NextAuth(req, res, authOptions)
@@ -19,7 +20,7 @@ export default authHandler
 const isServerMember = async (account: Account) => {
 	const guildId = '735923219315425401'
 
-	const guilds = await axios.get(
+	const { data } = await axios.get(
 		'https://discord.com/api/v10/users/@me/guilds',
 		{
 			headers: {
@@ -28,7 +29,7 @@ const isServerMember = async (account: Account) => {
 		}
 	)
 	if (
-		guilds?.data.some((guild) => {
+		data.some((guild: APIGuild) => {
 			if (guild.id === guildId) return true
 		})
 	) {
@@ -128,6 +129,9 @@ const authOptions: NextAuthOptions = {
 			session.bearerToken = access_token
 			return session
 		},
+	},
+	pages: {
+		newUser: '/auth/newuser',
 	},
 	adapter: PrismaAdapter(prisma),
 	secret: process.env.SECRET,
