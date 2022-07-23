@@ -64,11 +64,13 @@ Together, we designed a prototype that will allow us to track classes, assignmen
 
 ### Built With
 
-- [**Express.js**](https://expressjs.com/)
-- [**MongoDB**](https://www.mongodb.com/)
-- [**Next.js**](https://nextjs.org/)
+- [**Next.js**](https://nextjs.org/) [(Repo)](https://github.com/vercel/next.js)
+- [**React.js**](https://reactjs.org/) [(Repo)](https://github.com/facebook/react/)
+- [**Prisma**](https://www.prisma.io/) [(Repo)](https://github.com/prisma/prisma)
+- [**NextAuth.js**](https://next-auth.js.org/) [(Repo)](https://github.com/nextauthjs/next-auth)
+- [**Mantine**](https://mantine.dev/) [(Repo)](https://github.com/mantinedev/mantine/)
 - [**Node.js**](https://nodejs.org/)
-- [**React.js**](https://reactjs.org/)
+- [**MongoDB**](https://www.mongodb.com/)
 
 <br/>
 
@@ -145,7 +147,7 @@ If you want to say **thank you** or/and support active development of thinkBig:
 
 - Add a [GitHub Star](https://github.com/100Devs-ADHD/think-big) to the project.
 - Tweet about the thinkBig.
-- Write interesting articles about the project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or your personal blog.
+- Write interesting articles about the project on [Dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), [Medium](https://medium.com/) or your personal blog.
 
 Together, we can make thinkBig **better**!
 
