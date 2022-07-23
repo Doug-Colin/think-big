@@ -3,14 +3,17 @@ import {
 	Group,
 	Avatar,
 	Menu,
+	Button,
+	Text,
 	createStyles,
 } from '@mantine/core'
 import { Icon } from '@iconify/react'
 import React, { useState } from 'react'
+import { useSession, signIn, signOut } from 'next-auth/react'
 import styles from './UserMenu.module.scss'
 
 // This is Typescript stuff - don't worry about it.
-interface UserMenuProps {
+interface LoggedInProps {
 	image: string
 	name: string
 }
@@ -39,9 +42,10 @@ const useStyles = createStyles((theme) => ({
 	},
 }))
 
-export const UserMenu = ({ image, name, ...others }: UserMenuProps) => {
+const LoggedInUser = ({ image, name }: LoggedInProps) => {
 	const [userMenuOpened, setUserMenuOpened] = useState(false)
-	const { classes, cx, theme } = useStyles()
+	const { classes } = useStyles()
+
 	return (
 		<Menu
 			size={260}
@@ -64,8 +68,49 @@ export const UserMenu = ({ image, name, ...others }: UserMenuProps) => {
 				</UnstyledButton>
 			}
 		>
-			<Menu.Item>Item 1</Menu.Item>
-			<Menu.Item>Item 2</Menu.Item>
+			<Menu.Item onClick={() => signOut({ callbackUrl: '/' })}>
+				Logout
+			</Menu.Item>
+			{/* <Menu.Item>Item 2</Menu.Item> */}
 		</Menu>
 	)
+}
+
+const SignUpLoginButtons = () => {
+	const { classes, theme } = useStyles()
+	return (
+		<Group>
+			<Button
+				variant='outline'
+				color='highlightPrimary'
+				onClick={() => signIn('discord', null, { prompt: 'consent' })}
+			>
+				Sign Up with Discord
+			</Button>
+			<Button
+				onClick={() => signIn('discord', null, { prompt: 'none' })}
+				variant='filled'
+				color='highlightPrimary'
+			>
+				Log In with Discord
+			</Button>
+		</Group>
+	)
+}
+
+export const UserMenu = () => {
+	const { classes } = useStyles()
+	const { data: session, status } = useSession()
+	const { name, image } = session?.user || { name: '', image: '' }
+	const menuControl = () => {
+		if (status === 'authenticated') {
+			return <LoggedInUser name={name} image={image} />
+			// return <></>
+		}
+		if (status === 'unauthenticated') {
+			return <SignUpLoginButtons />
+		}
+		return <Text>Loading...</Text>
+	}
+	return menuControl()
 }
