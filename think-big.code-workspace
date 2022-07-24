@@ -32,6 +32,7 @@
 		},
 		"[prisma]": {
 			"editor.defaultFormatter": "Prisma.prisma"
-		}
+		},
+		"exportall.config.relExclusion": ["/src/pages"]
 	}
 }
