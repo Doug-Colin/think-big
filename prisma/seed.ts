@@ -1,62 +1,54 @@
 import { PrismaClient, Prisma } from '@prisma/client'
-
-const prisma = new PrismaClient()
-
-const userData: Prisma.UserCreateInput[] = [
-	{
-		name: 'Alice',
-		email: 'alice@prisma.io',
-		posts: {
-			create: [
-				{
-					title: 'Join the Prisma Slack',
-					content: 'https://slack.prisma.io',
-					published: true,
-				},
-			],
-		},
-	},
-	{
-		name: 'Nilu',
-		email: 'nilu@prisma.io',
-		posts: {
-			create: [
-				{
-					title: 'Follow Prisma on Twitter',
-					content: 'https://www.twitter.com/prisma',
-					published: true,
-				},
-			],
-		},
-	},
-	{
-		name: 'Mahmoud',
-		email: 'mahmoud@prisma.io',
-		posts: {
-			create: [
-				{
-					title: 'Ask a question about Prisma on GitHub',
-					content: 'https://www.github.com/prisma/prisma/discussions',
-					published: true,
-				},
-				{
-					title: 'Prisma on YouTube',
-					content: 'https://pris.ly/youtube',
-				},
-			],
-		},
-	},
-]
+import { tags } from './seed-data'
+import { fakeClass } from './fakeGen'
+export const prisma = new PrismaClient()
 
 async function main() {
-	console.log(`Start seeding ...`)
-	for (const u of userData) {
-		const user = await prisma.user.create({
-			data: u,
+	console.log(`🌱  Seeding database`)
+
+	console.info(`🌱  Tags:	Creating / Updating`)
+	const allTags = []
+	await tags.forEach((item) => {
+		try {
+			const dbTrans = prisma.tag.upsert({
+				where: {
+					tag: item.name,
+				},
+				update: {
+					color: item.color,
+				},
+				create: {
+					tag: item.name,
+					color: item.color,
+				},
+				select: {
+					tag: true,
+				},
+			})
+			console.info(`  💾  Upserted tag: ${item.name}`)
+			allTags.push(item.name)
+		} catch (err) {
+			console.error(err)
+		}
+	})
+	console.info(`🌱  Tags:	Complete`)
+
+	if (process.env.DEVSEED) {
+		console.info(`🌱  Seeding fake data for development...`)
+
+		console.info('🌱  Creating Classes...')
+		const classEntries = fakeClass(20, allTags)
+
+		classEntries.forEach((entry) => {
+			prisma.class.create({
+				data: entry,
+			})
+			console.info(` 💾  Created Class entry: ${entry.title}`)
 		})
-		console.log(`Created user with id: ${user.id}`)
+
+		console.info(`🌱  Fake data completed.`)
 	}
-	console.log(`Seeding finished.`)
+	console.log(`🌱  Seeding finished.`)
 }
 
 main()
@@ -65,5 +57,6 @@ main()
 		process.exit(1)
 	})
 	.finally(async () => {
+		console.info('Disconnecting from db...')
 		await prisma.$disconnect()
 	})
