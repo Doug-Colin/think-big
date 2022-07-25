@@ -8,7 +8,7 @@
 	"author": "",
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
-		"postinstall": "pnpm db:generate",
+		"postinstall": "pnpm db:generate && husky install",
 		"prepare": "husky install",
 		"dev": "next",
 		"build": "next build",
