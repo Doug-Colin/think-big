@@ -21,4 +21,5 @@ if (!env.success) {
 	)
 	process.exit(1)
 }
+console.info('✅ Environment variable check passed.')
 module.exports.env = env.data

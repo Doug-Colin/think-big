@@ -4,7 +4,7 @@ import {
 	Tooltip,
 	UnstyledButton,
 	createStyles,
-	Group,
+	Stack,
 } from '@mantine/core'
 import { Icon } from '@iconify/react'
 import { mocknav } from 'mockdata/nav'
@@ -78,10 +78,15 @@ export function SideNav() {
 	))
 
 	return (
-		<Navbar width={{ base: 80 }} p='md' className={classes.navbar}>
-			<Group direction='column' align='center' spacing={0}>
+		<Navbar
+			fixed={false}
+			width={{ base: 80 }}
+			p='md'
+			className={classes.navbar}
+		>
+			<Stack align='center' spacing={0}>
 				{links}
-			</Group>
+			</Stack>
 		</Navbar>
 	)
 }
