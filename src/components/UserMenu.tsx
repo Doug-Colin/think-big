@@ -48,13 +48,13 @@ const LoggedInUser = ({ image, name }: LoggedInProps) => {
 
 	return (
 		<Menu
-			size={260}
-			placement='end'
-			transition='pop-top-right'
-			className={classes.userMenu}
+			position='bottom'
+			transition='scale-y'
 			onClose={() => setUserMenuOpened(false)}
 			onOpen={() => setUserMenuOpened(true)}
-			control={
+			width={200}
+		>
+			<Menu.Target>
 				<UnstyledButton className={classes.user}>
 					<Group>
 						<Avatar
@@ -66,12 +66,13 @@ const LoggedInUser = ({ image, name }: LoggedInProps) => {
 						<Icon icon='tabler:chevron-down' />
 					</Group>
 				</UnstyledButton>
-			}
-		>
-			<Menu.Item onClick={() => signOut({ callbackUrl: '/' })}>
-				Logout
-			</Menu.Item>
-			{/* <Menu.Item>Item 2</Menu.Item> */}
+			</Menu.Target>
+			<Menu.Dropdown>
+				<Menu.Item onClick={() => signOut({ callbackUrl: '/' })}>
+					Logout
+				</Menu.Item>
+				{/* <Menu.Item>Item 2</Menu.Item> */}
+			</Menu.Dropdown>
 		</Menu>
 	)
 }
