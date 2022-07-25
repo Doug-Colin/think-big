@@ -5,19 +5,39 @@ Please note we have a [code of conduct](CODE_OF_CONDUCT.md), please follow it in
 
 ## Development environment setup
 
-> **[?]**
-> Proceed to describe how to setup local development environment.
-> e.g:
+This repo requires the use of [`pnpm`](https://pnpm.io/). To install, run the command:
+
+```bash
+npm -g install pnpm
+```
+
+or follow the instructions on [pnpm's installation page](https://pnpm.io/installation).
 
 To set up a development environment, please follow these steps:
 
 1. Clone the repo
 
-   ```sh
+   ```bash
    git clone https://github.com/100Devs-ADHD/think-big
    ```
 
-2. TODO
+2. Install the required packages & dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+3. Follow the instructions in the `.env.example` file to set up the necessary API keys.
+
+   - (Optional) After you have completed the `.env` setup for MongoDB, you can seed the database with some example data using
+     ```bash
+     pnpm db:devseed
+     ```
+
+4. Start the development live server:
+   ```bash
+   pnpm dev
+   ```
 
 ## Issues and feature requests
 
