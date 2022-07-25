@@ -78,9 +78,15 @@ type AssignmentUserProps {
 }
 
 type ClassUserProps {
-  classId   String   @db.ObjectId
-  completed Boolean?
-  notes     String
+  classId String          @db.ObjectId
+  status  ClassStatusEnum
+  notes   String
+}
+
+enum ClassStatusEnum {
+  not_started
+  in_progress
+  done
 }
 
 enum Progress {
