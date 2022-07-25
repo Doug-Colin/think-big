@@ -119,10 +119,10 @@ pnpm dev
    - Welcome page
    - Classes page
    - Assignments page
-   - Calendar page
-   - Tasks page
-2. Help Link system
-3. Moderator Operation system
+2. Calendar page
+3. Tasks page
+4. Help Link system
+5. Moderator Operation system
 
 See the [open issues](https://github.com/100Devs-ADHD/think-big/issues) for a list of proposed features (and known issues).
 
