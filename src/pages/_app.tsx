@@ -38,7 +38,12 @@ const App = (props: AppProps) => {
 				colorScheme={colorScheme}
 				toggleColorScheme={toggleColorScheme}
 			> */}
-				<MantineProvider withGlobalStyles withNormalizeCSS theme={baseTheme}>
+				<MantineProvider
+					withCSSVariables
+					withGlobalStyles
+					withNormalizeCSS
+					theme={baseTheme}
+				>
 					<ModalsProvider>
 						<MainLayout>
 							<Component {...pageProps} />
