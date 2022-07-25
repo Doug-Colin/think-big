@@ -2,7 +2,8 @@ import { NextApiHandler } from 'next'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import DiscordProvider from 'next-auth/providers/discord'
-import prisma from '~/lib/prisma'
+// import prisma from '~/lib/prisma'
+import { PrismaClient } from '@prisma/client'
 import axios from 'axios'
 import type { User, Account } from 'next-auth'
 import type { APIGuild } from 'discord-api-types/v10'
@@ -11,6 +12,7 @@ const authHandler: NextApiHandler = (req, res) =>
 	NextAuth(req, res, authOptions)
 export default authHandler
 
+const prisma = new PrismaClient()
 /**
  * It checks if the user is a member of the server
  * @param {Account} account - Account - This is the account object that is returned from the login
