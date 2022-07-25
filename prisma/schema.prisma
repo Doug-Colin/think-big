@@ -99,7 +99,8 @@ model Class {
   description   String
   tags          Tag[]          @relation(fields: [tagId], references: [id])
   tagId         String[]       @db.ObjectId
-  assignments   Assignment[]
+  assignments   Assignment[]   @relation(fields: [assignmentIds], references: [id])
+  assignmentIds String[]       @db.ObjectId
   materialLinks MaterialLink[]
   checkinUrl    String?
   vod           ClassVOD[]
@@ -154,8 +155,8 @@ type VODtimestamps {
 // Assignments
 model Assignment {
   id               String            @id @default(auto()) @map("_id") @db.ObjectId
-  class            Class             @relation(fields: [classId], references: [id])
-  classId          String            @db.ObjectId
+  class            Class[]           @relation(fields: [classId], references: [id])
+  classId          String[]          @db.ObjectId
   dateAssigned     DateTime
   dateDue          DateTime
   name             String
