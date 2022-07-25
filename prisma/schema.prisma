@@ -97,10 +97,12 @@ model Class {
   cohort        String
   date          DateTime
   description   String
-  tags          ClassTag[]
-  assignments   Assignment[]
+  tags          Tag[]          @relation(fields: [tagId], references: [id])
+  tagId         String[]       @db.ObjectId
+  assignments   Assignment[]   @relation(fields: [assignmentIds], references: [id])
+  assignmentIds String[]       @db.ObjectId
   materialLinks MaterialLink[]
-  checkinUrl    String
+  checkinUrl    String?
   vod           ClassVOD[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -117,14 +119,17 @@ enum MaterialType {
   Postclass
 }
 
-model ClassTag {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  classes   Class    @relation(fields: [classId], references: [id])
-  classId   String   @db.ObjectId
-  tag       String
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Tag {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  classes      Class[]      @relation(fields: [classId], references: [id])
+  classId      String[]     @db.ObjectId
+  assignments  Assignment[] @relation(fields: [assignmentId], references: [id])
+  assignmentId String[]     @db.ObjectId
+  tag          String       @unique
+  color        String
+  active       Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }
 
 model ClassVOD {
@@ -150,14 +155,15 @@ type VODtimestamps {
 // Assignments
 model Assignment {
   id               String            @id @default(auto()) @map("_id") @db.ObjectId
-  class            Class             @relation(fields: [classId], references: [id])
-  classId          String            @db.ObjectId
+  class            Class[]           @relation(fields: [classId], references: [id])
+  classId          String[]          @db.ObjectId
   dateAssigned     DateTime
   dateDue          DateTime
   name             String
   description      String
   resources        AssignResource[]
-  tags             AssignmentTag[]
+  tags             Tag[]             @relation(fields: [tagId], references: [id])
+  tagId            String[]          @db.ObjectId
   submitUrl        String?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
@@ -170,15 +176,15 @@ type AssignResource {
   description String
 }
 
-model AssignmentTag {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  assignments  Assignment @relation(fields: [assignmentId], references: [id])
-  assignmentId String     @db.ObjectId
-  tag          String
-  active       Boolean    @default(true)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-}
+// model AssignmentTag {
+//   id           String     @id @default(auto()) @map("_id") @db.ObjectId
+//   assignments  Assignment @relation(fields: [assignmentId], references: [id])
+//   assignmentId String     @db.ObjectId
+//   tag          String
+//   active       Boolean    @default(true)
+//   createdAt    DateTime   @default(now())
+//   updatedAt    DateTime   @updatedAt
+// }
 
 // Intersecting tables that show which users have completed assignments/classes
 model AssignmentStatus {
