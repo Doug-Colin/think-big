@@ -8,10 +8,6 @@ function getConfig(config) {
 }
 
 const nextConfig = {
-	reactStrictMode: true,
-}
-
-module.exports = getConfig({
 	/**
 	 * Dynamic configuration available for the browser and server.
 	 * @link https://nextjs.org/docs/api-reference/next.config.js/runtime-configuration
@@ -19,5 +15,7 @@ module.exports = getConfig({
 	publicRuntimeConfig: {
 		NODE_ENV: env.NODE_ENV,
 	},
-	nextConfig,
-})
+	reactStrictMode: true,
+}
+
+module.exports = getConfig(nextConfig)
