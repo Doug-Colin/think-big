@@ -24,6 +24,9 @@ const useStyles = createStyles((theme) => ({
 		'&:hover': {
 			opacity: 1,
 			backgroundColor: theme.colors.primary[5],
+			'*': {
+				color: theme.colors.secondary[1],
+			},
 		},
 	},
 	active: {
@@ -33,7 +36,8 @@ const useStyles = createStyles((theme) => ({
 		},
 	},
 	icon: {
-		fontSize: '2rem',
+		fontSize: '1.75rem',
+		color: theme.colors.primary[0],
 	},
 }))
 
@@ -95,7 +99,7 @@ export function SideNav() {
 			p='md'
 			className={classes.navbar}
 		>
-			<Stack align='center' spacing={0}>
+			<Stack align='center' spacing='md'>
 				{links}
 			</Stack>
 		</Navbar>
