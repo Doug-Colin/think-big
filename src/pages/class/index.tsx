@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { createStyles, Table, ScrollArea, Text } from '@mantine/core'
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
 import { fetchClasses } from '~/hooks'
-import { axiosClient } from '~/lib'
 import { DateTime } from 'luxon'
 
 export async function getServerSideProps() {
@@ -114,8 +113,6 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 		</ScrollArea>
 	)
 }
-const client = axiosClient()
-// const fetcher = async () => await client.get('/api/classes/all')
 
 const ClassTable = () => {
 	const { data, isLoading, isError, error } = useQuery(
