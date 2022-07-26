@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { createStyles, Table, ScrollArea, Text } from '@mantine/core'
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
-import { fetchClasses } from '~/hooks'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
+import { fetchClasses, useClasses } from '~/hooks'
 import { DateTime } from 'luxon'
+import superjson from 'superjson'
 
 export async function getServerSideProps() {
 	const queryClient = new QueryClient()
-
 	await queryClient.prefetchQuery(['classes'], fetchClasses)
+	const queryState = dehydrate(queryClient)
+	const { json: serializedQueryState } = superjson.serialize(queryState)
 
 	return {
 		props: {
-			dehydratedState: dehydrate(queryClient),
+			dehydratedState: serializedQueryState,
 		},
 	}
 }
@@ -54,14 +56,18 @@ const useStyles = createStyles((theme) => ({
 	},
 }))
 
+interface MaterialLink {
+	url: string
+	type: string
+}
 interface TableScrollAreaProps {
 	data: {
 		id: string
-		status: any
+		status?: any
 		classNum: number
 		description: string
-		materialLinks: string[]
-		date: string
+		materialLinks: MaterialLink[]
+		date: string | Date
 		tags: any
 	}[]
 }
@@ -72,7 +78,7 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 	const [selectedRow, setSelectedRow] = useState('')
 
 	const rows = data.map((row) => {
-		const formattedDate = DateTime.fromISO(row.date).toFormat('DDDD')
+		const formattedDate = DateTime.fromISO(row.date.toString()).toFormat('DDDD')
 		return (
 			<tr
 				key={row.id}
@@ -83,7 +89,7 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 				{/* This will return a react component for the Status */}
 				<td>{row.classNum}</td>
 				<td>{row.description}</td>
-				<td>{row.materialLinks}</td>
+				<td>{row.materialLinks[0]?.url}</td>
 				{/* may need to map again - this returns an array */}
 				<td>{formattedDate}</td>
 				<td>{row.tags[0].tag}</td>
@@ -115,11 +121,7 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 }
 
 const ClassTable = () => {
-	const { data, isLoading, isError, error } = useQuery(
-		['classes'],
-		fetchClasses
-	)
-
+	const { data, isLoading, isError, error } = useClasses()
 	if (isLoading) return <Text>Loading...</Text>
 	if (isError) return <Text>{`Error: ${error}`}</Text>
 	return <TableScrollArea data={data} />
