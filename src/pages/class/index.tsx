@@ -42,6 +42,17 @@ const useStyles = createStyles((theme) => ({
 	scrolled: {
 		boxShadow: theme.shadows.sm,
 	},
+	active: {
+		backgroundColor: theme.colors.primary[6],
+		'&:hover': {
+			backgroundColor: theme.colors.primary[5],
+		},
+	},
+	tablerow: {
+		'&:hover': {
+			backgroundColor: theme.colors.primary[3],
+		},
+	},
 }))
 
 interface TableScrollAreaProps {
@@ -59,11 +70,16 @@ interface TableScrollAreaProps {
 export function TableScrollArea({ data }: TableScrollAreaProps) {
 	const { classes, cx } = useStyles()
 	const [scrolled, setScrolled] = useState(false)
+	const [selectedRow, setSelectedRow] = useState('')
 
 	const rows = data.map((row) => {
 		const formattedDate = DateTime.fromISO(row.date).toFormat('DDDD')
 		return (
-			<tr key={row.id}>
+			<tr
+				key={row.id}
+				onClick={() => setSelectedRow(row.id)}
+				className={row.id === selectedRow ? classes.active : classes.tablerow}
+			>
 				<td>{row.status}</td>
 				{/* This will return a react component for the Status */}
 				<td>{row.classNum}</td>
@@ -79,10 +95,10 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 
 	return (
 		<ScrollArea
-			sx={{ height: 300 }}
+			sx={{ height: '80vh' }}
 			onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
 		>
-			<Table sx={{ minWidth: 700 }}>
+			<Table>
 				<thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
 					<tr>
 						<th>Status</th>
