@@ -8,6 +8,7 @@ import {
 } from '@mantine/core'
 import { Icon } from '@iconify/react'
 import { mocknav } from 'mockdata/nav'
+import Link from 'next/link'
 
 const useStyles = createStyles((theme) => ({
 	link: {
@@ -40,19 +41,29 @@ interface NavbarLinkProps {
 	icon: string
 	label: string
 	active?: boolean
+	url?: string
 	onClick?(): void
 }
 
-export function NavbarLink({ icon, label, active, onClick }: NavbarLinkProps) {
+export function NavbarLink({
+	icon,
+	label,
+	active,
+	url,
+	onClick,
+}: NavbarLinkProps) {
 	const { classes, cx } = useStyles()
 	return (
 		<Tooltip label={label} position='right' withArrow transitionDuration={0}>
-			<UnstyledButton
-				onClick={onClick}
-				className={cx(classes.link, { [classes.active]: active })}
-			>
-				<Icon icon={icon} className={classes.icon} />
-			</UnstyledButton>
+			<Link href={url} passHref>
+				<UnstyledButton
+					component='a'
+					className={cx(classes.link, { [classes.active]: active })}
+					onClick={onClick}
+				>
+					<Icon icon={icon} className={classes.icon} />
+				</UnstyledButton>
+			</Link>
 		</Tooltip>
 	)
 }
@@ -65,7 +76,7 @@ const useNavbarStyles = createStyles((theme) => ({
 }))
 
 export function SideNav() {
-	const [active, setActive] = useState(2)
+	const [active, setActive] = useState(0)
 	const { classes } = useNavbarStyles()
 
 	const links = mocknav.map((link, index) => (
