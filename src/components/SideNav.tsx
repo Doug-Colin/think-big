@@ -58,24 +58,19 @@ export function NavbarLink({
 }: NavbarLinkProps) {
 	const { classes, cx } = useStyles()
 	return (
-		<Link href={url} passHref>
-			<UnstyledButton
-				component='a'
-				className={cx(classes.link, { [classes.active]: active })}
-				onClick={onClick}
-			>
-				<Tooltip
-					label={label}
-					position='right'
-					withArrow
-					transitionDuration={0}
-				>
-					<div>
+		<Tooltip label={label} position='right' withArrow transitionDuration={0}>
+			<div>
+				<Link href={url} passHref>
+					<UnstyledButton
+						component='a'
+						className={cx(classes.link, { [classes.active]: active })}
+						onClick={onClick}
+					>
 						<Icon icon={icon} className={classes.icon} />
-					</div>
-				</Tooltip>
-			</UnstyledButton>
-		</Link>
+					</UnstyledButton>
+				</Link>
+			</div>
+		</Tooltip>
 	)
 }
 
