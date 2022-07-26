@@ -1,5 +1,12 @@
 import { Icon } from '@iconify/react'
-import { Center, Group, Image, createStyles, TextInput } from '@mantine/core'
+import {
+	Center,
+	Group,
+	Image,
+	createStyles,
+	TextInput,
+	Header,
+} from '@mantine/core'
 import { NavbarLink, UserMenu } from './'
 import { fakeUser } from 'mockdata'
 const useStyles = createStyles((theme) => ({
@@ -25,25 +32,29 @@ export const HeaderBar = () => {
 	const { classes } = useStyles()
 
 	return (
-		// <Header className={classes.header} height={80}>
-		<Group className={classes.header}>
-			<Image
-				src='/logo-temp.png'
-				className={classes.logo}
-				alt='logo placeholder'
-				height={60}
-				width={60}
-			/>
-			<Center className={classes.searchContainer}>
-				<TextInput
-					aria-label='Search'
-					placeholder='Search'
-					rightSection={<Icon icon='tabler:search' />}
-					className={classes.searchBox}
+		<Header
+			className={classes.header}
+			height={80}
+			sx={{ borderBottom: 'none' }}
+		>
+			<Group>
+				<Image
+					src='/logo-temp.png'
+					className={classes.logo}
+					alt='logo placeholder'
+					height={60}
+					width={60}
 				/>
-			</Center>
-			<UserMenu name={fakeUser.name} image={fakeUser.image} />
-		</Group>
-		// </Header>
+				<Center className={classes.searchContainer}>
+					<TextInput
+						aria-label='Search'
+						placeholder='Search'
+						rightSection={<Icon icon='tabler:search' />}
+						className={classes.searchBox}
+					/>
+				</Center>
+				<UserMenu />
+			</Group>
+		</Header>
 	)
 }
