@@ -24,7 +24,7 @@ const useStyles = createStyles((theme) => ({
 		'&:hover': {
 			opacity: 1,
 			backgroundColor: theme.colors.primary[5],
-			'*': {
+			svg: {
 				color: theme.colors.secondary[1],
 			},
 		},
@@ -58,17 +58,24 @@ export function NavbarLink({
 }: NavbarLinkProps) {
 	const { classes, cx } = useStyles()
 	return (
-		<Tooltip label={label} position='right' withArrow transitionDuration={0}>
-			<Link href={url} passHref>
-				<UnstyledButton
-					component='a'
-					className={cx(classes.link, { [classes.active]: active })}
-					onClick={onClick}
+		<Link href={url} passHref>
+			<UnstyledButton
+				component='a'
+				className={cx(classes.link, { [classes.active]: active })}
+				onClick={onClick}
+			>
+				<Tooltip
+					label={label}
+					position='right'
+					withArrow
+					transitionDuration={0}
 				>
-					<Icon icon={icon} className={classes.icon} />
-				</UnstyledButton>
-			</Link>
-		</Tooltip>
+					<div>
+						<Icon icon={icon} className={classes.icon} />
+					</div>
+				</Tooltip>
+			</UnstyledButton>
+		</Link>
 	)
 }
 
@@ -82,7 +89,6 @@ const useNavbarStyles = createStyles((theme) => ({
 export function SideNav() {
 	const [active, setActive] = useState(0)
 	const { classes } = useNavbarStyles()
-
 	const links = mocknav.map((link, index) => (
 		<NavbarLink
 			{...link}
