@@ -122,7 +122,7 @@ type MaterialLink {
 
 enum MaterialType {
   Starter
-  Postclass
+  Solution
 }
 
 model Tag {
