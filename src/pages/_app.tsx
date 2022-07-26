@@ -11,10 +11,12 @@ import { ModalsProvider } from '@mantine/modals'
 import { useState } from 'react'
 import { MainLayout } from '~/layouts'
 import { baseTheme } from '~/style'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+	Hydrate,
+	QueryClient,
+	QueryClientProvider,
+} from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-
-const queryClient = new QueryClient()
 
 const App = (props: AppProps) => {
 	const { Component, pageProps } = props
@@ -23,6 +25,7 @@ const App = (props: AppProps) => {
 		useState<ColorScheme>(preferredColorScheme)
 	const toggleColorScheme = (value?: ColorScheme) =>
 		setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
+	const [queryClient] = useState(() => new QueryClient())
 
 	return (
 		<SessionProvider session={pageProps.session}>
@@ -34,23 +37,25 @@ const App = (props: AppProps) => {
 				/>
 			</Head>
 			<QueryClientProvider client={queryClient}>
-				{/* <ColorSchemeProvider
+				<Hydrate state={pageProps.dehydratedState}>
+					{/* <ColorSchemeProvider
 				colorScheme={colorScheme}
 				toggleColorScheme={toggleColorScheme}
 			> */}
-				<MantineProvider
-					withCSSVariables
-					withGlobalStyles
-					withNormalizeCSS
-					theme={baseTheme}
-				>
-					<ModalsProvider>
-						<MainLayout>
-							<Component {...pageProps} />
-							<ReactQueryDevtools initialIsOpen={false} />
-						</MainLayout>
-					</ModalsProvider>
-				</MantineProvider>
+					<MantineProvider
+						withCSSVariables
+						withGlobalStyles
+						withNormalizeCSS
+						theme={baseTheme}
+					>
+						<ModalsProvider>
+							<MainLayout>
+								<Component {...pageProps} />
+								<ReactQueryDevtools initialIsOpen={false} />
+							</MainLayout>
+						</ModalsProvider>
+					</MantineProvider>
+				</Hydrate>
 				{/* </ColorSchemeProvider> */}
 			</QueryClientProvider>
 		</SessionProvider>
