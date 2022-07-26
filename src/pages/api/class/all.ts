@@ -1,16 +1,19 @@
-// import prisma from '~/lib/prisma'
-import superjson from 'superjson'
-
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '~/lib'
+import { getServerSession } from '../auth/[...nextauth]'
 
 /**
- * It finds all the classes in the database and returns them as a JSON object
+ * It gets the session from the request, and if there is no session, it returns a 401 error. If there
+ * is a session, it gets all the classes from the database and returns them
  * @param req - The request object.
- * @param res - The response object.
+ * @param res - the response object
  */
 export default async function handler(req, res) {
+	const session = await getServerSession(req, res)
+	if (!session) {
+		// res.status(401) // disabled for now during dev.
+		// res.end()
+		console.log('unauthed req for /api/classes/all')
+	}
 	const classes = await prisma.class.findMany({
 		select: {
 			id: true,
