@@ -46,12 +46,12 @@ export const HeaderBar = () => {
 					width={236}
 				/>
 				<Center className={classes.searchContainer}>
-					<TextInput
+					{/* <TextInput
 						aria-label='Search'
 						placeholder='Search'
 						rightSection={<Icon icon='tabler:search' />}
 						className={classes.searchBox}
-					/>
+					/> */}
 				</Center>
 				<UserMenu />
 			</Group>
