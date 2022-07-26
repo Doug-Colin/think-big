@@ -58,7 +58,13 @@ export function NavbarLink({
 }: NavbarLinkProps) {
 	const { classes, cx } = useStyles()
 	return (
-		<Tooltip label={label} position='right' withArrow transitionDuration={0}>
+		<Tooltip
+			label={label}
+			position='right'
+			withArrow
+			transitionDuration={50}
+			transition='scale-x'
+		>
 			<div>
 				<Link href={url} passHref>
 					<UnstyledButton
