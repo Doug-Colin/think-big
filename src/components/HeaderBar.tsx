@@ -39,11 +39,11 @@ export const HeaderBar = () => {
 		>
 			<Group>
 				<Image
-					src='/logo-temp.png'
+					src='/thinkbig-logo.svg'
 					className={classes.logo}
 					alt='logo placeholder'
 					height={60}
-					width={60}
+					width={236}
 				/>
 				<Center className={classes.searchContainer}>
 					<TextInput
