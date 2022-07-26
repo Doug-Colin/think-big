@@ -1,16 +1,14 @@
-import { NextApiHandler } from 'next'
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import NextAuth, { NextAuthOptions, unstable_getServerSession } from 'next-auth'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import DiscordProvider from 'next-auth/providers/discord'
-import prisma from '~/lib/prisma'
+import { prisma } from '~/lib'
 import axios from 'axios'
 import type { User, Account } from 'next-auth'
 import type { APIGuild } from 'discord-api-types/v10'
 
-const authHandler: NextApiHandler = (req, res) =>
-	NextAuth(req, res, authOptions)
-export default authHandler
-
+// import { PrismaClient } from '@prisma/client'
+// const prisma = new PrismaClient()
 /**
  * It checks if the user is a member of the server
  * @param {Account} account - Account - This is the account object that is returned from the login
@@ -118,15 +116,6 @@ const authOptions: NextAuthOptions = {
 			return false
 		},
 		async session({ session, user }) {
-			const { access_token } = await prisma.account.findFirst({
-				where: {
-					userId: user.id,
-				},
-				select: {
-					access_token: true,
-				},
-			})
-			session.bearerToken = access_token
 			return session
 		},
 	},
@@ -136,3 +125,26 @@ const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(prisma),
 	secret: process.env.SECRET,
 }
+
+/**
+ * It gets the session from the server
+ * @param {NextApiRequest} req - NextApiRequest - The request object from Next.js
+ * @param {NextApiResponse} res - NextApiResponse - The response object from Next.js
+ * @returns The session object
+ */
+export const getServerSession = async (
+	req: NextApiRequest,
+	res: NextApiResponse
+) => {
+	const session = await unstable_getServerSession(req, res, authOptions)
+	return session
+}
+
+/**
+ * It takes a request and response object, passes them to NextAuth, and returns the result
+ * @param req - The request object from Next.js
+ * @param res - The response object.
+ */
+const authHandler: NextApiHandler = (req, res) =>
+	NextAuth(req, res, authOptions)
+export default authHandler
