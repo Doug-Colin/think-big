@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { createStyles, Table, ScrollArea, Text } from '@mantine/core'
+import { TagGroup } from '~/components'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { fetchClasses, useClasses } from '~/hooks'
 import { DateTime } from 'luxon'
@@ -60,15 +61,22 @@ interface MaterialLink {
 	url: string
 	type: string
 }
+interface Tags {
+	id: string
+	tag: string
+	color: string
+	active: boolean
+}
 interface TableScrollAreaProps {
 	data: {
 		id: string
 		status?: any
+		title: string
 		classNum: number
 		description: string
 		materialLinks: MaterialLink[]
 		date: string | Date
-		tags: any
+		tags: Tags[]
 	}[]
 }
 
@@ -79,6 +87,7 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 
 	const rows = data.map((row) => {
 		const formattedDate = DateTime.fromISO(row.date.toString()).toFormat('DDDD')
+		const tags = {}
 		return (
 			<tr
 				key={row.id}
@@ -88,11 +97,13 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 				<td>{row.status}</td>
 				{/* This will return a react component for the Status */}
 				<td>{row.classNum}</td>
-				<td>{row.description}</td>
+				<td>{row.title}</td>
 				<td>{row.materialLinks[0]?.url}</td>
 				{/* may need to map again - this returns an array */}
 				<td>{formattedDate}</td>
-				<td>{row.tags[0].tag}</td>
+				<td>
+					<TagGroup tags={row.tags} />
+				</td>
 				{/* this will eventually display using the TagGroup component, passing in the tags as props*/}
 			</tr>
 		)
