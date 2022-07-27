@@ -1,70 +1,70 @@
 export const tags = [
 	{
 		name: 'async/await',
-		color: '#ffffff',
+		color: '#f4c430',
 	},
 	{
 		name: 'crud',
-		color: '#ffffff',
+		color: '#00a4ff',
 	},
 	{
 		name: 'css',
-		color: '#ffffff',
+		color: '#b400ff',
 	},
 	{
 		name: 'flexbox',
-		color: '#ffffff',
+		color: '#f27778',
 	},
 	{
 		name: 'floats',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'html',
-		color: '#ffffff',
+		color: '#5f00e5',
 	},
 	{
 		name: 'JavaScript',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'OOP',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'API',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'Express',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'MongoDB',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'Spicy Rant',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'Motivational',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'NodeJS',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'React',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'Networking',
-		color: '#ffffff',
+		color: '#408480',
 	},
 	{
 		name: 'Git',
-		color: '#ffffff',
+		color: '#408480',
 	},
 ]
