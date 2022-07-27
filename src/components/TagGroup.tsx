@@ -3,17 +3,17 @@ import { Badge, Group } from '@mantine/core'
 // TypeScript specific
 interface TagGroupProps {
 	tags: {
-		name: string
+		tag: string
 		color: string
 	}[]
-	noWrap: boolean
+	noWrap?: boolean
 }
 
 export const TagGroup = ({ tags, noWrap = true }: TagGroupProps) => {
 	const tagItems = tags.map((tag) => {
 		return (
 			<Badge
-				key={tag.name}
+				key={tag.tag}
 				size='sm'
 				styles={(theme) => ({
 					root: {
@@ -21,7 +21,7 @@ export const TagGroup = ({ tags, noWrap = true }: TagGroupProps) => {
 					},
 				})}
 			>
-				{tag.name}
+				{tag.tag}
 			</Badge>
 		)
 	})
