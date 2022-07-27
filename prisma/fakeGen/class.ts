@@ -1,18 +1,19 @@
 import { faker } from '@faker-js/faker'
 import { Prisma } from '@prisma/client'
 
+interface TagConnect {
+	tag: string
+}
+
 export const fakeClass = (num: number, tags: string[]) => {
 	const fakeData: Prisma.ClassCreateInput[] = []
 	for (let i = 0; i < num; i++) {
-		const connectTags = faker.helpers
+		const connectTags: TagConnect[] = faker.helpers
 			.uniqueArray(tags, 3)
-			.map((tag) => {
+			.map((item) => {
 				return {
-					tag,
+					tag: item,
 				}
-			})
-			.reduce((prev, curr) => {
-				return { ...prev, ...curr }
 			})
 		const data: Prisma.ClassCreateInput = {
 			title: `${faker.hacker.ingverb()} ${faker.hacker.adjective()} ${faker.hacker.noun()}s`,
@@ -21,9 +22,7 @@ export const fakeClass = (num: number, tags: string[]) => {
 			date: faker.date.past(1),
 			description: faker.hacker.phrase(),
 			tags: {
-				connect: {
-					...connectTags,
-				},
+				connect: connectTags,
 			},
 			assignments: {},
 			checkinUrl: faker.internet.url(),
