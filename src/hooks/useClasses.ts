@@ -47,9 +47,7 @@ const fetchClassesAPI = async () => {
 
 const useClasses = () => {
 	console.log('useClasses called')
-	const result = useQuery(['classes'], fetchClassesAPI, {
-		staleTime: 1000 * 60 * 5,
-	})
+	const result = useQuery(['classes'], fetchClassesAPI)
 	return result
 }
 

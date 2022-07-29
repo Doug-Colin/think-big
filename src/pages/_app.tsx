@@ -25,7 +25,12 @@ const App = (props: AppProps) => {
 		useState<ColorScheme>(preferredColorScheme)
 	const toggleColorScheme = (value?: ColorScheme) =>
 		setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
-	const [queryClient] = useState(() => new QueryClient())
+	const [queryClient] = useState(
+		() =>
+			new QueryClient({
+				defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } },
+			})
+	)
 
 	return (
 		<SessionProvider session={pageProps.session}>
