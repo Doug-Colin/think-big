@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { createStyles, Table, ScrollArea, Text } from '@mantine/core'
-import { TagGroup } from '~/components'
+import { createStyles, Table, ScrollArea, Text, Title } from '@mantine/core'
+import { openModal } from '@mantine/modals'
+import { TagGroup, ClassDetail } from '~/components'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { fetchClasses, useClasses } from '~/hooks'
 import { DateTime } from 'luxon'
@@ -10,7 +11,7 @@ export async function getServerSideProps() {
 	const queryClient = new QueryClient()
 	await queryClient.prefetchQuery(['classes'], fetchClasses)
 	const queryState = dehydrate(queryClient)
-	const { json: serializedQueryState } = superjson.serialize(queryState)
+	const serializedQueryState = superjson.stringify(queryState)
 
 	return {
 		props: {
@@ -55,31 +56,20 @@ const useStyles = createStyles((theme) => ({
 			backgroundColor: theme.colors.primary[3],
 		},
 	},
+	modal: {
+		height: '60vh',
+	},
+	fullHeight: {
+		height: '100%',
+	},
+	modalClose: {
+		color: theme.colors.secondary[4],
+	},
 }))
 
-interface MaterialLink {
-	url: string
-	type: string
-}
-interface Tags {
-	id: string
-	tag: string
-	color: string
-	active: boolean
-}
 interface TableScrollAreaProps {
-	data: {
-		id: string
-		status?: any
-		title: string
-		classNum: number
-		description: string
-		materialLinks: MaterialLink[]
-		date: string | Date
-		tags: Tags[]
-	}[]
+	data: ClassRecord[]
 }
-
 export function TableScrollArea({ data }: TableScrollAreaProps) {
 	const { classes, cx } = useStyles()
 	const [scrolled, setScrolled] = useState(false)
@@ -87,11 +77,27 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 
 	const rows = data.map((row) => {
 		const formattedDate = DateTime.fromISO(row.date.toString()).toFormat('DDDD')
-		const tags = {}
 		return (
 			<tr
 				key={row.id}
-				onClick={() => setSelectedRow(row.id)}
+				onClick={() => {
+					setSelectedRow(row.id)
+					openModal({
+						title: (
+							<Title order={1}>{`Class ${row.classNum} - ${row.title}`}</Title>
+						),
+						children: <ClassDetail classData={row} />,
+						centered: true,
+						size: '60vw',
+						classNames: {
+							modal: classes.modal,
+							body: classes.fullHeight,
+							close: classes.modalClose,
+						},
+						transition: 'pop',
+						transitionDuration: 400,
+					})
+				}}
 				className={row.id === selectedRow ? classes.active : classes.tablerow}
 			>
 				<td>{row.status}</td>
@@ -127,6 +133,7 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 				</thead>
 				<tbody>{rows}</tbody>
 			</Table>
+			{/* <ClassDetail classData={classItem} open={modalOpen} /> */}
 		</ScrollArea>
 	)
 }

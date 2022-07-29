@@ -1,3 +1,4 @@
+export * from './ClassDetail'
 export * from './HeaderBar'
 export * from './SideNav'
 export * from './TagGroup'
