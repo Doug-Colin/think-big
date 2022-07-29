@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import {
-	Modal,
 	Divider,
 	Group,
 	Stack,
@@ -8,48 +6,13 @@ import {
 	Anchor,
 	createStyles,
 	Space,
-	Title,
 } from '@mantine/core'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { TagGroup } from './'
 
-interface MaterialLink {
-	url: string
-	type: string
-}
-interface Tags {
-	id: string
-	tag: string
-	color: string
-	active: boolean
-}
-interface CheckinTweet {
-	id: string
-	url: string
-}
-interface VodLink {
-	id?: string
-	classId?: string
-	service: 'Twitch' | 'YouTube' | string
-	url: string
-}
 interface ClassDetailProps {
-	classData: {
-		id: string
-		status?: any
-		title: string
-		classNum: number
-		description: string
-		materialLinks: MaterialLink[]
-		date: string | Date
-		tags: Tags[]
-		checkinTweet?: CheckinTweet
-		slidesUrl?: string
-		vod?: VodLink[]
-	}
-	// non data props
-	open: boolean
+	classData: ClassRecord
 }
 
 const useStyles = createStyles((theme) => ({
@@ -80,29 +43,10 @@ const useStyles = createStyles((theme) => ({
 	},
 }))
 
-const ClassDetail = ({ classData, open }: ClassDetailProps) => {
-	const [opened, setOpened] = useState(false)
+const ClassDetail = ({ classData }: ClassDetailProps) => {
 	const { classes, cx } = useStyles()
-	open ? setOpened(true) : null
 	return (
-		<Modal
-			opened={opened}
-			onClose={() => setOpened(false)}
-			title={
-				<Title order={1}>
-					{`Class ${classData.classNum} - ${classData.title}`}
-				</Title>
-			}
-			centered
-			size='60vw'
-			classNames={{
-				modal: classes.modal,
-				body: classes.fullHeight,
-				close: classes.modalClose,
-			}}
-			transition='skew-down'
-			transitionDuration={400}
-		>
+		<>
 			<Divider my='xs' />
 			<Space h='md' />
 			<TagGroup
@@ -169,7 +113,7 @@ const ClassDetail = ({ classData, open }: ClassDetailProps) => {
 					</Group>
 				</Stack>
 			</Group>
-		</Modal>
+		</>
 	)
 }
 
