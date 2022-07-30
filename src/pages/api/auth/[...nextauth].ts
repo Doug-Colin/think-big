@@ -116,6 +116,7 @@ const authOptions: NextAuthOptions = {
 			return false
 		},
 		async session({ session, user }) {
+			session.user.id = user.id
 			return session
 		},
 	},
