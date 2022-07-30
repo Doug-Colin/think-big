@@ -1,4 +1,5 @@
 export * from './ClassDetail'
+export * from './ClassStatusSwitch'
 export * from './HeaderBar'
 export * from './SideNav'
 export * from './TagGroup'

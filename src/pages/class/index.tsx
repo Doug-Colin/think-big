@@ -1,15 +1,30 @@
 import { useState } from 'react'
 import { createStyles, Table, ScrollArea, Text, Title } from '@mantine/core'
 import { openModal } from '@mantine/modals'
-import { TagGroup, ClassDetail } from '~/components'
+import { TagGroup, ClassDetail, ClassStatusSwitch } from '~/components'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
-import { fetchClasses, useClasses } from '~/hooks'
+import {
+	fetchClasses,
+	useClasses,
+	fetchClassStatuses,
+	useClassStatuses,
+	keyClassStatuses,
+	UserClassStatusRecord,
+} from '~/hooks'
 import { DateTime } from 'luxon'
 import superjson from 'superjson'
+import { useSession } from 'next-auth/react'
+import { getServerSession } from '../api/auth/[...nextauth]'
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+	const { req, res } = context
+	const session = await getServerSession(req, res)
+	const { id: userId } = session?.user
 	const queryClient = new QueryClient()
 	await queryClient.prefetchQuery(['classes'], fetchClasses)
+	await queryClient.prefetchQuery(keyClassStatuses(userId), () =>
+		fetchClassStatuses(userId)
+	)
 	const queryState = dehydrate(queryClient)
 	const serializedQueryState = superjson.stringify(queryState)
 
@@ -69,19 +84,30 @@ const useStyles = createStyles((theme) => ({
 
 interface TableScrollAreaProps {
 	data: ClassRecord[]
+	status: UserClassStatusRecord
 }
-export function TableScrollArea({ data }: TableScrollAreaProps) {
+export function TableScrollArea({ data, status }: TableScrollAreaProps) {
 	const { classes, cx } = useStyles()
 	const [scrolled, setScrolled] = useState(false)
 	const [selectedRow, setSelectedRow] = useState('')
-
+	const { classes: statusArr, id: userId } = status
+	const classStatusMap = new Map(
+		statusArr.map((item) => [item.id, item.status])
+	)
 	const rows = data.map((row) => {
 		const formattedDate = DateTime.fromISO(row.date.toString()).toFormat('DDDD')
+		const classStatus = classStatusMap.get(row.id) || 'not_started'
 		return (
 			<tr
 				key={row.id}
-				onClick={() => {
+				onClick={(e) => {
 					setSelectedRow(row.id)
+					console.log(e.target['classList'].value)
+					if (
+						!e.target['classList'].value ||
+						e.target['classList'].value.includes('noPop')
+					)
+						return
 					openModal({
 						title: (
 							<Title order={1}>{`Class ${row.classNum} - ${row.title}`}</Title>
@@ -100,7 +126,13 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 				}}
 				className={row.id === selectedRow ? classes.active : classes.tablerow}
 			>
-				<td>{row.status}</td>
+				<td>
+					<ClassStatusSwitch
+						classId={row.id}
+						userId={userId}
+						status={classStatus}
+					/>
+				</td>
 				{/* This will return a react component for the Status */}
 				<td>{row.classNum}</td>
 				<td>{row.title}</td>
@@ -139,10 +171,25 @@ export function TableScrollArea({ data }: TableScrollAreaProps) {
 }
 
 const ClassTable = () => {
-	const { data, isLoading, isError, error } = useClasses()
-	if (isLoading) return <Text>Loading...</Text>
-	if (isError) return <Text>{`Error: ${error}`}</Text>
-	return <TableScrollArea data={data} />
+	const { data: session, status } = useSession()
+	const { id: userId } = session?.user || { id: '' }
+	const {
+		data: classData,
+		isLoading: classLoading,
+		isError: classErrorStat,
+		error: classError,
+	} = useClasses()
+	const {
+		data: statusData,
+		isLoading: statusLoading,
+		isError: statusErrorStat,
+		error: statusError,
+	} = useClassStatuses(keyClassStatuses(userId), userId)
+
+	if (classLoading || statusLoading) return <Text>Loading...</Text>
+	if (classErrorStat || statusErrorStat)
+		return <Text>{`Error: ${classError || statusError}`}</Text>
+	return <TableScrollArea data={classData} status={statusData} />
 }
 
 export default ClassTable
