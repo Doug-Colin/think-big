@@ -1,5 +1,6 @@
 import { prisma } from '~/lib'
 import { getServerSession } from '../auth/[...nextauth]'
+import { assignmentAll } from '~/common/dbSelect'
 
 /**
  * It gets the session from the request, and if there is no session, it returns a 401 error. If there
@@ -21,8 +22,20 @@ export default async function handler(req, res) {
 			classNum: true,
 			date: true,
 			description: true,
+			tags: {
+				select: {
+					id: true,
+					tag: true,
+					color: true,
+				},
+			},
+			assignments: {
+				select: assignmentAll,
+			},
 			materialLinks: true,
-			tags: true,
+			checkinTweet: true,
+			vod: true,
+			slidesUrl: true,
 		},
 	})
 	res.status(200).json(classes)
