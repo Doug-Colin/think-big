@@ -82,7 +82,7 @@ type AssignmentUserProps {
 type ClassUserProps {
   classId String          @db.ObjectId
   status  ClassStatusEnum
-  notes   String
+  notes   String[]
 }
 
 enum ClassStatusEnum {
