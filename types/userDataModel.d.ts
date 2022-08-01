@@ -1,4 +1,4 @@
 declare interface UserClassStatus {
-	id: string
+	classId: string
 	status: 'not_started' | 'in_progress' | 'done'
 }

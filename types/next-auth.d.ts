@@ -11,7 +11,13 @@ declare module 'next-auth' {
 	}
 
 	interface Session {
-		user: { id: string }
+		user: {
+			id: string
+			role: 'USER' | 'MOD' | 'ADMIN'
+		}
+	}
+	interface User {
+		role: 'USER' | 'MOD' | 'ADMIN'
 	}
 }
 
