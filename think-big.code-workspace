@@ -12,7 +12,7 @@
 		"docthis.includeDescriptionTag": true,
 		"docthis.inferTypesFromNames": true,
 		"editor.codeActionsOnSave": {
-			"source.fixAll.eslint": true
+			"source.fixAll": true
 		},
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnPaste": true,
@@ -36,6 +36,7 @@
 		"exportall.config.relExclusion": ["/src/pages"],
 		"eslint.alwaysShowStatus": true,
 		"eslint.packageManager": "pnpm",
-		"eslint.useESLintClass": true
+		"eslint.useESLintClass": true,
+		"typescript.tsdk": "node_modules/typescript/lib"
 	}
 }
