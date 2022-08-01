@@ -33,6 +33,9 @@
 		"[prisma]": {
 			"editor.defaultFormatter": "Prisma.prisma"
 		},
-		"exportall.config.relExclusion": ["/src/pages"]
+		"exportall.config.relExclusion": ["/src/pages"],
+		"eslint.alwaysShowStatus": true,
+		"eslint.packageManager": "pnpm",
+		"eslint.useESLintClass": true
 	}
 }
