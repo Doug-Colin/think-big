@@ -1,6 +1,8 @@
 import { MouseEventHandler } from 'react'
-import { ClassStatusSwitch, TagGroup } from '~/components'
+import { TagGroup } from '~/components'
+import { ClassStatusIcon } from './'
 import { DateTime } from 'luxon'
+import { Center } from '@mantine/core'
 
 interface ClassRowProps {
 	data: ClassRecord
@@ -15,19 +17,16 @@ export const ClassRow = ({
 	data,
 	userId,
 	classStatus,
-	key,
 	clickHandler,
 	className,
 }: ClassRowProps) => {
 	const formattedDate = DateTime.fromISO(data.date.toString()).toFormat('DDDD')
 	return (
-		<tr key={key} onClick={clickHandler} className={className}>
+		<tr onClick={clickHandler} className={className}>
 			<td>
-				<ClassStatusSwitch
-					classId={data.id}
-					userId={userId}
-					status={classStatus}
-				/>
+				<Center>
+					<ClassStatusIcon status={classStatus} />
+				</Center>
 			</td>
 			<td>{data.classNum}</td>
 			<td>{data.title}</td>

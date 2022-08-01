@@ -6,13 +6,17 @@ import {
 	Anchor,
 	createStyles,
 	Space,
+	Box,
 } from '@mantine/core'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { TagGroup } from '..'
+import { ClassStatusSwitch } from './'
 
 interface ClassDetailProps {
 	classData: ClassRecord
+	classStatus: UserClassStatus['status']
+	userId: string
 }
 
 const useStyles = createStyles((theme) => ({
@@ -43,17 +47,23 @@ const useStyles = createStyles((theme) => ({
 	},
 }))
 
-const ClassDetail = ({ classData }: ClassDetailProps) => {
+const ClassDetail = ({ classData, classStatus, userId }: ClassDetailProps) => {
 	const { classes, cx } = useStyles()
 	return (
 		<>
 			<Divider my='xs' />
 			<Space h='md' />
-			<TagGroup
-				tags={classData.tags}
-				className={classes.fullWidth}
-				tagSize='lg'
-			/>
+			<Group position='apart'>
+				{/* <Text weight={500} inline>
+						Status:{' '}
+					</Text> */}
+				<ClassStatusSwitch
+					userId={userId}
+					classId={classData.id}
+					status={classStatus}
+				/>
+				<TagGroup tags={classData.tags} tagSize='lg' />
+			</Group>
 			<Space h='xl' />
 			<Group align='flex-start' spacing='xl'>
 				<Stack className={classes.maxHalf}>

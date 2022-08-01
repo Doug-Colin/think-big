@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createStyles, Table, ScrollArea, Text, Title } from '@mantine/core'
+import { createStyles, Table, ScrollArea, Title } from '@mantine/core'
 import { openModal } from '@mantine/modals'
 import { ClassDetail, ClassRow } from './'
 import { UserClassStatusRecord } from '~/hooks'
@@ -62,7 +62,7 @@ export function ClassTable({ data, status }: TableScrollAreaProps) {
 	const [selectedRow, setSelectedRow] = useState('')
 	const { classes: statusArr, id: userId } = status
 	const classStatusMap = new Map(
-		statusArr.map((item) => [item.id, item.status])
+		statusArr.map((item) => [item.classId, item.status])
 	)
 	const rows = data.map((row) => {
 		const classStatus = classStatusMap.get(row.id) || 'not_started'
@@ -70,20 +70,19 @@ export function ClassTable({ data, status }: TableScrollAreaProps) {
 			<ClassRow
 				key={row.id}
 				data={row}
-				clickHandler={(e) => {
+				clickHandler={() => {
 					setSelectedRow(row.id)
-					console.log(e.target['classList'].value)
-					if (
-						!e.target['classList'].value ||
-						e.target['classList'].value.includes('noPop')
-					) {
-						e.stopPropagation()
-					}
 					openModal({
 						title: (
 							<Title order={1}>{`Class ${row.classNum} - ${row.title}`}</Title>
 						),
-						children: <ClassDetail classData={row} />,
+						children: (
+							<ClassDetail
+								classData={row}
+								classStatus={classStatus}
+								userId={userId}
+							/>
+						),
 						centered: true,
 						size: '60vw',
 						classNames: {
