@@ -69,6 +69,7 @@ model User {
   classes              ClassUserProps[]
   checkedInClasses     CheckinTweet[]        @relation(fields: [checkedInClassesId], references: [id])
   checkedInClassesId   String[]              @db.ObjectId
+  role                 UserRole              @default(USER)
 }
 
 type AssignmentUserProps {
@@ -95,6 +96,12 @@ enum Progress {
   to_do
   in_progress
   complete
+}
+
+enum UserRole {
+  USER
+  MOD
+  ADMIN
 }
 
 // Classes
