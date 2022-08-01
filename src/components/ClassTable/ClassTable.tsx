@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { createStyles, Table, ScrollArea, Text, Title } from '@mantine/core'
 import { openModal } from '@mantine/modals'
-import { TagGroup, ClassDetail, ClassStatusSwitch } from '~/components'
-import { DateTime } from 'luxon'
+import { ClassDetail, ClassRow } from './'
 import { UserClassStatusRecord } from '~/hooks'
 
 const useStyles = createStyles((theme) => ({
@@ -66,12 +65,12 @@ export function ClassTable({ data, status }: TableScrollAreaProps) {
 		statusArr.map((item) => [item.id, item.status])
 	)
 	const rows = data.map((row) => {
-		const formattedDate = DateTime.fromISO(row.date.toString()).toFormat('DDDD')
 		const classStatus = classStatusMap.get(row.id) || 'not_started'
 		return (
-			<tr
+			<ClassRow
 				key={row.id}
-				onClick={(e) => {
+				data={row}
+				clickHandler={(e) => {
 					setSelectedRow(row.id)
 					console.log(e.target['classList'].value)
 					if (
@@ -97,25 +96,9 @@ export function ClassTable({ data, status }: TableScrollAreaProps) {
 					})
 				}}
 				className={row.id === selectedRow ? classes.active : classes.tablerow}
-			>
-				<td>
-					<ClassStatusSwitch
-						classId={row.id}
-						userId={userId}
-						status={classStatus}
-					/>
-				</td>
-				{/* This will return a react component for the Status */}
-				<td>{row.classNum}</td>
-				<td>{row.title}</td>
-				<td>{row.materialLinks[0]?.url}</td>
-				{/* may need to map again - this returns an array */}
-				<td>{formattedDate}</td>
-				<td>
-					<TagGroup tags={row.tags} />
-				</td>
-				{/* this will eventually display using the TagGroup component, passing in the tags as props*/}
-			</tr>
+				classStatus={classStatus}
+				userId={userId}
+			/>
 		)
 	})
 

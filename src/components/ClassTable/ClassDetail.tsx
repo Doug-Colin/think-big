@@ -9,7 +9,7 @@ import {
 } from '@mantine/core'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
-import { TagGroup } from './'
+import { TagGroup } from '..'
 
 interface ClassDetailProps {
 	classData: ClassRecord
