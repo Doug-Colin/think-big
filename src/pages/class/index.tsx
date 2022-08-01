@@ -1,5 +1,5 @@
 import { Text } from '@mantine/core'
-import { ClassTable } from '~/components'
+import { ClassTable, ClassAccordianTable } from '~/components/ClassTable'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import {
 	fetchClasses,
@@ -51,6 +51,7 @@ const ClassPage = () => {
 	if (classErrorStat || statusErrorStat)
 		return <Text>{`Error: ${classError || statusError}`}</Text>
 	return <ClassTable data={classData} status={statusData} />
+	// return <ClassAccordianTable data={classData} status={statusData} />
 }
 
 export default ClassPage
