@@ -62,7 +62,7 @@ export function ClassTable({ data, status }: TableScrollAreaProps) {
 	const [selectedRow, setSelectedRow] = useState('')
 	const { classes: statusArr, id: userId } = status
 	const classStatusMap = new Map(
-		statusArr.map((item) => [item.classId, item.status])
+		statusArr?.map((item) => [item.id, item.status])
 	)
 	const rows = data.map((row) => {
 		const classStatus = classStatusMap.get(row.id) || 'not_started'

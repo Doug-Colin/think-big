@@ -6,4 +6,5 @@ export const userClassComposite = {
 export const userClassStatus = {
 	classId: true,
 	status: true,
+	userId: true,
 }
