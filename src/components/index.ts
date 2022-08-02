@@ -1,3 +1,4 @@
+export * from './CenterLoader'
 export * from './ClassTable'
 export * from './HeaderBar'
 export * from './SideNav'
