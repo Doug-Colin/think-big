@@ -1,5 +1,5 @@
 import { prisma, axiosClient } from '~/lib'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { userClassStatus } from '~/common/dbSelect'
 
 export interface UserClassStatusRecord {
