@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import { Text } from '@mantine/core'
 import { ClassTable, ClassAccordianTable } from '~/components/ClassTable'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
@@ -11,27 +12,11 @@ import {
 import superjson from 'superjson'
 import { useSession } from 'next-auth/react'
 import { getServerSession } from '../api/auth/[...nextauth]'
+import { ComponentWithAuth } from 'types/customComponents'
 
-export async function getServerSideProps(context) {
-	const { req, res } = context
-	const session = await getServerSession(req, res)
-	const { id: userId } = session?.user
-	const queryClient = new QueryClient()
-	await queryClient.prefetchQuery(['classes'], fetchClasses)
-	await queryClient.prefetchQuery(keyClassStatuses(userId), () =>
-		fetchClassStatuses(userId)
-	)
-	const queryState = dehydrate(queryClient)
-	const serializedQueryState = superjson.stringify(queryState)
-
-	return {
-		props: {
-			dehydratedState: serializedQueryState,
-		},
-	}
-}
-
-const ClassPage = () => {
+const ClassPage: ComponentWithAuth = ({}: InferGetServerSidePropsType<
+	typeof getServerSideProps
+>) => {
 	const { data: session, status } = useSession()
 	const { id: userId } = session?.user || { id: '' }
 	const {
@@ -47,11 +32,32 @@ const ClassPage = () => {
 		error: statusError,
 	} = useClassStatuses(keyClassStatuses(userId), userId)
 
-	if (classLoading || statusLoading) return <Text>Loading...</Text>
+	if (classLoading || statusLoading || status === 'loading')
+		return <Text>Loading...</Text>
 	if (classErrorStat || statusErrorStat)
 		return <Text>{`Error: ${classError || statusError}`}</Text>
 	return <ClassTable data={classData} status={statusData} />
 	// return <ClassAccordianTable data={classData} status={statusData} />
 }
 
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+	const { req, res } = context
+	const session = await getServerSession(req, res)
+	const { id: userId } = session?.user ?? { id: '' }
+	const queryClient = new QueryClient()
+	await queryClient.prefetchQuery(['classes'], fetchClasses)
+	await queryClient.prefetchQuery(keyClassStatuses(userId), () =>
+		fetchClassStatuses(userId)
+	)
+	const queryState = dehydrate(queryClient)
+	const serializedQueryState = superjson.stringify(queryState)
+
+	return {
+		props: {
+			dehydratedState: serializedQueryState,
+		},
+	}
+}
+
+ClassPage.auth = { required: true }
 export default ClassPage

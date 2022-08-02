@@ -139,10 +139,7 @@ const authOptions: NextAuthOptions = {
  * @param {NextApiResponse} res - NextApiResponse - The response object from Next.js
  * @returns The session object
  */
-export const getServerSession = async (
-	req: NextApiRequest,
-	res: NextApiResponse
-) => {
+export const getServerSession = async (req, res) => {
 	const session = await unstable_getServerSession(req, res, authOptions)
 	return session
 }

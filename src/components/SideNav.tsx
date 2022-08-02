@@ -7,7 +7,7 @@ import {
 	Stack,
 } from '@mantine/core'
 import { Icon } from '@iconify/react'
-import { mocknav } from 'mockdata/nav'
+import { nav } from '~/data'
 import Link from 'next/link'
 
 const useStyles = createStyles((theme) => ({
@@ -90,7 +90,7 @@ const useNavbarStyles = createStyles((theme) => ({
 export function SideNav() {
 	const [active, setActive] = useState(0)
 	const { classes } = useNavbarStyles()
-	const links = mocknav.map((link, index) => (
+	const links = nav.map((link, index) => (
 		<NavbarLink
 			{...link}
 			key={link.label}
