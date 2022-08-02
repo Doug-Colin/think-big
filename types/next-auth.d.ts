@@ -12,11 +12,11 @@ declare module 'next-auth' {
 
 	interface Session {
 		user: {
-			id: string
-			role: 'USER' | 'MOD' | 'ADMIN'
-			name: string
-			image: string
-			discordTag: string
+			id: User['id']
+			role: User['role']
+			name: User['name']
+			image: User['image']
+			discordTag: User['discordId']
 		}
 	}
 	interface User {
