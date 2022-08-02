@@ -16,12 +16,15 @@ declare module 'next-auth' {
 			role: 'USER' | 'MOD' | 'ADMIN'
 			name: string
 			image: string
+			discordTag: string
 		}
 	}
 	interface User {
-		id: string
-		role: 'USER' | 'MOD' | 'ADMIN'
-		name: string
+		id?: string
+		role?: 'USER' | 'MOD' | 'ADMIN'
+		name?: string
+		discordId?: string
+		discordTag?: string
 	}
 }
 
