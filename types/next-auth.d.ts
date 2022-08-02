@@ -14,10 +14,14 @@ declare module 'next-auth' {
 		user: {
 			id: string
 			role: 'USER' | 'MOD' | 'ADMIN'
+			name: string
+			image: string
 		}
 	}
 	interface User {
+		id: string
 		role: 'USER' | 'MOD' | 'ADMIN'
+		name: string
 	}
 }
 

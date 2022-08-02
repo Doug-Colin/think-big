@@ -25,7 +25,7 @@ export const fakeClass = (num: number, tags: string[]) => {
 				connect: connectTags,
 			},
 			assignments: {},
-			checkinUrl: faker.internet.url(),
+			// checkinUrl: faker.internet.url(),
 			vod: {},
 		}
 		fakeData.push(data)
