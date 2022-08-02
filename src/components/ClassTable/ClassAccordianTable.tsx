@@ -102,7 +102,11 @@ export const ClassAccordianTable = ({
 					</tr>
 				</Accordion.Control>
 				<Accordion.Panel>
-					<ClassDetail classData={row} />
+					<ClassDetail
+						classData={row}
+						userId={userId}
+						classStatus={classStatus}
+					/>
 				</Accordion.Panel>
 			</Accordion.Item>
 		)
