@@ -49,26 +49,33 @@ model VerificationToken {
 
 // Next-Auth & Custom - Be careful with modifications.
 model User {
-  id                   String                @id @default(auto()) @map("_id") @db.ObjectId
-  name                 String?
-  email                String?               @unique
-  emailVerified        DateTime?
-  image                String?
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  accounts             Account[]
-  sessions             Session[]
+  id                  String                @id @default(auto()) @map("_id") @db.ObjectId
+  discordId           String?
+  discordTag          String?
+  twitterId           String?
+  githubId            String?
+  name                String?
+  email               String?               @unique
+  emailVerified       DateTime?
+  image               String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  accounts            Account[]
+  sessions            Session[]
   //custom fields
-  userDisabled         Boolean               @default(false)
-  serverMember         Boolean               @default(false)
-  completedAssignments AssignmentStatus[]    @relation(fields: [assignmentId], references: [id])
-  assignmentId         String[]              @db.ObjectId
-  classStatuses        ClassStatus[]
-  assignments          AssignmentUserProps[]
-  classes              ClassUserProps[]
-  checkedInClasses     CheckinTweet[]        @relation(fields: [checkedInClassesId], references: [id])
-  checkedInClassesId   String[]              @db.ObjectId
-  role                 UserRole              @default(USER)
+  userDisabled        Boolean               @default(false)
+  serverMember        Boolean               @default(false)
+  assignmentStatus    AssignmentStatus[]    @relation(fields: [assignmentId], references: [id])
+  assignmentId        String[]              @db.ObjectId
+  classStatuses       ClassStatus[]
+  assignmentOverrides AssignmentUserProps[]
+  classes             ClassUserProps[]
+  checkedInClasses    CheckinTweet[]        @relation(fields: [checkedInClassesId], references: [id])
+  checkedInClassesId  String[]              @db.ObjectId
+  role                UserRole              @default(USER)
+
+  @@unique([id, assignmentOverrides.assignmentId])
+  @@unique([id, classes.classId])
 }
 
 type AssignmentUserProps {
@@ -80,8 +87,7 @@ type AssignmentUserProps {
 }
 
 type ClassUserProps {
-  classId String          @db.ObjectId
-  status  ClassStatusEnum
+  classId String   @db.ObjectId
   notes   String[]
 }
 
@@ -203,8 +209,8 @@ model AssignmentStatus {
 model ClassStatus {
   id      String          @id @default(auto()) @map("_id") @db.ObjectId
   classId String          @db.ObjectId
-  class   Class           @relation(fields: [classId], references: [id])
-  user    User            @relation(fields: [userId], references: [id])
+  class   Class           @relation(fields: [classId], references: [id], onDelete: Cascade)
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String          @db.ObjectId
   status  ClassStatusEnum
 

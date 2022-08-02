@@ -135,8 +135,6 @@ export const updateClassStatusAPI = async (
  * @returns The result of the useQuery hook.
  */
 export const useClassStatuses = (queryKey: string[], userId: string) => {
-	console.log('useClassStatuses called')
 	const result = useQuery(queryKey, () => fetchAPI(userId))
-	console.log('useClassStatuses result', result)
 	return result
 }

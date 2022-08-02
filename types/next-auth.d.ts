@@ -12,16 +12,19 @@ declare module 'next-auth' {
 
 	interface Session {
 		user: {
-			id: string
-			role: 'USER' | 'MOD' | 'ADMIN'
-			name: string
-			image: string
+			id: User['id']
+			role: User['role']
+			name: User['name']
+			image: User['image']
+			discordTag: User['discordId']
 		}
 	}
 	interface User {
-		id: string
-		role: 'USER' | 'MOD' | 'ADMIN'
-		name: string
+		id?: string
+		role?: 'USER' | 'MOD' | 'ADMIN'
+		name?: string
+		discordId?: string
+		discordTag?: string
 	}
 }
 
