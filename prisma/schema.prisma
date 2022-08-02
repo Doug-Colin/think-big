@@ -63,12 +63,12 @@ model User {
   serverMember         Boolean               @default(false)
   completedAssignments AssignmentStatus[]    @relation(fields: [assignmentId], references: [id])
   assignmentId         String[]              @db.ObjectId
-  completedClasses     ClassStatus[]         @relation(fields: [classId], references: [id])
-  classId              String[]              @db.ObjectId
+  classStatuses        ClassStatus[]
   assignments          AssignmentUserProps[]
   classes              ClassUserProps[]
   checkedInClasses     CheckinTweet[]        @relation(fields: [checkedInClassesId], references: [id])
   checkedInClassesId   String[]              @db.ObjectId
+  role                 UserRole              @default(USER)
 }
 
 type AssignmentUserProps {
@@ -82,7 +82,7 @@ type AssignmentUserProps {
 type ClassUserProps {
   classId String          @db.ObjectId
   status  ClassStatusEnum
-  notes   String
+  notes   String[]
 }
 
 enum ClassStatusEnum {
@@ -95,6 +95,12 @@ enum Progress {
   to_do
   in_progress
   complete
+}
+
+enum UserRole {
+  USER
+  MOD
+  ADMIN
 }
 
 // Classes
@@ -115,7 +121,7 @@ model Class {
   slidesUrl     String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  classStatus   ClassStatus?
+  classStatus   ClassStatus[]
 }
 
 type MaterialLink {
@@ -185,16 +191,6 @@ type AssignResource {
   description String
 }
 
-// model AssignmentTag {
-//   id           String     @id @default(auto()) @map("_id") @db.ObjectId
-//   assignments  Assignment @relation(fields: [assignmentId], references: [id])
-//   assignmentId String     @db.ObjectId
-//   tag          String
-//   active       Boolean    @default(true)
-//   createdAt    DateTime   @default(now())
-//   updatedAt    DateTime   @updatedAt
-// }
-
 // Intersecting tables that show which users have completed assignments/classes
 model AssignmentStatus {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
@@ -205,11 +201,14 @@ model AssignmentStatus {
 }
 
 model ClassStatus {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  classId String   @unique @db.ObjectId
-  class   Class    @relation(fields: [classId], references: [id])
-  user    User[]   @relation(fields: [userId], references: [id])
-  userId  String[] @db.ObjectId
+  id      String          @id @default(auto()) @map("_id") @db.ObjectId
+  classId String          @db.ObjectId
+  class   Class           @relation(fields: [classId], references: [id])
+  user    User            @relation(fields: [userId], references: [id])
+  userId  String          @db.ObjectId
+  status  ClassStatusEnum
+
+  @@unique([classId, userId])
 }
 
 model CheckinTweet {

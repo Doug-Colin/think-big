@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import DiscordProvider from 'next-auth/providers/discord'
+
 declare module 'next-auth' {
 	interface DiscordGuild {
 		id: string
@@ -10,7 +11,13 @@ declare module 'next-auth' {
 	}
 
 	interface Session {
-		bearerToken: string
+		user: {
+			id: string
+			role: 'USER' | 'MOD' | 'ADMIN'
+		}
+	}
+	interface User {
+		role: 'USER' | 'MOD' | 'ADMIN'
 	}
 }
 

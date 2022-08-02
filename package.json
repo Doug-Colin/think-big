@@ -19,6 +19,7 @@
 		"db:devseed": "DEVSEED=1 prisma db seed",
 		"db:push": "prisma db push",
 		"db:reset": "node prisma/db-reset.mjs",
+		"db:studio": "prisma studio",
 		"format": "prettier . --write --ignore-unknown --ignore-path .gitignore",
 		"cypress": "cypress open"
 	},
