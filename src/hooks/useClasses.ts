@@ -25,7 +25,6 @@ const fetchClasses = async () => {
 				tags: true,
 			},
 		})
-		// const { json } = superjson.serialize(classes)
 
 		return classes
 	} catch (err) {
@@ -48,7 +47,6 @@ const fetchClassesAPI = async (): Promise<ClassRecord[]> => {
  * @returns The result of the useQuery hook.
  */
 const useClasses = () => {
-	console.log('useClasses called')
 	const result = useQuery<ClassRecord[]>(['classes'], fetchClassesAPI)
 	return result
 }
