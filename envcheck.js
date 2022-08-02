@@ -7,9 +7,20 @@
 const { z } = require('zod')
 
 /*eslint sort-keys: "error"*/
-const envSchema = z.object({
-	NODE_ENV: z.enum(['development', 'test', 'production']),
-})
+const envSchema = z
+	.object({
+		DISCORD_CLIENT_ID: z.string().transform((x) => x.toString()),
+		DISCORD_CLIENT_SECRET: z.string(),
+		MONGODB_URI: z.string(),
+		MONGO_COLL: z.string(),
+		MONGO_PW: z.string(),
+		MONGO_SERVER: z.string(),
+		MONGO_USER: z.string(),
+		NEXTAUTH_SECRET: z.string(),
+		NEXTAUTH_URL: z.string(),
+		NODE_ENV: z.enum(['development', 'test', 'production']),
+	})
+	.deepPartial()
 
 const env = envSchema.safeParse(process.env)
 
@@ -21,4 +32,5 @@ if (!env.success) {
 	)
 	process.exit(1)
 }
+console.info('✅ Environment variable check passed.')
 module.exports.env = env.data

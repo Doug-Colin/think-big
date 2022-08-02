@@ -4,10 +4,11 @@ import {
 	Tooltip,
 	UnstyledButton,
 	createStyles,
-	Group,
+	Stack,
 } from '@mantine/core'
 import { Icon } from '@iconify/react'
 import { mocknav } from 'mockdata/nav'
+import Link from 'next/link'
 
 const useStyles = createStyles((theme) => ({
 	link: {
@@ -17,12 +18,15 @@ const useStyles = createStyles((theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		color: theme.white,
+		// color: theme.white,
 		opacity: 0.85,
 
 		'&:hover': {
 			opacity: 1,
 			backgroundColor: theme.colors.primary[5],
+			svg: {
+				color: theme.colors.secondary[1],
+			},
 		},
 	},
 	active: {
@@ -32,7 +36,8 @@ const useStyles = createStyles((theme) => ({
 		},
 	},
 	icon: {
-		fontSize: '2rem',
+		fontSize: '1.75rem',
+		color: theme.colors.primary[0],
 	},
 }))
 
@@ -40,34 +45,51 @@ interface NavbarLinkProps {
 	icon: string
 	label: string
 	active?: boolean
+	url?: string
 	onClick?(): void
 }
 
-export function NavbarLink({ icon, label, active, onClick }: NavbarLinkProps) {
+export function NavbarLink({
+	icon,
+	label,
+	active,
+	url,
+	onClick,
+}: NavbarLinkProps) {
 	const { classes, cx } = useStyles()
 	return (
-		<Tooltip label={label} position='right' withArrow transitionDuration={0}>
-			<UnstyledButton
-				onClick={onClick}
-				className={cx(classes.link, { [classes.active]: active })}
-			>
-				<Icon icon={icon} className={classes.icon} />
-			</UnstyledButton>
+		<Tooltip
+			label={label}
+			position='right'
+			withArrow
+			transitionDuration={50}
+			transition='scale-x'
+		>
+			<div>
+				<Link href={url} passHref>
+					<UnstyledButton
+						component='a'
+						className={cx(classes.link, { [classes.active]: active })}
+						onClick={onClick}
+					>
+						<Icon icon={icon} className={classes.icon} />
+					</UnstyledButton>
+				</Link>
+			</div>
 		</Tooltip>
 	)
 }
 
 const useNavbarStyles = createStyles((theme) => ({
 	navbar: {
-		backgroundColor: theme.colors.primary[9],
+		backgroundColor: theme.colors.primary[6],
 		margin: 'none',
 	},
 }))
 
 export function SideNav() {
-	const [active, setActive] = useState(2)
+	const [active, setActive] = useState(0)
 	const { classes } = useNavbarStyles()
-
 	const links = mocknav.map((link, index) => (
 		<NavbarLink
 			{...link}
@@ -78,10 +100,15 @@ export function SideNav() {
 	))
 
 	return (
-		<Navbar width={{ base: 80 }} p='md' className={classes.navbar}>
-			<Group direction='column' align='center' spacing={0}>
+		<Navbar
+			fixed={false}
+			width={{ base: 80 }}
+			p='md'
+			className={classes.navbar}
+		>
+			<Stack align='center' spacing='md'>
 				{links}
-			</Group>
+			</Stack>
 		</Navbar>
 	)
 }

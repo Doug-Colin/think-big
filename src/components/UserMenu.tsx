@@ -3,14 +3,17 @@ import {
 	Group,
 	Avatar,
 	Menu,
+	Button,
+	Text,
 	createStyles,
 } from '@mantine/core'
 import { Icon } from '@iconify/react'
 import React, { useState } from 'react'
+import { useSession, signIn, signOut } from 'next-auth/react'
 import styles from './UserMenu.module.scss'
 
 // This is Typescript stuff - don't worry about it.
-interface UserMenuProps {
+interface LoggedInProps {
 	image: string
 	name: string
 }
@@ -23,7 +26,7 @@ const useStyles = createStyles((theme) => ({
 		// },
 	},
 	user: {
-		color: theme.colors.primary[0], //theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+		color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : '',
 		padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
 		borderRadius: theme.radius.sm,
 		transition: 'background-color 100ms ease',
@@ -35,26 +38,23 @@ const useStyles = createStyles((theme) => ({
 		},
 	},
 	userActive: {
-		backgroundColor:
-			theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
-	},
-	name: {
-		color: theme.colors.primary[0],
+		backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : '',
 	},
 }))
 
-export const UserMenu = ({ image, name, ...others }: UserMenuProps) => {
+const LoggedInUser = ({ image, name }: LoggedInProps) => {
 	const [userMenuOpened, setUserMenuOpened] = useState(false)
-	const { classes, cx, theme } = useStyles()
+	const { classes } = useStyles()
+
 	return (
 		<Menu
-			size={260}
-			placement='end'
-			transition='pop-top-right'
-			className={classes.userMenu}
+			position='bottom'
+			transition='scale-y'
 			onClose={() => setUserMenuOpened(false)}
 			onOpen={() => setUserMenuOpened(true)}
-			control={
+			width={200}
+		>
+			<Menu.Target>
 				<UnstyledButton className={classes.user}>
 					<Group>
 						<Avatar
@@ -66,10 +66,52 @@ export const UserMenu = ({ image, name, ...others }: UserMenuProps) => {
 						<Icon icon='tabler:chevron-down' />
 					</Group>
 				</UnstyledButton>
-			}
-		>
-			<Menu.Item>Item 1</Menu.Item>
-			<Menu.Item>Item 2</Menu.Item>
+			</Menu.Target>
+			<Menu.Dropdown>
+				<Menu.Item onClick={() => signOut({ callbackUrl: '/' })}>
+					Logout
+				</Menu.Item>
+				{/* <Menu.Item>Item 2</Menu.Item> */}
+			</Menu.Dropdown>
 		</Menu>
 	)
+}
+
+const SignUpLoginButtons = () => {
+	const { classes, theme } = useStyles()
+	return (
+		<Group>
+			<Button
+				variant='outline'
+				color='highlightPrimary'
+				onClick={() => signIn('discord', null, { prompt: 'consent' })}
+			>
+				Sign Up with Discord
+			</Button>
+			<Button
+				onClick={() => signIn('discord', null, { prompt: 'none' })}
+				variant='filled'
+				color='highlightPrimary'
+			>
+				Log In with Discord
+			</Button>
+		</Group>
+	)
+}
+
+export const UserMenu = () => {
+	const { classes } = useStyles()
+	const { data: session, status } = useSession()
+	const { name, image } = session?.user || { name: '', image: '' }
+	const menuControl = () => {
+		if (status === 'authenticated') {
+			return <LoggedInUser name={name} image={image} />
+			// return <></>
+		}
+		if (status === 'unauthenticated') {
+			return <SignUpLoginButtons />
+		}
+		return <Text>Loading...</Text>
+	}
+	return menuControl()
 }

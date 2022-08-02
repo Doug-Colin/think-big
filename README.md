@@ -64,11 +64,13 @@ Together, we designed a prototype that will allow us to track classes, assignmen
 
 ### Built With
 
-- [**Express.js**](https://expressjs.com/)
-- [**MongoDB**](https://www.mongodb.com/)
-- [**Next.js**](https://nextjs.org/)
+- [**Next.js**](https://nextjs.org/) [(Repo)](https://github.com/vercel/next.js)
+- [**React.js**](https://reactjs.org/) [(Repo)](https://github.com/facebook/react/)
+- [**Prisma**](https://www.prisma.io/) [(Repo)](https://github.com/prisma/prisma)
+- [**NextAuth.js**](https://next-auth.js.org/) [(Repo)](https://github.com/nextauthjs/next-auth)
+- [**Mantine**](https://mantine.dev/) [(Repo)](https://github.com/mantinedev/mantine/)
 - [**Node.js**](https://nodejs.org/)
-- [**React.js**](https://reactjs.org/)
+- [**MongoDB**](https://www.mongodb.com/)
 
 <br/>
 
@@ -86,7 +88,7 @@ npm -g install pnpm
 
 or follow the instructions on [pnpm's installation page](https://pnpm.io/installation).
 
-If you are using [VS Code](https://code.visualstudio.com/), the `think-big.code-workspace` file will suggest some extensions to use along with this development environment and break out the folder structure based on components.
+If you are using [VS Code](https://code.visualstudio.com/), the `think-big.code-workspace` file will suggest some extensions to use along with this development environment.
 
 <br/>
 
@@ -117,10 +119,10 @@ pnpm dev
    - Welcome page
    - Classes page
    - Assignments page
-   - Calendar page
-   - Tasks page
-2. Help Link system
-3. Moderator Operation system
+2. Calendar page
+3. Tasks page
+4. Help Link system
+5. Moderator Operation system
 
 See the [open issues](https://github.com/100Devs-ADHD/think-big/issues) for a list of proposed features (and known issues).
 
@@ -145,7 +147,7 @@ If you want to say **thank you** or/and support active development of thinkBig:
 
 - Add a [GitHub Star](https://github.com/100Devs-ADHD/think-big) to the project.
 - Tweet about the thinkBig.
-- Write interesting articles about the project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or your personal blog.
+- Write interesting articles about the project on [Dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), [Medium](https://medium.com/) or your personal blog.
 
 Together, we can make thinkBig **better**!
 
