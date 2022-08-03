@@ -103,16 +103,13 @@ export const NewUserProgressModal = () => {
 			setNatSelDisabled(true)
 		}
 	}, [form.values.status])
-	useEffect(() => {
-		console.log('form values', form.values)
-	}, [form.values])
+	useEffect(() => {}, [form.values])
 
 	const dataAggregator = (lastCompleted: number) => {
 		const sliceEnd = +lastCompleted + 1
 		const classIdArr: string[] = selectArr
 			.slice(0, sliceEnd)
 			.map((item) => item.id)
-		console.log(classIdArr)
 		const response: CompletedClassesInput = {
 			userId: session.user.id,
 			classes: classIdArr,
@@ -125,7 +122,15 @@ export const NewUserProgressModal = () => {
 	)
 	const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault()
-		dataSubmit.mutate(form.values.lastCompleted, {
+		if (form.values.status === 'new') {
+			closeModal('newUserProgress')
+			return null
+		}
+		const lastCompleted =
+			form.values.status === 'current'
+				? selectArr.length
+				: form.values.lastCompleted
+		dataSubmit.mutate(lastCompleted, {
 			onSuccess: (data) => {
 				const records: number = data.length
 				queryClient.invalidateQueries(keyClassStatuses(session.user.id))
