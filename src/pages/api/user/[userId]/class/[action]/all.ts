@@ -1,9 +1,12 @@
 import { getServerSession } from '~/pages/api/auth/[...nextauth]'
-import type { ApiErrorResponse, NextApiHandler } from 'next'
+import type { NextApiHandler } from 'next'
 import { fetchClassStatuses } from '~/hooks'
+import { Prisma } from '@prisma/client'
+import * as httpResponse from '~/lib/httpResponse'
+import { isDevEnv } from '~/lib'
 
 interface QueryParams {
-	userId: string
+	userId: Prisma.UserCreateInput['id']
 	action: 'status' | 'update'
 }
 
@@ -14,20 +17,20 @@ const handler: NextApiHandler = async (req, res) => {
 
 	console.log(headers)
 	if (!session) {
-		// res.status(401).json({message: 'You must be logged in!}) // disabled for now during dev.
-		console.log('unauthed req for /api/classes/all')
+		!isDevEnv && httpResponse.unauthorized(res)
+		isDevEnv && console.log('unauthed req for /api/classes/all')
 	}
 	if (userId !== session.user.id && session.user.role !== 'USER') {
-		res.status(403).json({ message: 'Cannot check status for another user' })
+		httpResponse.forbidden(res)
 	}
 	switch (action) {
 		case 'status':
-			if (method !== 'GET') res.status(400).end()
+			if (method !== 'GET') httpResponse.badRequest(res)
 			try {
 				const classes = await fetchClassStatuses(userId)
-				res.status(200).json(classes)
+				httpResponse.json(res, classes)
 			} catch (error) {
-				res.status(500).json(error)
+				httpResponse.serverErrorJSON(res, error)
 			}
 	}
 }

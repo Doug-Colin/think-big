@@ -1,14 +1,14 @@
 import { Container, Text } from '@mantine/core'
 import { useSession } from 'next-auth/react'
 
+export const isDevEnv = () => {
+	return process.env.NODE_ENV === 'development'
+}
 /**
  * It takes in a data object and returns a styled text element with the data object stringified
  * @param {any} data - any - this is the data that will be displayed in the JSON view.
  * @returns A React component
  */
-export const isDevEnv = () => {
-	return process.env.NODE_ENV === 'development'
-}
 export const JsonViewDevTool = (data: any) => {
 	if (!isDevEnv()) return null
 	return (

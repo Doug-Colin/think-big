@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { createStyles, Table, ScrollArea, Title } from '@mantine/core'
 import { openModal } from '@mantine/modals'
 import { ClassDetail, ClassRow } from './'
-import { UserClassStatusRecord } from '~/hooks'
+import { FetchClassesResult, FetchClassStatusesResult } from '~/hooks'
 
 const useStyles = createStyles((theme) => ({
 	header: {
@@ -52,8 +52,8 @@ const useStyles = createStyles((theme) => ({
 }))
 
 interface TableScrollAreaProps {
-	data: ClassRecord[]
-	status: UserClassStatusRecord
+	data: FetchClassesResult
+	status: FetchClassStatusesResult
 }
 
 export function ClassTable({ data, status }: TableScrollAreaProps) {

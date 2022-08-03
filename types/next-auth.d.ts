@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import DiscordProvider from 'next-auth/providers/discord'
+import { Prisma } from '@prisma/client'
 
 declare module 'next-auth' {
 	interface DiscordGuild {
@@ -7,7 +8,7 @@ declare module 'next-auth' {
 	}
 
 	interface AxiosResponse {
-		data: DiscordGuild[]
+		data: DiscordGuild[] | any
 	}
 
 	interface Session {
@@ -19,13 +20,14 @@ declare module 'next-auth' {
 			discordTag: User['discordId']
 		}
 	}
-	interface User {
-		id?: string
-		role?: 'USER' | 'MOD' | 'ADMIN'
-		name?: string
-		discordId?: string
-		discordTag?: string
-	}
+	// interface User {
+	// 	id?: string
+	// 	role?: 'USER' | 'MOD' | 'ADMIN'
+	// 	name?: string
+	// 	discordId?: string
+	// 	discordTag?: string
+	// }
+	type User = Prisma.UserUpdateInput
 }
 
 declare module 'next-auth/providers/discord' {

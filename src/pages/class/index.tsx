@@ -50,7 +50,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 		fetchClassStatuses(userId)
 	)
 	const queryState = dehydrate(queryClient)
-	const serializedQueryState = superjson.stringify(queryState)
+	const serializedQueryState = superjson.serialize(queryState)
 
 	return {
 		props: {

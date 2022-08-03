@@ -1,35 +1,22 @@
 import { prisma, axiosClient } from '~/lib'
-import { useQuery } from '@tanstack/react-query'
-import { userClassStatus } from '~/common/dbSelect'
+import { useQuery, QueryKey } from '@tanstack/react-query'
+import { queryClassStatusesByUser, upsertSingleClassStatus } from '~/lib/db'
+import superjson from 'superjson'
+import { Prisma } from '@prisma/client'
 
-export interface UserClassStatusRecord {
-	id: string
-	classes: UserClassStatus[]
-}
-
-export const keyClassStatuses = (userId: string) => [
-	'class',
-	userId,
-	'statuses',
-]
-
+export type FetchClassStatusesResult = Prisma.PromiseReturnType<
+	typeof fetchClassStatuses
+>
 /**
- * It fetches the class statuses of a user
+ * It fetches all the class statuses for a user and returns them in a formatted object
  * @param {string} userId - The user's id
- * @returns An array of objects with the following properties:
- * 	- id
- * 	- classId
- * 	- classStatus
- *
+ * @returns {FetchClassStatusesResult} An array of objects with the classId and status
  */
 export const fetchClassStatuses = async (userId: string) => {
 	try {
-		const data = await prisma.classStatus.findMany({
-			where: {
-				userId: { equals: userId },
-			},
-			select: userClassStatus,
-		})
+		const data = await prisma.classStatus.findMany(
+			queryClassStatusesByUser(userId)
+		)
 		const formattedData = {
 			id: userId,
 			classes: data.map((result) => ({
@@ -44,52 +31,62 @@ export const fetchClassStatuses = async (userId: string) => {
 }
 
 /**
- * It fetches the user's class status records from the server
- * @param {string} userId - string - The user's ID
- * @returns An object with the following properties:
- * 	- userId: string
- * 	- classId: string
- * 	- status: string
+ * It fetches all the class statuses for a user
+ * @param {string} userId - The user's ID.
+ * @returns {FetchClassStatusesResult} FetchClassStatusesResult
  */
-const fetchAPI = async (userId: string): Promise<UserClassStatusRecord> => {
+const fetchClassStatusesAPI = async (
+	userId: string
+): Promise<FetchClassStatusesResult> => {
 	const client = axiosClient()
 	try {
 		const { data } = await client.get(`/api/user/${userId}/class/status/all`)
-		return data
+		const deserialized = superjson.deserialize<FetchClassStatusesResult>(data)
+		return deserialized
 	} catch (error) {
 		return error
 	}
 }
 
+export const keyClassStatuses = (
+	userId: Prisma.UserWhereUniqueInput['id']
+): QueryKey => ['class', userId, 'statuses']
+
 /**
- * It updates the status of a class for a user
- * @param {string} userId - The user's id
- * @param {string} classId - The id of the class you want to update the status of
- * @param newStatus - UserClassStatus['status']
+ * It returns a query result for a query key and a user id
+ * @param {QueryKey} queryKey - This is a unique key that will be used to identify this query.
+ * @param {Prisma.UserCreateInput['id']} userId
+ * @returns {FetchClassStatusesResult} The result of the query
+ */
+export const useClassStatuses = (
+	queryKey: QueryKey,
+	userId: Prisma.UserCreateInput['id']
+) => {
+	const result = useQuery<FetchClassStatusesResult, Error>(queryKey, () =>
+		fetchClassStatusesAPI(userId)
+	)
+	return result
+}
+
+export type UpdateClassStatusResult = Prisma.PromiseReturnType<
+	typeof updateClassStatus
+>
+/**
+ * It takes a userId, classId, and newStatus, and updates the status of the class for the user
+ * @param {Prisma.UserCreateInput['id']} userId - The user's id
+ * @param {Prisma.ClassCreateInput['id']} classId - The id of the class
+ * @param {Prisma.ClassStatusCreateInput['status']} newStatus - The updated status
+ * @returns {UpdateClassStatusResult} The userId and the status of the class
  */
 export const updateClassStatus = async (
-	userId: string,
-	classId: string,
-	newStatus: UserClassStatus['status']
+	userId: Prisma.UserCreateInput['id'],
+	classId: Prisma.ClassCreateInput['id'],
+	newStatus: Prisma.ClassStatusCreateInput['status']
 ) => {
 	try {
-		const record = await prisma.classStatus.upsert({
-			where: {
-				classId_userId: {
-					userId,
-					classId,
-				},
-			},
-			update: {
-				status: newStatus,
-			},
-			create: {
-				userId,
-				classId,
-				status: newStatus,
-			},
-			select: userClassStatus,
-		})
+		const record = await prisma.classStatus.upsert(
+			upsertSingleClassStatus(userId, classId, newStatus)
+		)
 		const formattedData = {
 			id: record.userId,
 			status: [
@@ -99,42 +96,32 @@ export const updateClassStatus = async (
 				},
 			],
 		}
+		return formattedData
 	} catch (error) {
 		console.error(error)
 	}
 }
+
 /**
  * It updates the status of a class for a user
- * @param {string} userId - the user's id
- * @param {string} classId - the id of the class you want to update
- * @param newStatus - UserClassStatus['status']
- * @returns The data is being returned.
+ * @param {Prisma.UserCreateInput['id']} userId - The id of the user who is updating the class status
+ * @param {Prisma.ClassCreateInput['id']} classId - The id of the class you want to update
+ * @param {Prisma.ClassStatusCreateInput['status']} newStatus - The updated status
+ * @returns {UpdateClassStatusResult}
  */
 export const updateClassStatusAPI = async (
-	userId: string,
-	classId: string,
-	newStatus: UserClassStatus['status']
-) => {
+	userId: Prisma.UserCreateInput['id'],
+	classId: Prisma.ClassCreateInput['id'],
+	newStatus: Prisma.ClassStatusCreateInput['status']
+): Promise<UpdateClassStatusResult> => {
 	const client = axiosClient()
 	try {
 		const { data } = await client.put(
 			`/api/user/${userId}/class/update/${classId}`,
-			{ newStatus }
+			superjson.serialize({ newStatus })
 		)
 		return data
 	} catch (err) {
 		console.error(err)
 	}
-}
-
-/**
- * It's a function that takes a queryKey and a userId and returns the result of a query that uses the
- * queryKey to fetch data from the API using the userId
- * @param {string[]} queryKey - This is an array of strings that uniquely identify the query.
- * @param {string} userId - The userId of the user you want to get the class statuses for.
- * @returns The result of the useQuery hook.
- */
-export const useClassStatuses = (queryKey: string[], userId: string) => {
-	const result = useQuery(queryKey, () => fetchAPI(userId))
-	return result
 }
