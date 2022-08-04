@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { assignmentSelectAll } from '.'
+import { prisma } from '~/lib'
 
 export const selectFetchClasses = Prisma.validator<Prisma.ClassArgs>()({
 	select: {
@@ -67,51 +68,30 @@ export const querySingleClass = (classId) => {
 	})
 }
 
-export const upsertManyCompletedClassesPayload = (userId, classes) => {
-	// return Prisma.validator<Prisma.ClassStatusUpsertArgs>()({
-	// 	where: {
-	// 		classId_userId: {
-	// 			classId,
-	// 			userId,
-	// 		},
-	// 	},
-	// 	update: {
-	// 		status: 'done',
-	// 	},
-	// 	create: {
-	// 		userId,
-	// 		classId,
-	// 		status: 'done',
-	// 	},
-	// })
-	return Prisma.validator<Prisma.UserUpdateArgs>()({
-		where: {
-			id: userId,
-		},
-		data: {
-			classStatuses: {
-				upsert: classes.map((classId) => {
-					return {
-						create: {
-							userId,
-							classId,
-							status: 'done',
-						},
-						update: {
-							status: 'done',
-						},
-						where: {
-							classId_userId: {
-								classId,
-								userId,
-							},
-						},
-					}
-				}),
+export const upsertManyCompletedClassesPayload = (
+	userId: string,
+	classId: string
+) => {
+	return prisma.classStatus.upsert(
+		Prisma.validator<Prisma.ClassStatusUpsertArgs>()({
+			where: {
+				classId_userId: {
+					classId,
+					userId,
+				},
 			},
-		},
-	})
+			update: {
+				status: 'done',
+			},
+			create: {
+				userId,
+				classId,
+				status: 'done',
+			},
+		})
+	)
 }
+
 export const selectUserClassStatus =
 	Prisma.validator<Prisma.ClassStatusSelect>()({
 		classId: true,

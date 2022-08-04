@@ -116,12 +116,18 @@ export interface CompletedClassesInput {
 	classes?: string[]
 }
 
+/**
+ * It takes an array of classIds and a userId, and creates a new classStatus record for each classId in
+ * the array
+ * @param {CompletedClassesInput} data - CompletedClassesInput
+ * @returns An array of classStatus objects
+ */
 export const upsertManyCompletedClasses = async (
 	data: CompletedClassesInput
 ) => {
 	const { userId, classes } = data
 	const payload = classes.map((classId) =>
-		prisma.user.update(upsertManyCompletedClassesPayload(userId, classId))
+		upsertManyCompletedClassesPayload(userId, classId)
 	)
 	const result = await prisma.$transaction(payload)
 	return result
@@ -141,5 +147,5 @@ export const upsertManyCompletedClassesAPI = async (
 		`/api/user/${payload.userId}/class/massupdate/`,
 		{ data: superjson.serialize(payload) }
 	)
-	return data
+	return superjson.deserialize<UpsertManyCompletedClassesResult>(data)
 }

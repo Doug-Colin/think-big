@@ -22,8 +22,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { CenterLoader, isDevEnv } from '~/components'
 import { modalDefinitions } from '~/components/GlobalModals'
 import notify from '~/data/notifications'
-import type { ComponentWithAuth } from 'types/customComponents'
-import type { NextPageContext, NextComponentType } from 'next'
+import type {
+	NextPageContext,
+	NextComponentType,
+	ComponentWithAuth,
+} from 'next'
 
 export type NextComponentWithAuth = NextComponentType<
 	NextPageContext,

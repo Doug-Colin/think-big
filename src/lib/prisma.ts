@@ -1,12 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-
-declare global {
-	namespace NodeJS {
-		interface Global {
-			prisma: PrismaClient
-		}
-	}
-}
+import { Prisma, PrismaClient } from '@prisma/client'
 
 let prisma: PrismaClient
 
@@ -16,8 +8,8 @@ if (typeof window === 'undefined') {
 	} else {
 		if (!global.prisma) {
 			global.prisma = new PrismaClient({
-				log: ['error', 'warn'],
-				errorFormat: 'pretty',
+				log: ['error', 'warn', 'info', 'query'],
+				errorFormat: 'minimal',
 			})
 			global.prisma.$use(async (params, next) => {
 				const before = Date.now()
@@ -29,9 +21,8 @@ if (typeof window === 'undefined') {
 				)
 				return result
 			})
+			prisma = global.prisma
 		}
-
-		prisma = global.prisma
 	}
 }
 
