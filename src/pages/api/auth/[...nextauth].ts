@@ -122,14 +122,26 @@ const authOptions: NextAuthOptions = {
 		},
 	},
 	pages: {
-		// newUser: '/auth/newuser',
+		newUser: '/dashboard/profile?newuser=true',
 	},
 	adapter: PrismaAdapter(prisma),
 	secret: process.env.SECRET,
 	events: {
-		signIn: (message) => console.info('User SignIn:', message),
-		createUser: (message) => console.info('Create User:', message),
-		session: (message) => console.info('Session Request: ', message),
+		signIn: (message) =>
+			console.info(
+				'\x1b[1mUser Signin:\x1b[0m',
+				`ID: ${message.user.id}; Discord Tag: ${message.user.discordTag}`
+			),
+		createUser: (message) =>
+			console.info(
+				'\x1b[1mCreate User:\x1b[0m',
+				`ID: ${message.user.id}; Discord Tag: ${message.user.discordTag}`
+			),
+		session: (message) =>
+			console.info(
+				'\x1b[1mSession Request:\x1b[0m',
+				`ID: ${message.session.user.id}`
+			),
 	},
 }
 

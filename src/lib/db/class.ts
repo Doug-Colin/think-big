@@ -67,21 +67,48 @@ export const querySingleClass = (classId) => {
 	})
 }
 
-export const upsertManyCompletedClassesPayload = (userId, classId) => {
-	return Prisma.validator<Prisma.ClassStatusUpsertArgs>()({
+export const upsertManyCompletedClassesPayload = (userId, classes) => {
+	// return Prisma.validator<Prisma.ClassStatusUpsertArgs>()({
+	// 	where: {
+	// 		classId_userId: {
+	// 			classId,
+	// 			userId,
+	// 		},
+	// 	},
+	// 	update: {
+	// 		status: 'done',
+	// 	},
+	// 	create: {
+	// 		userId,
+	// 		classId,
+	// 		status: 'done',
+	// 	},
+	// })
+	return Prisma.validator<Prisma.UserUpdateArgs>()({
 		where: {
-			classId_userId: {
-				classId,
-				userId,
+			id: userId,
+		},
+		data: {
+			classStatuses: {
+				upsert: classes.map((classId) => {
+					return {
+						create: {
+							userId,
+							classId,
+							status: 'done',
+						},
+						update: {
+							status: 'done',
+						},
+						where: {
+							classId_userId: {
+								classId,
+								userId,
+							},
+						},
+					}
+				}),
 			},
-		},
-		update: {
-			status: 'done',
-		},
-		create: {
-			userId,
-			classId,
-			status: 'done',
 		},
 	})
 }

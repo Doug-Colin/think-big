@@ -49,9 +49,9 @@ export const useClasses = () => {
 	return result
 }
 
-export type FetchSingleClassResult = Prisma.PromiseReturnType<
-	typeof fetchSingleClass
->
+export type FetchSingleClassResult =
+	| Prisma.PromiseReturnType<typeof fetchSingleClass>
+	| Prisma.NotFoundError
 
 /**
  * It fetches a single class from the database using the classId
@@ -101,7 +101,7 @@ export const keySingleClass = (
  * @returns {FetchSingleClassResult} The result of the query
  */
 export const useSingleClass = (classId: Prisma.ClassCreateInput['id']) => {
-	const result = useQuery<FetchSingleClassResult, Prisma.RejectOnNotFound>(
+	const result = useQuery<FetchSingleClassResult, Prisma.NotFoundError>(
 		keySingleClass(classId),
 		() => fetchSingleClassAPI(classId)
 	)
@@ -121,9 +121,7 @@ export const upsertManyCompletedClasses = async (
 ) => {
 	const { userId, classes } = data
 	const payload = classes.map((classId) =>
-		prisma.classStatus.upsert(
-			upsertManyCompletedClassesPayload(userId, classId)
-		)
+		prisma.user.update(upsertManyCompletedClassesPayload(userId, classId))
 	)
 	const result = await prisma.$transaction(payload)
 	return result
