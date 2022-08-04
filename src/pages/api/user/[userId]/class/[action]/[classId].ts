@@ -34,7 +34,6 @@ const handler: NextApiHandler = async (req, res) => {
 			case 'update':
 				if (method !== 'PUT') httpResponse.badRequest(res)
 				const reqBody = updateClassSchema.parse(superjson.deserialize(req.body))
-				console.log(reqBody)
 				const statusUpdate = await updateClassStatus(
 					userId,
 					classId,

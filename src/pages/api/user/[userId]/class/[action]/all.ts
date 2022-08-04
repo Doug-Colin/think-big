@@ -15,7 +15,6 @@ const handler: NextApiHandler = async (req, res) => {
 	const { userId, action } = req.query as Partial<QueryParams>
 	const { method, headers } = req
 
-	console.log(headers)
 	if (!session) {
 		!isDevEnv && httpResponse.unauthorized(res)
 		isDevEnv && console.log('unauthed req for /api/classes/all')
