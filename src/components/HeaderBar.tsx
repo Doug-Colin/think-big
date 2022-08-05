@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react'
 import {
 	Center,
 	Group,
@@ -7,11 +6,10 @@ import {
 	TextInput,
 	Header,
 } from '@mantine/core'
-import { NavbarLink, UserMenu } from './'
-import { fakeUser } from 'mockdata'
+import { UserMenu } from './'
 const useStyles = createStyles((theme) => ({
 	header: {
-		backgroundColor: theme.colors[theme.primaryColor][6],
+		backgroundColor: theme.colors.primary[6],
 		padding: '0 10px',
 	},
 	logo: {
