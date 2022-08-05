@@ -25,7 +25,7 @@ export const fetchClasses = async () => {
 		const classes = await prisma.class.findMany(selectFetchClasses)
 		return classes
 	} catch (err) {
-		console.error(err)
+		throw new Error(JSON.parse(JSON.stringify(err)))
 	}
 }
 
@@ -112,8 +112,8 @@ export type UpsertManyCompletedClassesResult = Prisma.PromiseReturnType<
 	typeof upsertManyCompletedClasses
 >
 export interface CompletedClassesInput {
-	userId?: string
-	classes?: string[]
+	userId: string
+	classes: string[]
 }
 
 /**

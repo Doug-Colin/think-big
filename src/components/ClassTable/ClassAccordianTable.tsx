@@ -8,15 +8,15 @@ import {
 	Box,
 } from '@mantine/core'
 import { useElementSize } from '@mantine/hooks'
-import { UserClassStatusRecord } from '~/hooks'
+import { FetchClassStatusesResult, FetchClassesResult } from '~/hooks'
 import { Icon } from '@iconify/react'
 import { DateTime } from 'luxon'
 import { TagGroup } from '~/components'
 import { ClassDetail } from './'
 
 interface ClassAccordianTableProps {
-	data: ClassRecord[]
-	status: UserClassStatusRecord
+	data: FetchClassesResult
+	status: FetchClassStatusesResult
 }
 
 const useStyles = createStyles((theme) => ({

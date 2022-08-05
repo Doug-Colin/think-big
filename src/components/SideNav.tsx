@@ -44,8 +44,8 @@ const useStyles = createStyles((theme) => ({
 interface NavbarLinkProps {
 	icon: string
 	label: string
-	active?: boolean
-	url?: string
+	active: boolean
+	url: string
 	onClick?(): void
 }
 

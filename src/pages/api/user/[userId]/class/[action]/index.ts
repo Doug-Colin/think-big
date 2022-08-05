@@ -20,7 +20,7 @@ const handler: NextApiHandler = async (req, res) => {
 		const { body, method } = req
 		/* Creating a schema that will be used to validate the payload. */
 		const massUpdateSchema = z.object({
-			userId: z.literal(userId, { invalid_type_error: 'Invalid userId' }),
+			userId: z.string(),
 			classes: z.array(z.string()).nonempty(),
 		})
 		/* If the user is not logged in, it will return a 401 error. */
@@ -31,17 +31,16 @@ const handler: NextApiHandler = async (req, res) => {
 		/* Deserializing the data from the request body. */
 		const payload = superjson.deserialize<CompletedClassesInput>(body.data)
 		/* Validating the payload against the schema. */
-		const validatedPayload = massUpdateSchema.safeParse(payload)
-		/* If the payload is not valid, it will throw an error. */
-		if (validatedPayload.success === false)
-			throw validatedPayload.error.format()
+		const validatedPayload = massUpdateSchema.parse(payload)
 		/* Calling the upsertManyCompletedClasses function and passing in the validated payload. */
-		const mutation = await upsertManyCompletedClasses(validatedPayload.data)
+		if (payload.userId !== userId && session?.user.role === 'USER')
+			httpResponse.forbidden(res)
+		const mutation = await upsertManyCompletedClasses(validatedPayload)
 		/* Sending the response back to the client. */
 		httpResponse.json(res, mutation)
 	} catch (error) {
 		/* Sending a 500 error to the client. */
-		httpResponse.serverErrorJSON(res, error)
+		httpResponse.serverErrorJSON(res, JSON.parse(JSON.stringify(error)))
 	}
 }
 export default handler

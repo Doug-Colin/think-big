@@ -3,10 +3,11 @@ import { TagGroup } from '~/components'
 import { ClassStatusIcon } from './'
 import { DateTime } from 'luxon'
 import { Center } from '@mantine/core'
+import { FetchClassesResult, FetchClassStatusesResult } from '~/hooks'
 
 interface ClassRowProps {
-	data: ClassRecord
-	classStatus: UserClassStatus['status']
+	data: FetchClassesResult[0]
+	classStatus: FetchClassStatusesResult['classes'][0]['status']
 	userId: string
 	key: string
 	clickHandler: MouseEventHandler<any>

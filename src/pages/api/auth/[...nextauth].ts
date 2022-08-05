@@ -1,11 +1,21 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
-import NextAuth, { NextAuthOptions, unstable_getServerSession } from 'next-auth'
+import {
+	NextApiHandler,
+	NextApiRequest,
+	NextApiResponse,
+	GetServerSidePropsContext,
+} from 'next'
+import NextAuth, {
+	NextAuthOptions,
+	Session,
+	unstable_getServerSession,
+} from 'next-auth'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import DiscordProvider, { DiscordProfile } from 'next-auth/providers/discord'
 import { prisma } from '~/lib'
 import axios from 'axios'
 import type { User, Account } from 'next-auth'
 import type { APIGuild } from 'discord-api-types/v10'
+import { env } from '~/lib/env.mjs'
 
 /**
  * It checks if the user is a member of the server
@@ -68,8 +78,8 @@ const generateRandomString = () => {
 const authOptions: NextAuthOptions = {
 	providers: [
 		DiscordProvider({
-			clientId: process.env.DISCORD_CLIENT_ID,
-			clientSecret: process.env.DISCORD_CLIENT_SECRET,
+			clientId: env.DISCORD_CLIENT_ID,
+			clientSecret: env.DISCORD_CLIENT_SECRET,
 			authorization: {
 				url: 'https://discord.com/api/oauth2/authorize',
 				params: {
@@ -94,7 +104,9 @@ const authOptions: NextAuthOptions = {
 					discordTag: `${profile.username}#${profile.discriminator}`,
 					email: profile.email,
 					image: profile.image_url,
-					serverMember: await isServerMember(tokens.access_token),
+					serverMember: !!tokens.access_token
+						? await isServerMember(tokens.access_token)
+						: false,
 				}
 			},
 		}),
@@ -106,7 +118,9 @@ const authOptions: NextAuthOptions = {
 			// 100Devs Discord server member? proceed!
 			if (user.serverMember) return true
 			// check to see if user is a member of the discord server & update status if they are
-			const serverMemberStatus = await isServerMember(account?.access_token)
+			const serverMemberStatus = !!account.access_token
+				? await isServerMember(account.access_token)
+				: false
 			if (serverMemberStatus) {
 				updateServerMember(account.userId, serverMemberStatus)
 				return true
@@ -147,20 +161,16 @@ const authOptions: NextAuthOptions = {
 
 /**
  * It gets the session from the server
- * @param {NextApiRequest} req - NextApiRequest - The request object from Next.js
- * @param {NextApiResponse} res - NextApiResponse - The response object from Next.js
+ * @param req - The request object from the server.
+ * @param res - The response object from the server.
  * @returns The session object
  */
-export const getServerSession = async (req, res) => {
+export const getServerSession = async (
+	req: GetServerSidePropsContext['req'],
+	res: GetServerSidePropsContext['res']
+) => {
 	const session = await unstable_getServerSession(req, res, authOptions)
 	return session
 }
 
-/**
- * It takes a request and response object, passes them to NextAuth, and returns the result
- * @param req - The request object from Next.js
- * @param res - The response object.
- */
-const authHandler: NextApiHandler = (req, res) =>
-	NextAuth(req, res, authOptions)
-export default authHandler
+export default NextAuth(authOptions)

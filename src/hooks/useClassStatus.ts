@@ -10,7 +10,7 @@ export type FetchClassStatusesResult = Prisma.PromiseReturnType<
 /**
  * It fetches all the class statuses for a user and returns them in a formatted object
  * @param {string} userId - The user's id
- * @returns {FetchClassStatusesResult} An array of objects with the classId and status
+ * @returns An array of objects with the classId and status
  */
 export const fetchClassStatuses = async (userId: string) => {
 	try {
@@ -26,7 +26,7 @@ export const fetchClassStatuses = async (userId: string) => {
 		}
 		return formattedData
 	} catch (err) {
-		console.error(err)
+		throw new Error(JSON.parse(JSON.stringify(err)))
 	}
 }
 
@@ -44,7 +44,7 @@ const fetchClassStatusesAPI = async (
 		const deserialized = superjson.deserialize<FetchClassStatusesResult>(data)
 		return deserialized
 	} catch (error) {
-		return error
+		throw new Error(JSON.parse(JSON.stringify(error)))
 	}
 }
 
@@ -58,10 +58,7 @@ export const keyClassStatuses = (
  * @param {Prisma.UserCreateInput['id']} userId
  * @returns {FetchClassStatusesResult} The result of the query
  */
-export const useClassStatuses = (
-	queryKey: QueryKey,
-	userId: Prisma.UserCreateInput['id']
-) => {
+export const useClassStatuses = (queryKey: QueryKey, userId: string) => {
 	const result = useQuery<FetchClassStatusesResult, Error>(queryKey, () =>
 		fetchClassStatusesAPI(userId)
 	)

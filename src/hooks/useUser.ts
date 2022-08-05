@@ -4,9 +4,10 @@ import superjson from 'superjson'
 import { Prisma } from '@prisma/client'
 import { findUniqueUser } from '~/lib/db'
 
-export type FetchCurrentUserResult =
-	| Prisma.PromiseReturnType<typeof fetchCurrentUser>
-	| Prisma.NotFoundError
+export type FetchCurrentUserResult = Prisma.PromiseReturnType<
+	typeof fetchCurrentUser
+>
+// | Prisma.NotFoundError
 
 export const fetchCurrentUser = async (
 	userId: Prisma.UserCreateInput['id']

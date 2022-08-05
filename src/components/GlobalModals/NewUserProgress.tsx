@@ -6,6 +6,7 @@ import {
 	createStyles,
 	Stack,
 	Select,
+	Center,
 	Loader,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
@@ -20,6 +21,8 @@ import {
 import { DateTime } from 'luxon'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
+import { notify, authRedirect } from '~/data'
+import { useRouter } from 'next/router'
 
 const useStyles = createStyles((theme) => ({
 	radioBtn: {
@@ -62,12 +65,21 @@ export const NewUserProgressModal = () => {
 	})
 	const { classes: styles } = useStyles()
 	const { data, isLoading, isFetched } = useClasses()
-	const { data: session } = useSession()
+	const router = useRouter()
+	const { data: session, status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			showNotification(notify('noSession'))
+			router.push(authRedirect.signIn)
+			closeModal('newUserProgress')
+		},
+	})
+	const [authStatus, setAuthStatus] = useState(status)
 	const queryClient = useQueryClient()
 	const form = useForm<FormValues>({
 		initialValues: {
 			status: '',
-			lastCompleted: null,
+			lastCompleted: NaN,
 		},
 	})
 	const notifySuccess = (numRecords: number) =>
@@ -80,7 +92,7 @@ export const NewUserProgressModal = () => {
 	useEffect(() => {
 		if (!isLoading && data) {
 			const transformedData = data.map((item, i) => {
-				const date = DateTime.fromISO(item.date.toString()).toLocaleString(
+				const date = DateTime.fromJSDate(item.date).toLocaleString(
 					DateTime.DATE_MED_WITH_WEEKDAY
 				)
 				return {
@@ -103,44 +115,62 @@ export const NewUserProgressModal = () => {
 			setNatSelDisabled(true)
 		}
 	}, [form.values.status])
-	useEffect(() => {}, [form.values])
+	useEffect(() => {
+		if (status !== authStatus) {
+			setAuthStatus(status)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [status])
 
 	const dataAggregator = (lastCompleted: number) => {
-		const sliceEnd = +lastCompleted + 1
-		const classIdArr: string[] = selectArr
-			.slice(0, sliceEnd)
-			.map((item) => item.id)
-		const response: CompletedClassesInput = {
-			userId: session.user.id,
-			classes: classIdArr,
+		try {
+			if (!session) throw 'Invalid Session'
+			const sliceEnd = +lastCompleted + 1
+			const classIdArr: string[] = selectArr
+				.slice(0, sliceEnd)
+				.map((item) => item.id)
+			const response: CompletedClassesInput = {
+				userId: session.user.id,
+				classes: classIdArr,
+			}
+			return response
+		} catch (error) {
+			console.error(error)
+			throw new Error()
 		}
-		return response
 	}
 
 	const dataSubmit = useMutation((dataInput: number) =>
 		upsertManyCompletedClassesAPI(dataAggregator(dataInput))
 	)
+
 	const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-		event.preventDefault()
-		if (form.values.status === 'new') {
-			closeModal('newUserProgress')
-			return null
-		}
-		const lastCompleted =
-			form.values.status === 'current'
-				? selectArr.length
-				: form.values.lastCompleted
-		dataSubmit.mutate(lastCompleted, {
-			onSuccess: (data) => {
-				const records: number = data.length
-				queryClient.invalidateQueries(keyClassStatuses(session.user.id))
-				notifySuccess(records)
+		try {
+			event.preventDefault()
+			if (!session) throw 'No valid session'
+			if (form.values.status === 'new') {
 				closeModal('newUserProgress')
-			},
-		})
+				return null
+			}
+
+			const lastCompleted =
+				form.values.status === 'current'
+					? selectArr.length
+					: form.values.lastCompleted
+			dataSubmit.mutate(lastCompleted, {
+				onSuccess: (data) => {
+					const records: number = data.length
+					queryClient.invalidateQueries(keyClassStatuses(session.user.id))
+					notifySuccess(records)
+					closeModal('newUserProgress')
+				},
+			})
+		} catch (err) {
+			console.error(err)
+		}
 	}
 
-	if (!data && isLoading) return <Loader />
+	if ((!data && isLoading) || authStatus === 'loading') return <Loader />
 
 	return (
 		<form onSubmit={handleSubmit}>
