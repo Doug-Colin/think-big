@@ -12,7 +12,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useState, useEffect } from 'react'
 import { MainLayout } from '~/layouts'
-import { baseTheme } from '~/style'
+import { baseTheme, mantineCache } from '~/style'
 import {
 	Hydrate,
 	QueryClient,
@@ -21,7 +21,7 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { CenterLoader, isDevEnv } from '~/components'
 import { modalDefinitions } from '~/components/GlobalModals'
-import notify from '~/data/notifications'
+import { authRedirect, notify } from '~/data'
 import type {
 	NextPageContext,
 	NextComponentType,
@@ -43,18 +43,16 @@ const Auth: ComponentWithAuth = ({ children, auth }) => {
 	const hasUser = !!session?.user
 	const hasRole = session?.user?.role === role
 	const router = useRouter()
-	const signinUrl = '/api/auth/signin?error=SessionRequired'
-	const accessdeniedUrl = '/api/auth/error?error=AccessDenied'
 
 	useEffect(() => {
 		if (!isLoading && !hasUser)
 			isDevEnv()
 				? showNotification(notify('devSignIn'))
-				: router.push(signinUrl)
+				: router.push(authRedirect.signIn)
 		if (!isLoading && !hasRole && hasUser)
 			isDevEnv()
 				? showNotification(notify('devAccessDenied'))
-				: router.push(accessdeniedUrl)
+				: router.push(authRedirect.accessDenied)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoading, hasUser, hasRole])
 
@@ -96,6 +94,7 @@ const App = (props: AppPropsWithAuth) => {
 							withGlobalStyles
 							withNormalizeCSS
 							theme={baseTheme}
+							emotionCache={mantineCache}
 						>
 							<NotificationsProvider position='top-center'>
 								<ModalsProvider modals={modalDefinitions}>
