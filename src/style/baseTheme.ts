@@ -96,4 +96,5 @@ export const baseTheme: MantineThemeOverride = {
 	headings: {
 		fontWeight: '700',
 	},
+	cursorType: 'pointer',
 }
