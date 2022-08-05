@@ -21,15 +21,29 @@ const notifyData = [
 			color: 'red',
 		},
 	],
+	[
+		'noSession',
+		{
+			id: 'noSession',
+			title: 'Invalid session',
+			message:
+				'This action requires a valid session.\n\n Redirecting to Login...',
+			color: 'red',
+		},
+	],
 ] as const
 
 const notifyMap = new Map<string, NotificationProps>(notifyData)
 
-export const notify = (key: NotificationKey) => {
+export const notify = (
+	key: NotificationKey,
+	override: Partial<NotificationProps> = {}
+) => {
 	try {
-		const notifyProps = notifyMap.get(key)
+		const notifyLookup = notifyMap.get(key)
+		if (!notifyLookup) throw 'Not found'
+		const notifyProps = Object.assign(notifyLookup, override)
 
-		if (!notifyProps) throw 'Not found'
 		return notifyProps
 	} catch (error) {
 		return {
