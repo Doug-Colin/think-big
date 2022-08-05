@@ -1,5 +1,14 @@
 import NextAuth from 'next-auth'
 import DiscordProvider from 'next-auth/providers/discord'
+import { Prisma } from '@prisma/client'
+import { FetchCurrentUserResult } from '~/hooks'
+import { prisma } from '~/lib'
+
+const userTypeGen = Prisma.validator<Prisma.UserFindUniqueArgs>()({
+	where: {
+		id: string,
+	},
+})
 
 declare module 'next-auth' {
 	interface DiscordGuild {
@@ -7,7 +16,7 @@ declare module 'next-auth' {
 	}
 
 	interface AxiosResponse {
-		data: DiscordGuild[]
+		data: DiscordGuild[] | any
 	}
 
 	interface Session {
@@ -26,8 +35,8 @@ declare module 'next-auth' {
 		discordId?: string
 		discordTag?: string
 	}
+	// interface User extends Partial<Prisma.UserGetPayload<typeof userTypeGen>> {}
 }
-
 declare module 'next-auth/providers/discord' {
 	interface DiscordProfile {
 		discordId: string

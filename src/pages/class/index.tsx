@@ -1,4 +1,8 @@
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
+import {
+	GetServerSidePropsContext,
+	InferGetServerSidePropsType,
+	ComponentWithAuth,
+} from 'next'
 import { Text } from '@mantine/core'
 import { ClassTable, ClassAccordianTable } from '~/components/ClassTable'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
@@ -12,7 +16,6 @@ import {
 import superjson from 'superjson'
 import { useSession } from 'next-auth/react'
 import { getServerSession } from '../api/auth/[...nextauth]'
-import { ComponentWithAuth } from 'types/customComponents'
 
 const ClassPage: ComponentWithAuth = ({}: InferGetServerSidePropsType<
 	typeof getServerSideProps
@@ -46,11 +49,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { id: userId } = session?.user ?? { id: '' }
 	const queryClient = new QueryClient()
 	await queryClient.prefetchQuery(['classes'], fetchClasses)
-	await queryClient.prefetchQuery(keyClassStatuses(userId), () =>
-		fetchClassStatuses(userId)
-	)
+	if (userId) {
+		await queryClient.prefetchQuery(keyClassStatuses(userId), () =>
+			fetchClassStatuses(userId)
+		)
+	}
 	const queryState = dehydrate(queryClient)
-	const serializedQueryState = superjson.stringify(queryState)
+	const serializedQueryState = superjson.serialize(queryState)
 
 	return {
 		props: {

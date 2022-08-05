@@ -12,10 +12,11 @@ import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { TagGroup } from '..'
 import { ClassStatusSwitch } from './'
+import { FetchClassesResult, FetchClassStatusesResult } from '~/hooks'
 
 interface ClassDetailProps {
-	classData: ClassRecord
-	classStatus: UserClassStatus['status']
+	classData: FetchClassesResult[0]
+	classStatus: FetchClassStatusesResult['classes'][0]['status']
 	userId: string
 }
 

@@ -1,10 +1,20 @@
 import next, { NextComponentType, NextPageContext } from 'next'
-import { Session } from 'next-auth'
+import { Session, User } from 'next-auth'
 import { Router } from 'next/router'
 
 declare module 'next' {
 	interface ApiErrorResponse {
 		message: string
+	}
+	interface AuthWrapProps {
+		required?: boolean
+		children?: AppProps['children']
+		role?: User['role']
+		loader?: JSX.Element
+		// redirectTo?: 'signin' | 'accessdenied'
+	}
+	type ComponentWithAuth<PropsTypes = any> = React.FC<PropsTypes> & {
+		auth?: AuthWrapProps
 	}
 }
 

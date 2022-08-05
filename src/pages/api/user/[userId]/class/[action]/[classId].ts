@@ -1,9 +1,10 @@
-import { prisma } from '~/lib'
 import { getServerSession } from '~/pages/api/auth/[...nextauth]'
 import type { NextApiHandler } from 'next'
-import { userClassComposite } from '~/common/dbSelect'
 import { fetchClassStatuses, updateClassStatus } from '~/hooks'
 import { z } from 'zod'
+import superjson from 'superjson'
+import * as httpResponse from '~/lib/httpResponse'
+import { isDevEnv } from '~/lib'
 
 interface QueryParams {
 	classId: string
@@ -17,35 +18,32 @@ const updateClassSchema = z.object({
 const handler: NextApiHandler = async (req, res) => {
 	const session = await getServerSession(req, res)
 	const { classId, userId, action } = req.query as Partial<QueryParams>
-	const { method, headers } = req
+	const { method } = req
 
-	console.log(req.body)
 	if (!session) {
-		// res.status(401) // disabled for now during dev.
-		// res.end()
-		console.log('unauthed req for /api/classes/all')
+		!isDevEnv && httpResponse.unauthorized(res)
+		isDevEnv && console.log('unauthed req for /api/classes/all')
 	}
 	try {
 		switch (action) {
 			case 'status':
-				if (method !== 'GET') res.status(400).end()
+				if (method !== 'GET') httpResponse.badRequest(res)
 				const classes = await fetchClassStatuses(userId)
-				res.status(200).json(classes)
+				httpResponse.json(res, classes)
 				break
 			case 'update':
-				if (method !== 'PUT') res.status(400).end()
-				const reqBody = updateClassSchema.parse(req.body)
-				console.log(reqBody)
+				if (method !== 'PUT') httpResponse.badRequest(res)
+				const reqBody = updateClassSchema.parse(superjson.deserialize(req.body))
 				const statusUpdate = await updateClassStatus(
 					userId,
 					classId,
 					reqBody.newStatus
 				)
-				res.status(200).json(statusUpdate)
+				httpResponse.json(res, statusUpdate)
 				break
 		}
 	} catch (error) {
-		res.status(500).json(error)
+		httpResponse.serverErrorJSON(res, error)
 	}
 }
 

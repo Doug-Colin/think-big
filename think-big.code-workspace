@@ -21,7 +21,8 @@
 		"exportall.config.folderListener": [
 			"/src/components",
 			"/mockdata",
-			"/src/style"
+			"/src/style",
+			"/src/components/GlobalModals"
 		],
 		"exportall.config.semis": false,
 		"git.autofetch": true,
@@ -37,6 +38,13 @@
 		"eslint.alwaysShowStatus": true,
 		"eslint.packageManager": "pnpm",
 		"eslint.useESLintClass": true,
-		"typescript.tsdk": "node_modules/typescript/lib"
+		"typescript.tsdk": "./node_modules/typescript/lib",
+		"git.showActionButton": {
+			"commit": false,
+			"publish": true,
+			"sync": true
+		},
+		"git.showCommitInput": false,
+		"git.terminalGitEditor": true
 	}
 }

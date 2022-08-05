@@ -18,7 +18,7 @@ const getClasses = async () => {
 export const fakeAssignment = async (num: number, tags: string[]) => {
 	const fakeData: Prisma.AssignmentCreateInput[] = []
 	const classes = await getClasses()
-	const resource = (max) => {
+	const resource = (max: number) => {
 		const limit = faker.mersenne.rand(max, 1)
 		const res: Prisma.AssignResourceCreateInput[] = []
 		for (let i = 0; i < limit; i++) {

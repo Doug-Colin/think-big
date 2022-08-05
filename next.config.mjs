@@ -1,13 +1,17 @@
+// @ts-check
+import { env } from './src/lib/env.mjs'
 /**
- * @type {import('next').NextConfig}
+ *
+ * @template {import('next').NextConfig} T
+ * @param {T} config - A generic parameter that flows through to the return type
+ * @constraint {{import('next').NextConfig}}
  */
-const { env } = require('./envcheck')
 
-function getConfig(config) {
+function defineNextConfig(config) {
 	return config
 }
 
-const nextConfig = {
+export default defineNextConfig({
 	/**
 	 * Dynamic configuration available for the browser and server.
 	 * @link https://nextjs.org/docs/api-reference/next.config.js/runtime-configuration
@@ -15,6 +19,7 @@ const nextConfig = {
 	publicRuntimeConfig: {
 		NODE_ENV: env.NODE_ENV,
 	},
+	typescript: {},
 	reactStrictMode: true,
 	// enable CORS
 	// async headers() {
@@ -38,6 +43,4 @@ const nextConfig = {
 	// 		},
 	// 	]
 	// },
-}
-
-module.exports = getConfig(nextConfig)
+})

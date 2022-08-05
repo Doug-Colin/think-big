@@ -1,11 +1,12 @@
 import { Icon } from '@iconify/react'
 import { Tooltip } from '@mantine/core'
+import { Prisma } from '@prisma/client'
 
 interface Props {
-	status: 'not_started' | 'in_progress' | 'done'
+	status: Prisma.ClassStatusCreateInput['status']
 }
 
-export const ClassStatusIcon = ({ status }) => {
+export const ClassStatusIcon = ({ status }: Props) => {
 	switch (status) {
 		case 'not_started':
 			return (
@@ -25,5 +26,11 @@ export const ClassStatusIcon = ({ status }) => {
 					<Icon icon='fa6-solid:flag-checkered' />
 				</Tooltip>
 			)
+		// default:
+		// 	return (
+		// 		<Tooltip label='Error: Status not recieved' withArrow>
+		// 			<Icon icon='fa6-solid:question' />
+		// 		</Tooltip>
+		// )
 	}
 }
