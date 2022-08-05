@@ -1,6 +1,6 @@
-import type { PrismaClient } from '@prisma/client'
+// import type { PrismaClient } from '@prisma/client'
 
-declare global {
-	var prisma: PrismaClient
-}
-export {}
+// declare global {
+// 	var prisma: PrismaClient
+// }
+// export {}

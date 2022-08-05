@@ -25,5 +25,19 @@ const notifyData = [
 
 const notifyMap = new Map<string, NotificationProps>(notifyData)
 
-const notify = (key: NotificationKey) => notifyMap.get(key)
-export default notify
+export const notify = (key: NotificationKey) => {
+	try {
+		const notifyProps = notifyMap.get(key)
+
+		if (!notifyProps) throw 'Not found'
+		return notifyProps
+	} catch (error) {
+		return {
+			id: key,
+			title: 'ERROR',
+			message:
+				'There was an attempt to display a notification, but an invalid value was passed to the notifier',
+			color: 'red',
+		}
+	}
+}
