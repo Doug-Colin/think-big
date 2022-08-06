@@ -7,8 +7,9 @@ import { fetchClasses } from '~/hooks'
 const handler: NextApiHandler = async (req, res) => {
 	const session = await getServerSession(req, res)
 	if (!session) {
-		!isDevEnv && httpResponse.unauthorized(res)
-		isDevEnv && console.log('unauthed req for /api/classes/all')
+		!isDevEnv
+			? httpResponse.unauthorized(res)
+			: console.log('unauthed req for /api/classes/all')
 	}
 	try {
 		const classes = await fetchClasses()

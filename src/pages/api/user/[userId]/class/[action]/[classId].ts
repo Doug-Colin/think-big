@@ -21,18 +21,19 @@ const handler: NextApiHandler = async (req, res) => {
 	const { method } = req
 
 	if (!session) {
-		!isDevEnv && httpResponse.unauthorized(res)
-		isDevEnv && console.log('unauthed req for /api/classes/all')
+		!isDevEnv
+			? httpResponse.unauthorized(res)
+			: console.log('unauthed req for /api/classes/all')
 	}
 	try {
 		switch (action) {
 			case 'status':
-				if (method !== 'GET') httpResponse.badRequest(res)
+				if (method !== 'GET' || !userId) throw 'badRequest'
 				const classes = await fetchClassStatuses(userId)
 				httpResponse.json(res, classes)
 				break
 			case 'update':
-				if (method !== 'PUT') httpResponse.badRequest(res)
+				if (method !== 'PUT' || !userId || !classId) throw 'badRequest'
 				const reqBody = updateClassSchema.parse(superjson.deserialize(req.body))
 				const statusUpdate = await updateClassStatus(
 					userId,
@@ -43,7 +44,9 @@ const handler: NextApiHandler = async (req, res) => {
 				break
 		}
 	} catch (error) {
-		httpResponse.serverErrorJSON(res, error)
+		error == 'badRequest'
+			? httpResponse.badRequest(res)
+			: httpResponse.serverErrorJSON(res, error)
 	}
 }
 

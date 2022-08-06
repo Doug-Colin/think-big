@@ -17,11 +17,11 @@ import superjson from 'superjson'
 import { useSession } from 'next-auth/react'
 import { getServerSession } from '../api/auth/[...nextauth]'
 
-const ClassPage: ComponentWithAuth = ({}: InferGetServerSidePropsType<
-	typeof getServerSideProps
->) => {
-	const { data: session, status } = useSession()
-	const { id: userId } = session?.user || { id: '' }
+const ClassPage: ComponentWithAuth = ({
+	session,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	// const { data: session, status } = useSession()
+	const userId = session?.user.id
 	const {
 		data: classData,
 		isLoading: classLoading,
@@ -34,13 +34,21 @@ const ClassPage: ComponentWithAuth = ({}: InferGetServerSidePropsType<
 		isError: statusErrorStat,
 		error: statusError,
 	} = useClassStatuses(keyClassStatuses(userId), userId)
-
-	if (classLoading || statusLoading || status === 'loading')
-		return <Text>Loading...</Text>
-	if (classErrorStat || statusErrorStat)
-		return <Text>{`Error: ${classError || statusError}`}</Text>
-	return <ClassTable data={classData} status={statusData} />
-	// return <ClassAccordianTable data={classData} status={statusData} />
+	try {
+		if (classLoading || statusLoading) return <Text>Loading...</Text>
+		if (classErrorStat || statusErrorStat)
+			throw classErrorStat ? 'classError' : 'statusError'
+		return <ClassTable data={classData} status={statusData} />
+	} catch (err) {
+		switch (err) {
+			case 'classError':
+				return <Text>{`Error: ${classError}`}</Text>
+			case 'statusError':
+				return <Text>{`Error: ${statusError}`}</Text>
+			default:
+				return <Text>{`Error: ${err}`}</Text>
+		}
+	}
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -53,13 +61,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 		await queryClient.prefetchQuery(keyClassStatuses(userId), () =>
 			fetchClassStatuses(userId)
 		)
+		const queryState = dehydrate(queryClient)
+		const serializedQueryState = superjson.serialize(queryState)
+		return {
+			props: {
+				dehydratedState: serializedQueryState,
+				session,
+			},
+		}
 	}
-	const queryState = dehydrate(queryClient)
-	const serializedQueryState = superjson.serialize(queryState)
-
 	return {
-		props: {
-			dehydratedState: serializedQueryState,
+		redirect: {
+			destination: '/',
+			permanent: false,
 		},
 	}
 }

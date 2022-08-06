@@ -40,7 +40,7 @@ const handler: NextApiHandler = async (req, res) => {
 		httpResponse.json(res, mutation)
 	} catch (error) {
 		/* Sending a 500 error to the client. */
-		httpResponse.serverErrorJSON(res, JSON.parse(JSON.stringify(error)))
+		httpResponse.serverErrorJSON(res, error)
 	}
 }
 export default handler

@@ -9,9 +9,7 @@ export type FetchCurrentUserResult = Prisma.PromiseReturnType<
 >
 // | Prisma.NotFoundError
 
-export const fetchCurrentUser = async (
-	userId: Prisma.UserCreateInput['id']
-) => {
+export const fetchCurrentUser = async (userId: string) => {
 	const data = await prisma.user.findUniqueOrThrow(findUniqueUser(userId))
 	return data
 }

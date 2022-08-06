@@ -26,7 +26,7 @@ export const fetchClassStatuses = async (userId: string) => {
 		}
 		return formattedData
 	} catch (err) {
-		throw new Error(JSON.parse(JSON.stringify(err)))
+		throw err
 	}
 }
 
@@ -76,9 +76,9 @@ export type UpdateClassStatusResult = Prisma.PromiseReturnType<
  * @returns {UpdateClassStatusResult} The userId and the status of the class
  */
 export const updateClassStatus = async (
-	userId: Prisma.UserCreateInput['id'],
-	classId: Prisma.ClassCreateInput['id'],
-	newStatus: Prisma.ClassStatusCreateInput['status']
+	userId: string,
+	classId: string,
+	newStatus: 'not_started' | 'in_progress' | 'done'
 ) => {
 	try {
 		const record = await prisma.classStatus.upsert(
@@ -96,6 +96,7 @@ export const updateClassStatus = async (
 		return formattedData
 	} catch (error) {
 		console.error(error)
+		throw error
 	}
 }
 
@@ -120,5 +121,6 @@ export const updateClassStatusAPI = async (
 		return data
 	} catch (err) {
 		console.error(err)
+		throw err
 	}
 }

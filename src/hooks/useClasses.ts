@@ -56,11 +56,9 @@ export type FetchSingleClassResult =
 /**
  * It fetches a single class from the database using the classId
  * @param {Prisma.ClassCreateInput['id']} classId - The id of the class you want to fetch
- * @returns {FetchSingleClassResult} The result of the query.
+ * @returns  The result of the query.
  */
-export const fetchSingleClass = async (
-	classId: Prisma.ClassCreateInput['id']
-) => {
+export const fetchSingleClass = async (classId: string) => {
 	try {
 		const result = await prisma.class.findUniqueOrThrow(
 			querySingleClass(classId)
@@ -68,6 +66,7 @@ export const fetchSingleClass = async (
 		return result
 	} catch (err) {
 		console.error(err)
+		throw 'not found'
 	}
 }
 

@@ -139,7 +139,7 @@ export function serverError(
  */
 export function serverErrorJSON(
 	res: NextApiResponse,
-	error: Record<string, any> | Error
+	error: Record<string, any> | Error | unknown
 ) {
 	res.status(500).json(superjson.serialize(error))
 }
