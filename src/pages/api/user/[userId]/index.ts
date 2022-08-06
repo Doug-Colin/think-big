@@ -3,21 +3,22 @@ import { getServerSession } from '~/pages/api/auth/[...nextauth]'
 import { fetchCurrentUser, FetchCurrentUserResult } from '~/hooks'
 import * as httpResponse from '~/lib/httpResponse'
 
-type ErrorMessage = {
-	message?: string
-}
-
 const handler: NextApiHandler = async (req, res) => {
-	const session = await getServerSession(req, res)
-	const { method, query } = req
-	if (!session) httpResponse.unauthorized(res)
 	try {
+		const session = await getServerSession(req, res)
+		const { method, query } = req
+		if (!session?.user.id) throw 'unauthorized'
 		if (query.userId === 'me' && method === 'GET') {
-			const currentUserProfile = await fetchCurrentUser(session?.user.id)
+			const currentUserProfile = await fetchCurrentUser(session.user.id)
 			httpResponse.json(res, currentUserProfile)
 		}
 	} catch (error) {
-		httpResponse.serverErrorJSON(res, JSON.parse(JSON.stringify(error)))
+		switch (error) {
+			case 'unauthorized':
+				httpResponse.unauthorized(res)
+			default:
+				httpResponse.serverErrorJSON(res, error)
+		}
 	}
 }
 export default handler

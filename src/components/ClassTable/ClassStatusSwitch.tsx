@@ -26,7 +26,7 @@ export const ClassStatusSwitch = ({
 		setClassStatus(value)
 		update.mutate(value)
 	}
-	const showLoader = (value) =>
+	const showLoader = (value: ClassStatusSwitchProps['status']) =>
 		update.isLoading && value === classStatus ? <Loader size='sm' /> : false
 	return (
 		<SegmentedControl

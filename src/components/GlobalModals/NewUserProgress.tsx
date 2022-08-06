@@ -124,7 +124,7 @@ export const NewUserProgressModal = () => {
 
 	const dataAggregator = (lastCompleted: number) => {
 		try {
-			if (!session) throw 'Invalid Session'
+			if (!session?.user?.id) throw 'Invalid Session'
 			const sliceEnd = +lastCompleted + 1
 			const classIdArr: string[] = selectArr
 				.slice(0, sliceEnd)

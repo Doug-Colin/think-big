@@ -24,7 +24,7 @@ export const selectFetchClasses = Prisma.validator<Prisma.ClassArgs>()({
 	},
 })
 
-export const querySingleClass = (classId) => {
+export const querySingleClass = (classId: string) => {
 	return Prisma.validator<Prisma.ClassFindUniqueOrThrowArgs>()({
 		where: {
 			id: classId,
@@ -98,7 +98,7 @@ export const selectUserClassStatus =
 		status: true,
 		userId: true,
 	})
-export const queryClassStatusesByUser = (userId) => {
+export const queryClassStatusesByUser = (userId: string) => {
 	return Prisma.validator<Prisma.ClassStatusFindManyArgs>()({
 		where: {
 			userId: { equals: userId },
@@ -107,7 +107,11 @@ export const queryClassStatusesByUser = (userId) => {
 	})
 }
 
-export const upsertSingleClassStatus = (userId, classId, newStatus) => {
+export const upsertSingleClassStatus = (
+	userId: string,
+	classId: string,
+	newStatus: 'not_started' | 'in_progress' | 'done'
+) => {
 	return Prisma.validator<Prisma.ClassStatusUpsertArgs>()({
 		where: {
 			classId_userId: {

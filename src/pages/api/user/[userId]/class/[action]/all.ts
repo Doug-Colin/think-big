@@ -11,26 +11,34 @@ interface QueryParams {
 }
 
 const handler: NextApiHandler = async (req, res) => {
-	const session = await getServerSession(req, res)
-	const { userId, action } = req.query as Partial<QueryParams>
-	const { method, headers } = req
+	try {
+		const session = await getServerSession(req, res)
+		const { userId, action } = req.query as Partial<QueryParams>
+		const { method, headers } = req
 
-	if (!session) {
-		!isDevEnv && httpResponse.unauthorized(res)
-		isDevEnv && console.log('unauthed req for /api/classes/all')
-	}
-	if (userId !== session.user.id && session.user.role !== 'USER') {
-		httpResponse.forbidden(res)
-	}
-	switch (action) {
-		case 'status':
-			if (method !== 'GET') httpResponse.badRequest(res)
-			try {
+		if (!session) {
+			!isDevEnv
+				? httpResponse.unauthorized(res)
+				: console.log('unauthed req for /api/classes/all')
+		}
+		if (userId !== session?.user.id && session?.user.role !== 'USER')
+			throw 'forbidden'
+		switch (action) {
+			case 'status':
+				if (method !== 'GET' || !userId) throw 'badRequest'
+
 				const classes = await fetchClassStatuses(userId)
 				httpResponse.json(res, classes)
-			} catch (error) {
+		}
+	} catch (error) {
+		switch (error) {
+			case 'forbidden':
+				httpResponse.forbidden(res)
+			case 'badRequest':
+				httpResponse.badRequest(res)
+			default:
 				httpResponse.serverErrorJSON(res, error)
-			}
+		}
 	}
 }
 export default handler

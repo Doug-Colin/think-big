@@ -49,10 +49,13 @@ const useStyles = createStyles((theme) => ({
 	},
 }))
 
-const LoggedInUser = ({ image, name }: LoggedInProps) => {
+const LoggedInUser = () => {
+	const { data: session, status } = useSession()
 	const [userMenuOpened, setUserMenuOpened] = useState(false)
 	const { classes } = useStyles()
 	const router = useRouter()
+	let name, image
+	session ? ({ name, image } = session.user) : null
 
 	return (
 		<Menu
@@ -104,12 +107,12 @@ const SignUpLoginButtons = () => {
 			<Button
 				variant='outline'
 				color='highlightPrimary'
-				onClick={() => signIn('discord', null, { prompt: 'consent' })}
+				onClick={() => signIn('discord', undefined, { prompt: 'consent' })}
 			>
 				Sign Up with Discord
 			</Button>
 			<Button
-				onClick={() => signIn('discord', null, { prompt: 'none' })}
+				onClick={() => signIn('discord', undefined, { prompt: 'none' })}
 				variant='filled'
 				color='highlightPrimary'
 			>
@@ -122,13 +125,15 @@ const SignUpLoginButtons = () => {
 export const UserMenu = () => {
 	const { classes } = useStyles()
 	const { data: session, status } = useSession()
-	const { name, image } = session?.user || { name: '', image: '' }
+	const isLoading = status === 'loading'
+	const hasSession = session != null
+	const { name, image } = session ? session.user : { name: '', image: '' }
 	const menuControl = () => {
-		if (status === 'authenticated') {
-			return <LoggedInUser name={name} image={image} />
+		if (hasSession && !isLoading) {
+			return <LoggedInUser />
 			// return <></>
 		}
-		if (status === 'unauthenticated') {
+		if (!hasSession && !isLoading) {
 			return <SignUpLoginButtons />
 		}
 		return <Text>Loading...</Text>
