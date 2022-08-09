@@ -1,28 +1,48 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"addLabels": ["dependencies"],
+	"assignAutomerge": true,
+	"assigneesFromCodeOwners": true,
+	"baseBranches": ["develop"],
+	"configMigration": true,
 	"extends": [
 		"config:base",
 		":preserveSemverRanges",
 		":prNotPending",
-		":automergeAll"
+		":automergeMinor",
+		"workarounds:typesNodeVersioning"
 	],
-	"addLabels": ["dependencies"],
-	"reviewersFromCodeOwners": true,
-	"assigneesFromCodeOwners": true,
-	"semanticCommits": "enabled",
-	"assignAutomerge": true,
-	"baseBranches": ["develop"],
+	"lockFileMaintenance": {
+		"addLabels": ["lockfile", "automerge"],
+		"branchTopic": "lock-file-maintenance",
+		"commitMessageAction": "Lock file maintenance",
+		"enabled": false,
+		"prBodyDefinitions": {
+			"Change": "All locks refreshed"
+		},
+		"rebaseStalePrs": true,
+		"recreateClosed": true,
+		"schedule": ["before 5am on monday"]
+	},
 	"packageRules": [
 		{
-			"matchPackagePatterns": ["^@mantine/"],
-			"groupName": "Mantine"
+			"addLabels": ["major"],
+			"dependencyDashboardApproval": true,
+			"matchManagers": ["npm"],
+			"matchUpdateTypes": ["major"]
 		},
 		{
-			"packagePatterns": ["*"],
+			"matchSourceUrlPrefixes": ["https://github.com/mantinedev/mantine"]
+		},
+		{
 			"minor": {
+				"addLabels": ["minor", "automerge"],
 				"groupName": "non-major dependencies",
 				"groupSlug": "all-minor-patch"
-			}
+			},
+			"packagePatterns": ["*"]
 		}
-	]
+	],
+	"reviewersFromCodeOwners": true,
+	"semanticCommits": "enabled"
 }

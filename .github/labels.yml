@@ -29,6 +29,9 @@
 - name: 'dependencies'
   color: 1d76db
   description: 'Change in project dependencies.'
+- name: 'lockfile'
+  color: 1d76db
+  description: 'RenovateBot lockfile maintenance'
 
 - name: 'in-progress'
   color: fbca04

@@ -1,14 +1,16 @@
+#:schema https://github.com/chdsbd/kodiak/blob/master/bot/kodiak/test/fixtures/config/config-schema.json
 version = 1
 
 [update]
 ## Keep every PR up to date with main
-always = true 
-require_automerge_label = false 
+always = true
+require_automerge_label = false
 ignored_usernames = ["dependabot", "renovate"]
 
 
 [merge]
 automerge_label = "automerge"
+show_missing_automerge_label_message = true
 prioritize_ready_to_merge = true
 
 [merge.automerge_dependencies]
@@ -23,15 +25,14 @@ auto_approve_usernames = ["dependabot", "renovate"]
 [merge.message]
 # use title of PR for merge commit.
 title = "pull_request_title" # default: "github_default"
-
 # use body of PR for merge commit.
-# body = "pull_request_body" # default: "github_default"
-
+body = "pull_request_body" # default: "github_default"
 # add the PR number to the merge commit title, like GitHub.
 include_pr_number = true # default: true
-
 # use the default markdown content of the PR for the merge commit.
 body_type = "markdown" # default: "markdown"
-
 # remove html comments to auto remove PR templates.
-strip_html_comments = true # default: false
+strip_html_comments = true         # default: false
+include_pull_request_url = true
+include_coauthors = true
+include_pull_request_author = true
