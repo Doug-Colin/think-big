@@ -34,6 +34,8 @@ declare module 'next-auth' {
 		name?: string
 		discordId?: string
 		discordTag?: string
+		updatedAt?: Date
+		image?: string
 	}
 	// interface User extends Partial<Prisma.UserGetPayload<typeof userTypeGen>> {}
 }

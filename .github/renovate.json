@@ -20,7 +20,7 @@
 		"prBodyDefinitions": {
 			"Change": "All locks refreshed"
 		},
-		"rebaseStalePrs": true,
+		"rebaseWhen": "behind-base-branch",
 		"recreateClosed": true,
 		"schedule": ["before 5am on monday"]
 	},
@@ -35,12 +35,12 @@
 			"matchSourceUrlPrefixes": ["https://github.com/mantinedev/mantine"]
 		},
 		{
+			"matchPackagePatterns": ["*"],
 			"minor": {
 				"addLabels": ["minor", "automerge"],
 				"groupName": "non-major dependencies",
 				"groupSlug": "all-minor-patch"
-			},
-			"packagePatterns": ["*"]
+			}
 		}
 	],
 	"reviewersFromCodeOwners": true,

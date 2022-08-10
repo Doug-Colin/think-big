@@ -10,6 +10,8 @@ import { z } from 'zod'
 export const envSchema = z.object({
 	DISCORD_CLIENT_ID: z.string().transform((x) => x.toString()),
 	DISCORD_CLIENT_SECRET: z.string(),
+	GITHUB_CLIENT_ID: z.string().optional(),
+	GITHUB_CLIENT_SECRET: z.string().optional(),
 	MONGODB_URI: z.string().url(),
 	MONGO_COLL: z.string(),
 	MONGO_PW: z.string(),
@@ -22,4 +24,6 @@ export const envSchema = z.object({
 		}),
 	NEXTAUTH_URL: z.string().url(),
 	NODE_ENV: z.enum(['development', 'test', 'production']),
+	TWITTER_CLIENT_ID: z.string().optional(),
+	TWITTER_CLIENT_SECRET: z.string().optional(),
 })

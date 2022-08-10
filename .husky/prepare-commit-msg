@@ -2,7 +2,7 @@
 . "$(dirname -- "$0")/_/husky.sh"
 . "$(dirname "$0")/common.sh"
 
-TMP_FILE=$(git rev-parse --path-format=absolute --git-dir)/commit-skip
+TMP_FILE=$(git rev-parse --path-format=relative --git-dir)/commit-skip
 
 if [ -f $TMP_FILE ]; then
 	echo 'Skipping Commitizen step'

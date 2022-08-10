@@ -17,7 +17,8 @@ import workTogetherImg from 'public/landingpage-work-together.svg'
 import stayUpToDateImg from 'public/landingpage-stay-up-to-date.svg'
 import heroImage from 'public/coding-924920_1920.jpg'
 import Image from 'next/image'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const useStyles = createStyles((theme) => ({
 	bgWrap: {
@@ -52,6 +53,10 @@ const useStyles = createStyles((theme) => ({
 function LandingPage() {
 	const { classes } = useStyles()
 	const theme = useMantineTheme()
+	const { data: session } = useSession()
+	const router = useRouter()
+
+	if (session) router.push('/dashboard')
 	return (
 		<Container size='xl'>
 			<AspectRatio ratio={16 / 9} className={classes.hero}>
@@ -101,7 +106,13 @@ function LandingPage() {
 							to: theme.colors.secondary[8],
 							deg: 135,
 						}}
-						onClick={() => signIn('discord', undefined, { prompt: 'consent' })}
+						onClick={() =>
+							signIn(
+								'discord',
+								{ callbackUrl: '/dashboard' },
+								{ prompt: 'consent' }
+							)
+						}
 					>
 						Sign Up and Get Started!
 					</Button>

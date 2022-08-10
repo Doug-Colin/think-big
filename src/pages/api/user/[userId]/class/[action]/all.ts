@@ -1,6 +1,6 @@
 import { getServerSession } from '~/pages/api/auth/[...nextauth]'
 import type { NextApiHandler } from 'next'
-import { fetchClassStatuses } from '~/hooks'
+import { fetchClassStatuses } from '~/lib/db/queries'
 import { Prisma } from '@prisma/client'
 import * as httpResponse from '~/lib/httpResponse'
 import { isDevEnv } from '~/lib'
@@ -14,7 +14,7 @@ const handler: NextApiHandler = async (req, res) => {
 	try {
 		const session = await getServerSession(req, res)
 		const { userId, action } = req.query as Partial<QueryParams>
-		const { method, headers } = req
+		const { method } = req
 
 		if (!session) {
 			!isDevEnv

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { createStyles, Table, ScrollArea, Title } from '@mantine/core'
 import { openModal } from '@mantine/modals'
 import { ClassDetail, ClassRow } from './'
-import { FetchClassesResult, FetchClassStatusesResult } from '~/hooks'
+import { FetchClassesResult, FetchClassStatusesResult } from '~/lib/db/queries'
 
 const useStyles = createStyles((theme) => ({
 	header: {

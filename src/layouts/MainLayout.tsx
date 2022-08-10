@@ -1,4 +1,4 @@
-import { AppShell, Center, Loader } from '@mantine/core'
+import { AppShell } from '@mantine/core'
 import { SideNav, HeaderBar, CenterLoader } from '~/components'
 import { useSession } from 'next-auth/react'
 import React from 'react'

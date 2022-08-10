@@ -1,6 +1,7 @@
+// Automatically generated index file by: https://marketplace.visualstudio.com/items?itemName=eliostruyf.vscode-typescript-exportallmodules
+
+export * from './AccountConnectChip'
 export * from './CenterLoader'
-export * from './ClassTable'
-export * from './GlobalModals'
 export * from './HeaderBar'
 export * from './SideNav'
 export * from './TagGroup'

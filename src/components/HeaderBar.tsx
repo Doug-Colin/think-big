@@ -1,11 +1,4 @@
-import {
-	Center,
-	Group,
-	Image,
-	createStyles,
-	TextInput,
-	Header,
-} from '@mantine/core'
+import { Center, Group, Image, createStyles, Header } from '@mantine/core'
 import { UserMenu } from './'
 const useStyles = createStyles((theme) => ({
 	header: {

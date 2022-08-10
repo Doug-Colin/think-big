@@ -1,6 +1,6 @@
 import { getServerSession } from '~/pages/api/auth/[...nextauth]'
 import type { NextApiHandler } from 'next'
-import { fetchClassStatuses, updateClassStatus } from '~/hooks'
+import { fetchClassStatuses, updateClassStatus } from '~/lib/db/queries'
 import { z } from 'zod'
 import superjson from 'superjson'
 import * as httpResponse from '~/lib/httpResponse'

@@ -4,16 +4,13 @@ import {
 	Avatar,
 	Menu,
 	Button,
-	Text,
+	Loader,
 	createStyles,
 	Center,
 } from '@mantine/core'
 import { NextLink } from '@mantine/next'
 import { Icon } from '@iconify/react'
-import React, { useState } from 'react'
 import { useSession, signIn, signOut } from 'next-auth/react'
-import styles from './UserMenu.module.scss'
-import { useRouter } from 'next/router'
 
 // This is Typescript stuff - don't worry about it.
 interface LoggedInProps {
@@ -47,24 +44,19 @@ const useStyles = createStyles((theme) => ({
 		// fontSize: '2.5rem',
 		marginRight: '2rem',
 	},
+	avatarShadow: {
+		filter: `drop-shadow(3px 3px 1px #737373)`,
+	},
 }))
 
 const LoggedInUser = () => {
 	const { data: session, status } = useSession()
-	const [userMenuOpened, setUserMenuOpened] = useState(false)
 	const { classes } = useStyles()
-	const router = useRouter()
 	let name, image
 	session ? ({ name, image } = session.user) : null
 
 	return (
-		<Menu
-			position='bottom'
-			transition='scale-y'
-			onClose={() => setUserMenuOpened(false)}
-			onOpen={() => setUserMenuOpened(true)}
-			width={200}
-		>
+		<Menu position='bottom' transition='scale-y' width={200}>
 			<Menu.Target>
 				<UnstyledButton className={classes.user}>
 					<Group>
@@ -73,7 +65,9 @@ const LoggedInUser = () => {
 							radius='xl'
 							size='lg'
 							alt={name}
-							className={styles.avatarShadow}
+							classNames={{
+								root: classes.avatarShadow,
+							}}
 						/>
 						<Icon icon='fa6-solid:chevron-down' height='18' />
 					</Group>
@@ -94,25 +88,31 @@ const LoggedInUser = () => {
 				>
 					<Center>Logout</Center>
 				</Menu.Item>
-				{/* <Menu.Item>Item 2</Menu.Item> */}
 			</Menu.Dropdown>
 		</Menu>
 	)
 }
 
 const SignUpLoginButtons = () => {
-	const { classes, theme } = useStyles()
 	return (
 		<Group>
 			<Button
 				variant='outline'
 				color='highlightPrimary'
-				onClick={() => signIn('discord', undefined, { prompt: 'consent' })}
+				onClick={() =>
+					signIn(
+						'discord',
+						{ callbackUrl: '/dashboard' },
+						{ prompt: 'consent' }
+					)
+				}
 			>
 				Sign Up with Discord
 			</Button>
 			<Button
-				onClick={() => signIn('discord', undefined, { prompt: 'none' })}
+				onClick={() =>
+					signIn('discord', { callbackUrl: '/dashboard' }, { prompt: 'none' })
+				}
 				variant='filled'
 				color='highlightPrimary'
 			>
@@ -123,11 +123,9 @@ const SignUpLoginButtons = () => {
 }
 
 export const UserMenu = () => {
-	const { classes } = useStyles()
 	const { data: session, status } = useSession()
 	const isLoading = status === 'loading'
 	const hasSession = session != null
-	const { name, image } = session ? session.user : { name: '', image: '' }
 	const menuControl = () => {
 		if (hasSession && !isLoading) {
 			return <LoggedInUser />
@@ -136,7 +134,7 @@ export const UserMenu = () => {
 		if (!hasSession && !isLoading) {
 			return <SignUpLoginButtons />
 		}
-		return <Text>Loading...</Text>
+		return <Loader />
 	}
 	return menuControl()
 }

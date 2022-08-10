@@ -12,7 +12,7 @@ import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { TagGroup } from '..'
 import { ClassStatusSwitch } from './'
-import { FetchClassesResult, FetchClassStatusesResult } from '~/hooks'
+import { FetchClassesResult, FetchClassStatusesResult } from '~/lib/db/queries'
 
 interface ClassDetailProps {
 	classData: FetchClassesResult[0]

@@ -2,7 +2,7 @@
 const { execSync } = require('child_process')
 
 const commitFile =
-	`${execSync('git rev-parse --path-format=absolute --git-dir')
+	`${execSync('git rev-parse --path-format=relative --git-dir')
 		.toString()
 		.trim()}/COMMIT_EDITMSG` || false
 

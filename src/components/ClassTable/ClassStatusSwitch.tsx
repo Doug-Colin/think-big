@@ -33,37 +33,43 @@ export const ClassStatusSwitch = ({
 			data={[
 				{
 					label: (
-						<Tooltip label='Not started' withArrow withinPortal>
+						<>
 							{showLoader('not_started') ? (
 								showLoader('not_started')
 							) : (
-								<Icon icon='fa6-solid:minus' />
+								<Tooltip label='Not started' withArrow withinPortal>
+									<Icon icon='fa6-solid:minus' />
+								</Tooltip>
 							)}
-						</Tooltip>
+						</>
 					),
 					value: 'not_started',
 				},
 				{
 					label: (
-						<Tooltip label='In progress' withArrow withinPortal>
+						<>
 							{showLoader('in_progress') ? (
 								showLoader('in_progress')
 							) : (
-								<Icon icon='fa6-solid:laptop-code' />
+								<Tooltip label='In progress' withArrow withinPortal>
+									<Icon icon='fa6-solid:laptop-code' />
+								</Tooltip>
 							)}
-						</Tooltip>
+						</>
 					),
 					value: 'in_progress',
 				},
 				{
 					label: (
-						<Tooltip label='Done' withArrow withinPortal>
+						<>
 							{showLoader('done') ? (
 								showLoader('done')
 							) : (
-								<Icon icon='fa6-solid:flag-checkered' />
+								<Tooltip label='Done' withArrow withinPortal>
+									<Icon icon='fa6-solid:flag-checkered' />
+								</Tooltip>
 							)}
-						</Tooltip>
+						</>
 					),
 					value: 'done',
 				},

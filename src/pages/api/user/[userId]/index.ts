@@ -1,6 +1,6 @@
 import type { NextApiHandler } from 'next'
 import { getServerSession } from '~/pages/api/auth/[...nextauth]'
-import { fetchCurrentUser, FetchCurrentUserResult } from '~/hooks'
+import { fetchCurrentUser } from '~/lib/db/queries'
 import * as httpResponse from '~/lib/httpResponse'
 
 const handler: NextApiHandler = async (req, res) => {

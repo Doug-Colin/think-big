@@ -15,9 +15,9 @@ import { closeModal } from '@mantine/modals'
 import {
 	useClasses,
 	upsertManyCompletedClassesAPI,
-	CompletedClassesInput,
 	keyClassStatuses,
 } from '~/hooks'
+import { CompletedClassesInput } from '~/lib/db/queries'
 import { DateTime } from 'luxon'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'

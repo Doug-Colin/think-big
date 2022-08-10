@@ -1,7 +1,10 @@
 import type { NextApiHandler } from 'next'
 import { getServerSession } from '~/pages/api/auth/[...nextauth]'
-import { upsertManyCompletedClasses, CompletedClassesInput } from '~/hooks'
-import * as z from 'zod'
+import {
+	upsertManyCompletedClasses,
+	CompletedClassesInput,
+} from '~/lib/db/queries'
+import { z } from 'zod'
 import superjson from 'superjson'
 import * as httpResponse from '~/lib/httpResponse'
 

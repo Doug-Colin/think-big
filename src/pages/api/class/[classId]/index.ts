@@ -1,6 +1,6 @@
 import { getServerSession } from '~/pages/api/auth/[...nextauth]'
 import type { NextApiHandler } from 'next'
-import { fetchSingleClass } from '~/hooks'
+import { fetchSingleClass } from '~/lib/db/queries'
 import * as httpResponse from '~/lib/httpResponse'
 import { isDevEnv } from '~/lib'
 

@@ -4,17 +4,11 @@ import {
 	ComponentWithAuth,
 } from 'next'
 import { Text } from '@mantine/core'
-import { ClassTable, ClassAccordianTable } from '~/components/ClassTable'
+import { ClassTable } from '~/components/ClassTable'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
-import {
-	fetchClasses,
-	useClasses,
-	fetchClassStatuses,
-	useClassStatuses,
-	keyClassStatuses,
-} from '~/hooks'
+import { useClasses, useClassStatuses, keyClassStatuses } from '~/hooks'
+import { fetchClasses, fetchClassStatuses } from '~/lib/db/queries'
 import superjson from 'superjson'
-import { useSession } from 'next-auth/react'
 import { getServerSession } from '../api/auth/[...nextauth]'
 
 const ClassPage: ComponentWithAuth = ({

@@ -1,34 +1,11 @@
-import { prisma, axiosClient } from '~/lib'
+import { axiosClient } from '~/lib'
 import { useQuery, QueryKey } from '@tanstack/react-query'
-import { queryClassStatusesByUser, upsertSingleClassStatus } from '~/lib/db'
 import superjson from 'superjson'
 import { Prisma } from '@prisma/client'
-
-export type FetchClassStatusesResult = Prisma.PromiseReturnType<
-	typeof fetchClassStatuses
->
-/**
- * It fetches all the class statuses for a user and returns them in a formatted object
- * @param {string} userId - The user's id
- * @returns An array of objects with the classId and status
- */
-export const fetchClassStatuses = async (userId: string) => {
-	try {
-		const data = await prisma.classStatus.findMany(
-			queryClassStatusesByUser(userId)
-		)
-		const formattedData = {
-			id: userId,
-			classes: data.map((result) => ({
-				id: result.classId,
-				status: result.status,
-			})),
-		}
-		return formattedData
-	} catch (err) {
-		throw err
-	}
-}
+import type {
+	FetchClassStatusesResult,
+	UpdateClassStatusResult,
+} from '~/lib/db/queries'
 
 /**
  * It fetches all the class statuses for a user
@@ -63,41 +40,6 @@ export const useClassStatuses = (queryKey: QueryKey, userId: string) => {
 		fetchClassStatusesAPI(userId)
 	)
 	return result
-}
-
-export type UpdateClassStatusResult = Prisma.PromiseReturnType<
-	typeof updateClassStatus
->
-/**
- * It takes a userId, classId, and newStatus, and updates the status of the class for the user
- * @param {Prisma.UserCreateInput['id']} userId - The user's id
- * @param {Prisma.ClassCreateInput['id']} classId - The id of the class
- * @param {Prisma.ClassStatusCreateInput['status']} newStatus - The updated status
- * @returns {UpdateClassStatusResult} The userId and the status of the class
- */
-export const updateClassStatus = async (
-	userId: string,
-	classId: string,
-	newStatus: 'not_started' | 'in_progress' | 'done'
-) => {
-	try {
-		const record = await prisma.classStatus.upsert(
-			upsertSingleClassStatus(userId, classId, newStatus)
-		)
-		const formattedData = {
-			id: record.userId,
-			status: [
-				{
-					classId: record.classId,
-					status: record.status,
-				},
-			],
-		}
-		return formattedData
-	} catch (error) {
-		console.error(error)
-		throw error
-	}
 }
 
 /**

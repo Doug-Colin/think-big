@@ -8,7 +8,7 @@ import {
 	Box,
 } from '@mantine/core'
 import { useElementSize } from '@mantine/hooks'
-import { FetchClassStatusesResult, FetchClassesResult } from '~/hooks'
+import { FetchClassStatusesResult, FetchClassesResult } from '~/lib/db/queries'
 import { Icon } from '@iconify/react'
 import { DateTime } from 'luxon'
 import { TagGroup } from '~/components'

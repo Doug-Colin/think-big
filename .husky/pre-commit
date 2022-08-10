@@ -2,14 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 . "$(dirname "$0")/common.sh"
 
-GIT_EDITOR=$(git config --get core.editor)
-
-if ! [[ "$GIT_EDITOR" =~ code ]]; 
-	then
-		if [ "$TERM_PROGRAM" == "vscode" ]; then
-			echo "You're using VS Code, I'll make sure that any commit edits use VS Code."
-			git config core.editor "code --wait"
-	fi
-fi
 
 npx lint-staged

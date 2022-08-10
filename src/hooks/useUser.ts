@@ -1,18 +1,13 @@
-import { prisma, axiosClient } from '~/lib'
+import { axiosClient } from '~/lib'
 import { useQuery } from '@tanstack/react-query'
 import superjson from 'superjson'
 import { Prisma } from '@prisma/client'
-import { findUniqueUser } from '~/lib/db'
-
-export type FetchCurrentUserResult = Prisma.PromiseReturnType<
-	typeof fetchCurrentUser
->
-// | Prisma.NotFoundError
-
-export const fetchCurrentUser = async (userId: string) => {
-	const data = await prisma.user.findUniqueOrThrow(findUniqueUser(userId))
-	return data
-}
+import type {
+	FetchCurrentUserResult,
+	UpdateCurrentUserResult,
+} from '~/lib/db/queries'
+import type { CurrentUserUpdateData } from '~/lib/db/validations'
+import { SuperJSONResult } from 'superjson/dist/types'
 
 export const fetchCurrentUserAPI =
 	async (): Promise<FetchCurrentUserResult> => {
@@ -28,4 +23,16 @@ export const useCurrentUser = () => {
 		fetchCurrentUserAPI
 	)
 	return result
+}
+
+export const updateCurrentUserAPI = async (
+	data: CurrentUserUpdateData
+): Promise<UpdateCurrentUserResult> => {
+	const client = axiosClient()
+	const { data: res } = await client.patch<SuperJSONResult>(
+		'/api/user/me/update',
+		superjson.serialize(data)
+	)
+	const deserialized = superjson.deserialize<UpdateCurrentUserResult>(res)
+	return deserialized
 }

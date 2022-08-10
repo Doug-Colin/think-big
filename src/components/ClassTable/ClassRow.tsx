@@ -1,9 +1,9 @@
 import { MouseEventHandler } from 'react'
 import { TagGroup } from '~/components'
 import { ClassStatusIcon } from './'
-import { DateTime } from 'luxon'
 import { Center } from '@mantine/core'
-import { FetchClassesResult, FetchClassStatusesResult } from '~/hooks'
+import { FetchClassesResult, FetchClassStatusesResult } from '~/lib/db/queries'
+import { dateDisplay } from '~/lib'
 
 interface ClassRowProps {
 	data: FetchClassesResult[0]
@@ -21,7 +21,7 @@ export const ClassRow = ({
 	clickHandler,
 	className,
 }: ClassRowProps) => {
-	const formattedDate = DateTime.fromISO(data.date.toString()).toFormat('DDDD')
+	const formattedDate = dateDisplay(data.date)
 	return (
 		<tr onClick={clickHandler} className={className}>
 			<td>

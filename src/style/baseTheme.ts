@@ -97,4 +97,11 @@ export const baseTheme: MantineThemeOverride = {
 		fontWeight: '700',
 	},
 	cursorType: 'pointer',
+	components: {
+		TextInput: {
+			styles: (theme) => ({
+				wrapper: { maxWidth: 300 },
+			}),
+		},
+	},
 }

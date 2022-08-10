@@ -1,7 +1,6 @@
 import type { NextApiResponse } from 'next'
 import superjson from 'superjson'
 import type { SuperJSONResult } from 'superjson/dist/types'
-import { z } from 'zod'
 
 type JsonObject = {
 	[key: string]: any
@@ -14,9 +13,20 @@ type JsonObject = {
  * @param data - The data to send back to the client.
  * @returns A function that takes a response and data as parameters.
  */
-export function ok(res: NextApiResponse, data: Record<string, any>) {
+export function ok(
+	res: NextApiResponse<SuperJSONResult>,
+	data: Record<string, any>
+) {
 	return json(res, data)
 }
+
+export function created(
+	res: NextApiResponse<SuperJSONResult>,
+	data: Record<string, any> = { message: 'Record created' }
+) {
+	return res.status(201).json(superjson.serialize(data))
+}
+
 /**
  * It takes a Next.js response object and a data object, and returns a JSON response with the data
  * object serialized using SuperJSON
@@ -54,7 +64,7 @@ export function send(
  * @param {string} url - The URL to redirect to.
  * @returns A function that takes a response and a url and redirects the user to the url.
  */
-export function redirect(res: NextApiResponse, url: string) {
+export function redirect(res: NextApiResponse<string>, url: string) {
 	res.setHeader('Location', url)
 
 	return res.status(303).end()
@@ -68,7 +78,10 @@ export function redirect(res: NextApiResponse, url: string) {
  * @returns A function that takes a response object and a message and returns a response object with a
  * status of 400 and the message.
  */
-export function badRequest(res: NextApiResponse, msg = '400 Bad Request') {
+export function badRequest(
+	res: NextApiResponse<string>,
+	msg = '400 Bad Request'
+) {
 	return res.status(400).end(msg)
 }
 
@@ -79,7 +92,10 @@ export function badRequest(res: NextApiResponse, msg = '400 Bad Request') {
  * @param [msg=401 Unauthorized] - The message to send back to the client.
  * @returns A function that takes a response object and a message string.
  */
-export function unauthorized(res: NextApiResponse, msg = '401 Unauthorized') {
+export function unauthorized(
+	res: NextApiResponse<string>,
+	msg = '401 Unauthorized'
+) {
 	return res.status(401).end(msg)
 }
 
@@ -90,7 +106,7 @@ export function unauthorized(res: NextApiResponse, msg = '401 Unauthorized') {
  * @param [msg=403 Forbidden] - The message to send back to the client.
  * @returns A function that takes a response object and a message as parameters.
  */
-export function forbidden(res: NextApiResponse, msg = '403 Forbidden') {
+export function forbidden(res: NextApiResponse<string>, msg = '403 Forbidden') {
 	return res.status(403).end(msg)
 }
 
@@ -102,7 +118,7 @@ export function forbidden(res: NextApiResponse, msg = '403 Forbidden') {
  * @returns A function that takes a response object and a message and returns a response object with a
  * 404 status and the message.
  */
-export function notFound(res: NextApiResponse, msg = '404 Not Found') {
+export function notFound(res: NextApiResponse<string>, msg = '404 Not Found') {
 	return res.status(404).end(msg)
 }
 
@@ -113,7 +129,7 @@ export function notFound(res: NextApiResponse, msg = '404 Not Found') {
  * @param [msg=405 Method Not Allowed] - The message to send back to the client.
  */
 export function methodNotAllowed(
-	res: NextApiResponse,
+	res: NextApiResponse<string>,
 	msg = '405 Method Not Allowed'
 ) {
 	res.status(405).end(msg)
@@ -125,7 +141,7 @@ export function methodNotAllowed(
  * @param [msg=500 Internal Server Error] - The message to send to the client.
  */
 export function serverError(
-	res: NextApiResponse,
+	res: NextApiResponse<string>,
 	msg = '500 Internal Server Error'
 ) {
 	res.status(500).end(msg)
@@ -138,7 +154,7 @@ export function serverError(
  * @param error - The error object to be serialized.
  */
 export function serverErrorJSON(
-	res: NextApiResponse,
+	res: NextApiResponse<SuperJSONResult>,
 	error: Record<string, any> | Error | unknown
 ) {
 	res.status(500).json(superjson.serialize(error))

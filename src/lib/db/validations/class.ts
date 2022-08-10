@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { assignmentSelectAll } from '.'
+import { assignmentSelectAll } from './'
 import { prisma } from '~/lib'
 
 export const selectFetchClasses = Prisma.validator<Prisma.ClassArgs>()({

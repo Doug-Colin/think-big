@@ -21,6 +21,7 @@ export default defineNextConfig({
 	},
 	typescript: {},
 	reactStrictMode: true,
+	swcMinify: true,
 	// enable CORS
 	// async headers() {
 	// 	return [
