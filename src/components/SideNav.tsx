@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import {
 	Navbar,
 	Tooltip,
@@ -9,6 +8,7 @@ import {
 import { Icon } from '@iconify/react'
 import { nav } from '~/data'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const useStyles = createStyles((theme) => ({
 	link: {
@@ -46,16 +46,9 @@ interface NavbarLinkProps {
 	label: string
 	active: boolean
 	url: string
-	onClick?(): void
 }
 
-export function NavbarLink({
-	icon,
-	label,
-	active,
-	url,
-	onClick,
-}: NavbarLinkProps) {
+export function NavbarLink({ icon, label, active, url }: NavbarLinkProps) {
 	const { classes, cx } = useStyles()
 	return (
 		<Tooltip
@@ -70,7 +63,6 @@ export function NavbarLink({
 					<UnstyledButton
 						component='a'
 						className={cx(classes.link, { [classes.active]: active })}
-						onClick={onClick}
 					>
 						<Icon icon={icon} className={classes.icon} />
 					</UnstyledButton>
@@ -88,14 +80,13 @@ const useNavbarStyles = createStyles((theme) => ({
 }))
 
 export function SideNav() {
-	const [active, setActive] = useState(0)
 	const { classes } = useNavbarStyles()
+	const router = useRouter()
 	const links = nav.map((link, index) => (
 		<NavbarLink
 			{...link}
 			key={link.label}
-			active={index === active}
-			onClick={() => setActive(index)}
+			active={router.pathname === link.url}
 		/>
 	))
 
