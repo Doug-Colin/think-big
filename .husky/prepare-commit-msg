@@ -2,11 +2,22 @@
 . "$(dirname -- "$0")/_/husky.sh"
 . "$(dirname "$0")/common.sh"
 
-TMP_FILE=$(git rev-parse --path-format=relative --git-dir)/commit-skip
+REBASE="$(git rev-parse --path-format=relative --git-dir)/rebase-*"
 
-if [ -f $TMP_FILE ]; then
-	echo 'Skipping Commitizen step'
-	exit 0
-fi
+
+lint() {
+ trap 'exit $?' EXIT
+ npx commitlint --edit $1 > /dev/tty
+}
+# if [ -d $REBASE ]; then
+	# echo 'Rebase in progress - Checking Commitlint'
+	if $(lint $1)
+	then
+		echo "Commitlint passed!"
+		exit 0
+	else
+		echo "Commitlint failed - Routing to Commitizen"
+	fi 
+# fi
 
 exec < /dev/tty && npx czg --hook || true

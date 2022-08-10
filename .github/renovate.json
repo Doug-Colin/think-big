@@ -43,6 +43,6 @@
 			}
 		}
 	],
-	"reviewersFromCodeOwners": true,
+	"reviewersFromCodeOwners": false,
 	"semanticCommits": "enabled"
 }
