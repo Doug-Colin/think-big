@@ -120,6 +120,7 @@ Once complete, you'll need to seed the database with test data. Do this as follo
 
 ```bash
 pnpm db:seed
+pnpm db:devseed
 ```
 
 <br/>
