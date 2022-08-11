@@ -32,72 +32,80 @@ const generateRandomString = () => {
 
 	return randomString
 }
-const auxProviders = []
+const authProviders = []
 
+/**
+ * Discord Auth Provider Setup
+ */
+const discordProvider = DiscordProvider({
+	clientId: env.DISCORD_CLIENT_ID,
+	clientSecret: env.DISCORD_CLIENT_SECRET,
+	authorization: {
+		url: 'https://discord.com/api/oauth2/authorize',
+		params: {
+			scope: 'identify email guilds.members.read',
+			state: generateRandomString(),
+			display: 'popup',
+		},
+	},
+	checks: 'state',
+	async profile(profile: DiscordProfile, tokens) {
+		const discordGuild = await getGuildMember(tokens.access_token as string)
+		const guildProfile = discordGuild.status === 200 ? discordGuild.data : null
+		if (profile.avatar === null) {
+			const defaultAvatarNumber = parseInt(profile.discriminator) % 5
+			profile.image_url = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`
+		} else {
+			if (guildProfile?.avatar) {
+				// Use server specific avatar, if exists
+				const format = guildProfile.avatar.startsWith('a_') ? 'gif' : 'png'
+				profile.image_url = `https://cdn.discordapp.com/guilds/${guildID}/avatars/${profile.id}/${guildProfile.avatar}.${format}`
+			} else {
+				// use Discord global profile avatar
+				const format = profile.avatar.startsWith('a_') ? 'gif' : 'png'
+				profile.image_url = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`
+			}
+		}
+		profile.name = guildProfile?.nick ? guildProfile.nick : profile.username
+
+		return {
+			id: profile.id,
+			discordId: profile.id,
+			name: profile.name,
+			discordTag: `${profile.username}#${profile.discriminator}`,
+			email: profile.email,
+			image: profile.image_url,
+			serverMember: !!guildProfile,
+		}
+	},
+})
+authProviders.push(discordProvider)
+
+/**
+ * Twitter Auth Provider Setup - if env vars exist
+ */
 if (env.TWITTER_CLIENT_ID && env.TWITTER_CLIENT_SECRET) {
 	const twitterProvider = TwitterProvider({
 		clientId: env.TWITTER_CLIENT_ID,
 		clientSecret: env.TWITTER_CLIENT_SECRET,
 		version: '2.0',
 	})
-	auxProviders.push(twitterProvider)
+	authProviders.push(twitterProvider)
 }
 
+/**
+ * Discord Auth Provider Setup - if env vars exist
+ */
 if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) {
 	const githubProvider = GithubProvider({
 		clientId: env.GITHUB_CLIENT_ID,
 		clientSecret: env.GITHUB_CLIENT_SECRET,
 	})
-	auxProviders.push(githubProvider)
+	authProviders.push(githubProvider)
 }
 
 const authOptions: NextAuthOptions = {
-	providers: [
-		DiscordProvider({
-			clientId: env.DISCORD_CLIENT_ID,
-			clientSecret: env.DISCORD_CLIENT_SECRET,
-			authorization: {
-				url: 'https://discord.com/api/oauth2/authorize',
-				params: {
-					scope: 'identify email guilds.members.read',
-					state: generateRandomString(),
-					display: 'popup',
-				},
-			},
-			checks: 'state',
-			async profile(profile: DiscordProfile, tokens) {
-				const discordGuild = await getGuildMember(tokens.access_token as string)
-				const guildProfile =
-					discordGuild.status === 200 ? discordGuild.data : null
-				if (profile.avatar === null) {
-					const defaultAvatarNumber = parseInt(profile.discriminator) % 5
-					profile.image_url = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`
-				} else {
-					if (guildProfile?.avatar) {
-						// Use server specific avatar, if exists
-						const format = guildProfile.avatar.startsWith('a_') ? 'gif' : 'png'
-						profile.image_url = `https://cdn.discordapp.com/guilds/${guildID}/avatars/${profile.id}/${guildProfile.avatar}.${format}`
-					} else {
-						// use Discord global profile avatar
-						const format = profile.avatar.startsWith('a_') ? 'gif' : 'png'
-						profile.image_url = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`
-					}
-				}
-				profile.name = guildProfile?.nick ? guildProfile.nick : profile.username
-
-				return {
-					id: profile.id,
-					discordId: profile.id,
-					name: profile.name,
-					discordTag: `${profile.username}#${profile.discriminator}`,
-					email: profile.email,
-					image: profile.image_url,
-					serverMember: !!guildProfile,
-				}
-			},
-		}),
-		...auxProviders,
-	],
+	providers: authProviders,
 	callbacks: {
 		async signIn({ user, account }) {
 			// Is the account disabled? Get out of here!

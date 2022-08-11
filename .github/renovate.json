@@ -9,6 +9,7 @@
 		"config:base",
 		":preserveSemverRanges",
 		":prNotPending",
+		":rebaseStalePrs",
 		":automergeMinor",
 		"workarounds:typesNodeVersioning"
 	],

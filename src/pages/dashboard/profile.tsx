@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 import {
 	signIn,
 	useSession,
@@ -22,7 +22,7 @@ import {
 } from '@mantine/core'
 import { openContextModal } from '@mantine/modals'
 import { useForm } from '@mantine/form'
-import { randomId } from '@mantine/hooks'
+import { randomId, useShallowEffect } from '@mantine/hooks'
 import { showNotification } from '@mantine/notifications'
 import { Icon } from '@iconify/react'
 import { useCurrentUser } from '~/hooks'
@@ -93,7 +93,7 @@ const ConnectedAccounts = ({ accounts }: ConnectedAccountsProps) => {
 			if (icon)
 				providerChips.push(
 					<AccountConnectChip
-						key={id}
+						key={randomId()}
 						service={id}
 						connected={isConnected}
 						icon={icon}
@@ -120,7 +120,7 @@ const ProfilePage = ({}: InferGetServerSidePropsType<
 	const { data: session, status } = useSession()
 	const { data, isLoading, isSuccess } = useCurrentUser()
 	const queryClient = useQueryClient()
-	const { query } = useRouter()
+	const router = useRouter()
 	const form = useForm({
 		initialValues: {
 			name: '',
@@ -130,19 +130,24 @@ const ProfilePage = ({}: InferGetServerSidePropsType<
 	const { classes: chipClasses } = useChipStyles()
 	const [twitterConnected, setTwitterConnected] = useState(false)
 	const [githubConnected, setGithubConnected] = useState(false)
-	useEffect(() => {
-		if (query?.newuser)
+	useShallowEffect(() => {
+		console.log('url query', router.query)
+		if (router.query.newuser) {
+			router.push('/dashboard/profile?showModal=true')
+		}
+		if (router.query.showModal) {
+			console.log('run modal')
 			openContextModal({
 				modal: 'newUserProgress',
 				title: 'Welcome!',
 				innerProps: {},
 			})
-		if (query?.connect) queryClient.invalidateQueries(['user', 'me'])
+		}
+		if (router.query.connect) queryClient.invalidateQueries(['user', 'me'])
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [query])
+	}, [router.query])
 	useEffect(() => {
 		if (isSuccess) {
-			console.log('useEffect connected account', data.accounts)
 			form.setValues(data)
 			const twitterStatus = data.accounts.some(
 				(item) => item.provider === 'discord'
@@ -150,7 +155,6 @@ const ProfilePage = ({}: InferGetServerSidePropsType<
 			const githubStatus = data.accounts.some(
 				(item) => item.provider === 'github'
 			)
-			console.log(twitterConnected, githubConnected)
 			setTwitterConnected(twitterStatus)
 			setGithubConnected(githubStatus)
 		}
