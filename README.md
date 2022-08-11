@@ -102,6 +102,28 @@ pnpm install
 
 <br/>
 
+### **Environment Variables**
+
+- This will require that you setup a MongoDB database. We recommend using MongoDB Atlas because there's a free option.
+- You will also need access to our Discord Developer Portal. For this, you can reach out @GarlandKey or @JoeKarow.
+- Do not try to run the server locally until you have completed the MongoDB and Discord setup.
+
+Copy `.env.example` in the root directory and name it `.env`
+
+```bash
+cp .env.example .env
+```
+
+Follow the instructions listed in the newly created `.env`.
+
+Once complete, you'll need to seed the database with test data. Do this as follows:
+
+```bash
+pnpm db:seed
+```
+
+<br/>
+
 ## Usage
 
 To start the development live server:
@@ -109,6 +131,8 @@ To start the development live server:
 ```bash
 pnpm dev
 ```
+
+If you need help with installation or setup, please reach out to @GarlandKey or @JoeKarow.
 
 <br/>
 
