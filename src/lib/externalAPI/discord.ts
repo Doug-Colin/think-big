@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { APIGuildMember } from 'discord-api-types/v10'
+import type { APIGuildMember, APIPartialGuild } from 'discord-api-types/v10'
 import { Account, User } from 'next-auth'
 import { prisma } from '~/lib'
 import { DateTime } from 'luxon'
@@ -23,7 +23,7 @@ export const getGuildMember = async (access_token: string) => {
 		)
 		return res
 	} catch (error) {
-		throw error
+		return undefined
 	}
 }
 
@@ -33,8 +33,19 @@ export const getGuildMember = async (access_token: string) => {
  * @returns A boolean value
  */
 export const checkGuildMember = async (access_token: string) => {
-	const guildProfile = await getGuildMember(access_token)
-	if (guildProfile.status === 200) {
+	const guilds = await axios.get<APIPartialGuild[]>(
+		'https://discord.com/api/v10/users/@me/guilds',
+		{
+			headers: {
+				Authorization: `Bearer ${access_token}`,
+			},
+		}
+	)
+	if (
+		guilds?.data.some((guild) => {
+			if (guild.id === guildID) return true
+		})
+	) {
 		return true
 	}
 	return false
@@ -60,7 +71,7 @@ export const updateDiscordProfileSchema = async (
 		console.log('run updates')
 		const profile = user
 		const guildAPI = await getGuildMember(account.access_token as string)
-		if (guildAPI.status === 200) {
+		if (guildAPI?.status === 200) {
 			const guildProfile = guildAPI.data
 			if (guildProfile?.avatar) {
 				// Use server specific avatar, if exists

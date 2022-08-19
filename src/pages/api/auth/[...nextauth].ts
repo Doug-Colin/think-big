@@ -43,7 +43,7 @@ const discordProvider = DiscordProvider({
 	authorization: {
 		url: 'https://discord.com/api/oauth2/authorize',
 		params: {
-			scope: 'identify email guilds.members.read',
+			scope: 'identify email guilds guilds.members.read',
 			state: generateRandomString(),
 			display: 'popup',
 		},
@@ -51,12 +51,12 @@ const discordProvider = DiscordProvider({
 	checks: 'state',
 	async profile(profile: DiscordProfile, tokens) {
 		const discordGuild = await getGuildMember(tokens.access_token as string)
-		const guildProfile = discordGuild.status === 200 ? discordGuild.data : null
+		const guildProfile = discordGuild?.data
 		if (profile.avatar === null) {
 			const defaultAvatarNumber = parseInt(profile.discriminator) % 5
 			profile.image_url = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`
 		} else {
-			if (guildProfile?.avatar) {
+			if (typeof guildProfile?.avatar === 'string') {
 				// Use server specific avatar, if exists
 				const format = guildProfile.avatar.startsWith('a_') ? 'gif' : 'png'
 				profile.image_url = `https://cdn.discordapp.com/guilds/${guildID}/avatars/${profile.id}/${guildProfile.avatar}.${format}`
@@ -66,7 +66,7 @@ const discordProvider = DiscordProvider({
 				profile.image_url = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`
 			}
 		}
-		profile.name = guildProfile?.nick ? guildProfile.nick : profile.username
+		profile.name = guildProfile?.nick ?? profile.username
 
 		return {
 			id: profile.id,
