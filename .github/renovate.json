@@ -33,7 +33,8 @@
 			"matchUpdateTypes": ["major"]
 		},
 		{
-			"matchSourceUrlPrefixes": ["https://github.com/mantinedev/mantine"]
+			"groupName": "Mantine monorepo",
+			"matchSourceUrlPrefixes": ["https://github.com/mantinedev/"]
 		},
 		{
 			"matchPackagePatterns": ["*"],
