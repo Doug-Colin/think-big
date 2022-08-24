@@ -14,20 +14,8 @@
 	],
 	"packageRules": [
 		{
-			"addLabels": ["major"],
-			"dependencyDashboardApproval": true,
-			"matchManagers": ["npm"],
-			"matchUpdateTypes": ["major"]
-		},
-		{
 			"groupName": "Mantine monorepo",
 			"matchPackagePrefixes": ["@mantine"]
-		},
-		{
-			"addLabels": ["minor", "automerge"],
-			"groupName": "non-major dependencies",
-			"groupSlug": "all-minor-patch",
-			"matchUpdateTypes": ["minor", "patch"]
 		}
 	],
 	"reviewersFromCodeOwners": false,
