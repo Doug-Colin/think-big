@@ -10,21 +10,8 @@
 		":preserveSemverRanges",
 		":prNotPending",
 		":rebaseStalePrs",
-		":automergeMinor",
-		"workarounds:typesNodeVersioning"
+		":automergeMinor"
 	],
-	"lockFileMaintenance": {
-		"addLabels": ["lockfile", "automerge"],
-		"branchTopic": "lock-file-maintenance",
-		"commitMessageAction": "Lock file maintenance",
-		"enabled": false,
-		"prBodyDefinitions": {
-			"Change": "All locks refreshed"
-		},
-		"rebaseWhen": "behind-base-branch",
-		"recreateClosed": true,
-		"schedule": ["before 5am on monday"]
-	},
 	"packageRules": [
 		{
 			"addLabels": ["major"],
