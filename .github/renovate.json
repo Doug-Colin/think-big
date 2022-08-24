@@ -37,12 +37,10 @@
 			"matchSourceUrlPrefixes": ["https://github.com/mantinedev/"]
 		},
 		{
-			"matchPackagePatterns": ["*"],
-			"minor": {
-				"addLabels": ["minor", "automerge"],
-				"groupName": "non-major dependencies",
-				"groupSlug": "all-minor-patch"
-			}
+			"addLabels": ["minor", "automerge"],
+			"groupName": "non-major dependencies",
+			"groupSlug": "all-minor-patch",
+			"matchUpdateTypes": ["minor", "patch"]
 		}
 	],
 	"reviewersFromCodeOwners": false,
