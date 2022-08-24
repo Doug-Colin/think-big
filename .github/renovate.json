@@ -21,7 +21,7 @@
 		},
 		{
 			"groupName": "Mantine monorepo",
-			"matchSourceUrlPrefixes": ["https://github.com/mantinedev/"]
+			"matchPackagePrefixes": ["@mantine"]
 		},
 		{
 			"addLabels": ["minor", "automerge"],
