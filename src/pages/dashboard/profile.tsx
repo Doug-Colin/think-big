@@ -1,14 +1,8 @@
-/* eslint-disable react/no-unescaped-entities */
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
-import Router, { useRouter } from 'next/router'
-import {
-	signIn,
-	useSession,
-	getProviders,
-	ClientSafeProvider,
-} from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { getProviders, ClientSafeProvider } from 'next-auth/react'
 import { getServerSession } from '../api/auth/[...nextauth]'
-import { FormEventHandler, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
 	Container,
 	Avatar,
@@ -17,11 +11,11 @@ import {
 	Grid,
 	TextInput,
 	Space,
-	createStyles,
 	Button,
+	createStyles,
 } from '@mantine/core'
 import { openContextModal } from '@mantine/modals'
-import { useForm } from '@mantine/form'
+import { useForm, zodResolver } from '@mantine/form'
 import { randomId, useShallowEffect } from '@mantine/hooks'
 import { showNotification } from '@mantine/notifications'
 import { Icon } from '@iconify/react'
@@ -39,20 +33,7 @@ import {
 } from '@tanstack/react-query'
 import superjson from 'superjson'
 import { CurrentUserUpdateData } from '~/lib/db/validations'
-
-const useChipStyles = createStyles((theme, _params, getRef) => ({
-	label: {
-		'&[data-checked]': {
-			'&, &:hover': {
-				backgroundColor: theme.colors.highlightPrimary[4],
-				color: theme.white,
-			},
-			[`& .${getRef('iconWrapper')}`]: {
-				color: theme.white,
-			},
-		},
-	},
-}))
+import { z } from 'zod'
 
 interface ConnectedAccountsProps {
 	accounts: FetchCurrentUserResult['accounts']
@@ -87,7 +68,7 @@ const ConnectedAccounts = ({ accounts }: ConnectedAccountsProps) => {
 		let i = 1
 		let limit = Object.keys(providers as object).length
 		for (const key in providers) {
-			const { id, name } = providers[key] as ClientSafeProvider
+			const { id } = providers[key] as ClientSafeProvider
 			const isConnected = accounts.some((item) => item.provider === id)
 			const icon = providerIcon.get(id.toLocaleLowerCase())
 			if (icon)
@@ -114,29 +95,37 @@ const ConnectedAccounts = ({ accounts }: ConnectedAccountsProps) => {
 	return <CenterLoader />
 }
 
+const useStyles = createStyles((theme) => ({
+	invalid: {
+		color: theme.colors.secondary[4],
+	},
+}))
+
 const ProfilePage = ({}: InferGetServerSidePropsType<
 	typeof getServerSideProps
 >) => {
-	const { data: session, status } = useSession()
-	const { data, isLoading, isSuccess } = useCurrentUser()
+	const { data, isSuccess } = useCurrentUser()
+	const { classes } = useStyles()
 	const queryClient = useQueryClient()
 	const router = useRouter()
-	const form = useForm({
+	const formSchema = z.object({
+		name: z.string().min(1, { message: 'Field cannot be empty.' }),
+		email: z.string().email({ message: 'Invalid email.' }),
+	})
+	const form = useForm<CurrentUserUpdateData>({
 		initialValues: {
 			name: '',
 			email: '',
 		},
+		validate: zodResolver(formSchema),
+		validateInputOnChange: true,
 	})
-	const { classes: chipClasses } = useChipStyles()
-	const [twitterConnected, setTwitterConnected] = useState(false)
-	const [githubConnected, setGithubConnected] = useState(false)
+	type FormValues = typeof form.values
 	useShallowEffect(() => {
-		console.log('url query', router.query)
 		if (router.query.newuser) {
 			router.push('/dashboard/profile?showModal=true')
 		}
 		if (router.query.showModal) {
-			console.log('run modal')
 			openContextModal({
 				modal: 'newUserProgress',
 				title: 'Welcome!',
@@ -149,31 +138,19 @@ const ProfilePage = ({}: InferGetServerSidePropsType<
 	useEffect(() => {
 		if (isSuccess) {
 			form.setValues(data)
-			const twitterStatus = data.accounts.some(
-				(item) => item.provider === 'discord'
-			)
-			const githubStatus = data.accounts.some(
-				(item) => item.provider === 'github'
-			)
-			setTwitterConnected(twitterStatus)
-			setGithubConnected(githubStatus)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSuccess, data])
-	const handleConnectAccount = async (service: string) => {
-		signIn(service)
-	}
-
-	const dataSubmit = useMutation((formData: CurrentUserUpdateData) =>
+	const dataSubmit = useMutation((formData: FormValues) =>
 		updateCurrentUserAPI(formData)
 	)
 
-	const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+	const handleSubmit = (values: FormValues) => {
 		try {
-			event.preventDefault()
-			const formData = form.values
+			// event.preventDefault()
+			const formData = values
 			dataSubmit.mutate(formData, {
-				onSuccess: (data) => {
+				onSuccess: () => {
 					queryClient.invalidateQueries(['user', 'me'])
 					showNotification({
 						id: 'profileSave',
@@ -186,6 +163,11 @@ const ProfilePage = ({}: InferGetServerSidePropsType<
 		} catch (err) {}
 	}
 
+	const handleError = (values: FormValues) => {
+		console.log(values)
+		return null
+	}
+
 	if (isSuccess) {
 		return (
 			<Container size='lg'>
@@ -196,15 +178,30 @@ const ProfilePage = ({}: InferGetServerSidePropsType<
 				<Space h='lg' />
 				<Grid columns={3}>
 					<Grid.Col span={2}>
-						<form onSubmit={handleSubmit}>
-							<TextInput label='Name' {...form.getInputProps('name')} />
-							<TextInput label='Email' {...form.getInputProps('email')} />
+						<form onSubmit={form.onSubmit(handleSubmit, handleError)}>
+							<TextInput
+								label='Name'
+								{...form.getInputProps('name')}
+								classNames={{
+									error: classes.invalid,
+									invalid: classes.invalid,
+								}}
+							/>
+							<TextInput
+								label='Email'
+								{...form.getInputProps('email')}
+								classNames={{
+									error: classes.invalid,
+									invalid: classes.invalid,
+								}}
+							/>
 							<Space h='md' />
 							<Button
 								color='highlightPrimary'
 								type='submit'
 								leftIcon={<Icon icon='fa6-solid:floppy-disk' />}
 								loading={dataSubmit.isLoading}
+								disabled={!form.isValid()}
 								sx={{
 									root: {
 										marginTop: '1rem',

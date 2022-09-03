@@ -10,38 +10,12 @@
 		":preserveSemverRanges",
 		":prNotPending",
 		":rebaseStalePrs",
-		":automergeMinor",
-		"workarounds:typesNodeVersioning"
+		":automergeMinor"
 	],
-	"lockFileMaintenance": {
-		"addLabels": ["lockfile", "automerge"],
-		"branchTopic": "lock-file-maintenance",
-		"commitMessageAction": "Lock file maintenance",
-		"enabled": false,
-		"prBodyDefinitions": {
-			"Change": "All locks refreshed"
-		},
-		"rebaseWhen": "behind-base-branch",
-		"recreateClosed": true,
-		"schedule": ["before 5am on monday"]
-	},
 	"packageRules": [
 		{
-			"addLabels": ["major"],
-			"dependencyDashboardApproval": true,
-			"matchManagers": ["npm"],
-			"matchUpdateTypes": ["major"]
-		},
-		{
-			"matchSourceUrlPrefixes": ["https://github.com/mantinedev/mantine"]
-		},
-		{
-			"matchPackagePatterns": ["*"],
-			"minor": {
-				"addLabels": ["minor", "automerge"],
-				"groupName": "non-major dependencies",
-				"groupSlug": "all-minor-patch"
-			}
+			"groupName": "Mantine monorepo",
+			"matchPackagePrefixes": ["@mantine"]
 		}
 	],
 	"reviewersFromCodeOwners": false,

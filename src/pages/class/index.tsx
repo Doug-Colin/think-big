@@ -4,7 +4,7 @@ import {
 	ComponentWithAuth,
 } from 'next'
 import { Text } from '@mantine/core'
-import { ClassTable } from '~/components/ClassTable'
+import { ClassAccordianTable } from '~/components/ClassTable'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { useClasses, useClassStatuses, keyClassStatuses } from '~/hooks'
 import { fetchClasses, fetchClassStatuses } from '~/lib/db/queries'
@@ -32,7 +32,7 @@ const ClassPage: ComponentWithAuth = ({
 		if (classLoading || statusLoading) return <Text>Loading...</Text>
 		if (classErrorStat || statusErrorStat)
 			throw classErrorStat ? 'classError' : 'statusError'
-		return <ClassTable data={classData} status={statusData} />
+		return <ClassAccordianTable data={classData} status={statusData} />
 	} catch (err) {
 		switch (err) {
 			case 'classError':
