@@ -6,18 +6,20 @@ import {
 	Anchor,
 	createStyles,
 	Space,
-	Box,
 } from '@mantine/core'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { TagGroup } from '..'
 import { ClassStatusSwitch } from './'
 import { FetchClassesResult, FetchClassStatusesResult } from '~/lib/db/queries'
+import { dateDisplay } from '~/lib'
 
 interface ClassDetailProps {
 	classData: FetchClassesResult[0]
 	classStatus: FetchClassStatusesResult['classes'][0]['status']
 	userId: string
+	showTags?: boolean
+	showDate?: boolean
 }
 
 const useStyles = createStyles((theme) => ({
@@ -48,8 +50,15 @@ const useStyles = createStyles((theme) => ({
 	},
 }))
 
-const ClassDetail = ({ classData, classStatus, userId }: ClassDetailProps) => {
+const ClassDetail = ({
+	classData,
+	classStatus,
+	userId,
+	showTags = true,
+	showDate = false,
+}: ClassDetailProps) => {
 	const { classes, cx } = useStyles()
+	const formattedDate = dateDisplay(classData.date)
 	return (
 		<>
 			<Divider my='xs' />
@@ -63,7 +72,10 @@ const ClassDetail = ({ classData, classStatus, userId }: ClassDetailProps) => {
 					classId={classData.id}
 					status={classStatus}
 				/>
-				<TagGroup tags={classData.tags} tagSize='lg' />
+				{showTags && <TagGroup tags={classData.tags} tagSize='lg' />}
+				{showDate && (
+					<time dateTime={classData.date.toString()}>{formattedDate}</time>
+				)}
 			</Group>
 			<Space h='xl' />
 			<Group align='flex-start' spacing='xl'>
